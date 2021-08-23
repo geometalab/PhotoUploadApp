@@ -31,7 +31,7 @@ class HomePageState extends State<HomePage> {
       case 0:
         return new HomeFragment();
       case 1:
-        return new CommonsUploadFragment();
+        return new SelectImageFragment();
       case 3:
         return new SettingsFragment();
 
