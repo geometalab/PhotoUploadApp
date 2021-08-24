@@ -42,7 +42,7 @@ class HomePageState extends State<HomePage> {
 
   _onSelectItem(int index) {
     setState(() => _selectedDrawerIndex = index);
-    Navigator.of(context).pop(); // close the drawer
+    Navigator.of(context).pop();
   }
 
   @override
@@ -66,13 +66,12 @@ class HomePageState extends State<HomePage> {
 
     return new Scaffold(
       appBar: new AppBar(
-        // here we display the title corresponding to the fragment
-        // you can instead choose to have a static title
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
       ),
       drawer: new Drawer(
         child: new Column(
           children: <Widget>[
+            // TODO DrawerMenu header (maybe display wikimedia account when logged in)
             DrawerHeader(child: Text("TODO: Header")),
             new Column(children: drawerOptions)
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projects/main.dart';
 
 class SelectImageFragment extends StatelessWidget {
   //TODO Support Video Files
@@ -111,7 +112,6 @@ class SelectCategoryFragment extends StatelessWidget {
                     },
                   )
                   */
-
         ]
       )
     );
@@ -226,7 +226,6 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                     child: Text('Submit to Commons'),
                   )
                 )
-
               ),
             ]
         )
