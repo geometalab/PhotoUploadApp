@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
+import 'package:projects/fragments/userFragment.dart';
+
 
 class DrawerItem {
   String title;
@@ -10,12 +12,15 @@ class DrawerItem {
 }
 
 class HomePage extends StatefulWidget {
-  final drawerItems = [
+  final  drawerItems = [
     new DrawerItem("Start", Icons.not_started_outlined),
     new DrawerItem("Upload to Wikimedia", Icons.upload_file),
     new DrawerItem("Divider", null),
+    new DrawerItem("Account Settings", Icons.person),
+    new DrawerItem("Divider", null),
     new DrawerItem("Settings", Icons.settings)
   ];
+
 
   @override
   State<StatefulWidget> createState() {
@@ -33,6 +38,8 @@ class HomePageState extends State<HomePage> {
       case 1:
         return new SelectImageFragment();
       case 3:
+        return new UserFragment();
+      case 4:
         return new SettingsFragment();
 
       default:
@@ -44,6 +51,7 @@ class HomePageState extends State<HomePage> {
     setState(() => _selectedDrawerIndex = index);
     Navigator.of(context).pop();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +71,6 @@ class HomePageState extends State<HomePage> {
         );
       }
     }
-
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
