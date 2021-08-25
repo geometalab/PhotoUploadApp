@@ -13,7 +13,7 @@ class DrawerItem {
 
 class HomePage extends StatefulWidget {
   final  drawerItems = [
-    new DrawerItem("Start", Icons.not_started_outlined),
+    new DrawerItem("Home", Icons.not_started_outlined),
     new DrawerItem("Upload to Wikimedia", Icons.upload_file),
     new DrawerItem("Divider", null),
     new DrawerItem("Account Settings", Icons.person),
@@ -39,7 +39,7 @@ class HomePageState extends State<HomePage> {
         return new SelectImageFragment();
       case 3:
         return new UserFragment();
-      case 4:
+      case 5:
         return new SettingsFragment();
 
       default:

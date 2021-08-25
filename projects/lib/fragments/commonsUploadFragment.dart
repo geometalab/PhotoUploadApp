@@ -27,7 +27,7 @@ class SelectImageFragment extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SelectCategoryFragment()),
+                        builder: (context) => StatefulSelectCategoryFragment()),
                   );
                 },
                 child: Text("Select Image from Files"),
@@ -41,7 +41,7 @@ class SelectImageFragment extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectCategoryFragment()),
+                          builder: (context) => StatefulSelectCategoryFragment()),
                     );
                   },
                   child: Text("Capture a Photo"),
@@ -51,11 +51,23 @@ class SelectImageFragment extends StatelessWidget {
       )
     );
   }
+
+
 }
 
-class SelectCategoryFragment extends StatelessWidget {
+class StatefulSelectCategoryFragment extends StatefulWidget {
+  @override
+  _SelectCategoryFragment createState() => _SelectCategoryFragment();
+}
+
+class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
+
+  List<String> addedCategories = [];
+  List<IconData> addedCategoriesImages = []; // TODO Replace with images later
+
   @override
   Widget build(BuildContext context) {
+
     return new Scaffold(
         body: Column(children: <Widget>[
           AppBar(
@@ -77,41 +89,34 @@ class SelectCategoryFragment extends StatelessWidget {
           Padding(
               padding: EdgeInsets.all(10),
               child: TextField(
+                //TODO: Implement Typeahead field
                 decoration: InputDecoration(
                     labelText: 'Category', border: OutlineInputBorder()),
               )
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: addedCategories.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.all(5),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (BuildContext context, int i) {
+                return Card(
+                  child: ListTile(
+                    leading: Icon(addedCategoriesImages[i]),
+                    title: Text(addedCategories[i]),
+                    trailing: Icon(Icons.remove_circle_outline),
+                      onTap: () {
+                        setState(() {
+                          addedCategories.removeAt(i);
+                          addedCategoriesImages.removeAt(i);
+                        });
+                      },
+                  ),
+                );
+              },
+            ),
           )
-
-          //TODO: Implement Typeahead field
-          /*
-                  TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                        autofocus: true,
-                        style: DefaultTextStyle.of(context).style.copyWith(
-                            fontStyle: FontStyle.italic
-                        ),
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder()
-                        )
-                    ),
-                    suggestionsCallback: (pattern) async {
-                      return await backendService.getSuggestions(pattern);
-                    },
-                    itemBuilder: (context, suggestion) {
-                      return ListTile(
-                        leading: Icon(Icons.shopping_cart),
-                        title: Text(suggestion['name']),
-                        subtitle: Text('\$${suggestion['price']}'),
-                      );
-                    },
-                    onSuggestionSelected: (suggestion) {
-                      //TODO Implement onSuggestionSelected
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProductPage(product: suggestion)
-                      ));
-                    },
-                  )
-                  */
         ]
       )
     );
@@ -124,9 +129,7 @@ class StatefulInformationFragment extends StatefulWidget {
 }
 
 class _InformationFragment extends State<StatefulInformationFragment> {
-
   DateTime selectedDate = DateTime.now();
-
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -214,8 +217,6 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   ],
                 ),
               ),
-
-
               Padding(padding: EdgeInsets.all(10),
                 child: SizedBox(
                   height: 45,

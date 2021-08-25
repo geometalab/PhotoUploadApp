@@ -6,7 +6,6 @@ class UserFragment extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement sign out and account management
     LoginHandler loginHandler = new LoginHandler();
-    Future username = loginHandler.getUsername();
 
     return new Center(
      child: FutureBuilder(
