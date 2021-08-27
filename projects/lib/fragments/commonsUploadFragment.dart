@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projects/api/categoryService.dart';
 import 'package:projects/main.dart';
 
 class SelectImageFragment extends StatelessWidget {
@@ -64,6 +67,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
 
   List<String> addedCategories = [];
   List<IconData> addedCategoriesImages = []; // TODO Replace with images later
+  CategoryService cs = new CategoryService();
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +92,32 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
           Padding(padding: EdgeInsets.all(2)),
           Padding(
               padding: EdgeInsets.all(10),
-              child: TextField(
-                //TODO: Implement Typeahead field
-                decoration: InputDecoration(
-                    labelText: 'Category', border: OutlineInputBorder()),
+              child: TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    autofocus: true,
+                    style: DefaultTextStyle.of(context).style.copyWith(
+                        fontStyle: FontStyle.italic
+                    ),
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder()
+                    )
+                ),
+                suggestionsCallback: (pattern) async {
+                  return await cs.getSuggestions(pattern);
+                },
+                itemBuilder: (context, Map<String, dynamic> suggestion) {
+                  return ListTile(
+                    leading: Icon(Icons.shopping_cart),
+                    title: Text(suggestion['title']!),
+                    subtitle: Text('${suggestion['id']}'),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  setState(() {
+                    addedCategories.add("lol");
+                    addedCategoriesImages.add(Icons.accessible);
+                  });
+                },
               )
           ),
           Expanded(
@@ -105,7 +131,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                   child: ListTile(
                     leading: Icon(addedCategoriesImages[i]),
                     title: Text(addedCategories[i]),
-                    trailing: Icon(Icons.remove_circle_outline),
+                    trailing: Icon(Icons.remove),
                       onTap: () {
                         setState(() {
                           addedCategories.removeAt(i);

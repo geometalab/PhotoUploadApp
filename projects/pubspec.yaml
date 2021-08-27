@@ -35,6 +35,7 @@ dependencies:
   uni_links: ^0.5.1
   shared_preferences: ^2.0.7
   url_launcher: ^6.0.9
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
