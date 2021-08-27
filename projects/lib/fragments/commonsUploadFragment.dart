@@ -5,15 +5,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/categoryService.dart';
 import 'package:projects/main.dart';
 
+// Upload Details
+late final XFile? image;
+late List<String> imageCategories;
+
 class SelectImageFragment extends StatelessWidget {
   //TODO Support Video Files
   //TODO Support Audio Files
   //TODO Support multiple Files
 
   final ImagePicker _picker = ImagePicker();
-
-  // Upload Info
-  late final XFile? image;
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +72,16 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _typeAheadController = TextEditingController();
 
     return new Scaffold(
         body: Column(children: <Widget>[
           AppBar(
             title: Text('Add Categories'),
             actions: [
-              IconButton(onPressed: () { Navigator.push(
-                context,
-                MaterialPageRoute(
+              IconButton(onPressed: () {
+                imageCategories = addedCategories;
+                Navigator.push(context, MaterialPageRoute(
                     builder: (context) => StatefulInformationFragment()),
                 );
               }
@@ -92,13 +94,20 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
           Padding(padding: EdgeInsets.all(2)),
           Padding(
               padding: EdgeInsets.all(10),
+
+              // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
               child: TypeAheadField(
+                debounceDuration: Duration(milliseconds: 150), // Wait for 150 ms of no typing before starting to get the results
                 textFieldConfiguration: TextFieldConfiguration(
+                    controller: _typeAheadController,
                     autofocus: true,
-                    style: DefaultTextStyle.of(context).style.copyWith(
-                        fontStyle: FontStyle.italic
+                    style: TextStyle(
+                      height: 1,
+                      fontSize: 20,
+                      color: Colors.black
                     ),
                     decoration: InputDecoration(
+                        labelText: "Enter fitting Keywords",
                         border: OutlineInputBorder()
                     )
                 ),
@@ -107,15 +116,16 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                 },
                 itemBuilder: (context, Map<String, dynamic> suggestion) {
                   return ListTile(
-                    leading: Icon(Icons.shopping_cart),
                     title: Text(suggestion['title']!),
                     subtitle: Text('${suggestion['id']}'),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSuggestionSelected: (Map<String, dynamic> suggestion) {
+                  // TODO Add Wiki ID in List tile
+                  // TODO Add Image thumbnail in List tile
                   setState(() {
-                    addedCategories.add("lol");
-                    addedCategoriesImages.add(Icons.accessible);
+                    addedCategories.add(suggestion['title']!);
+                    addedCategoriesImages.add(Icons.fireplace);
                   });
                 },
               )
@@ -134,6 +144,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                     trailing: Icon(Icons.remove),
                       onTap: () {
                         setState(() {
+                          _typeAheadController.clear();
                           addedCategories.removeAt(i);
                           addedCategoriesImages.removeAt(i);
                         });

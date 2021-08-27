@@ -9,56 +9,26 @@ class CategoryService{
 
   Future<List<Map<String, dynamic>>> getSuggestions(String pattern) async {
     var listedSuggestions;
+    String request = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/title?q=' + pattern + '&limit=3';
     try{
-      if (pattern.isEmpty || pattern.length < 3) {
-        return Future.value([]); // Search Results only start to get shown after 3 entered chars
+      if (pattern.isEmpty || pattern.length < 2) {
+        return Future.value([]); // Search Results only start to get shown after 2 entered chars
       }
-      String request = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/title?q=' + pattern + '&limit=3';
       Response response = await get(Uri.parse(request));
-      var jsonObject = jsonDecode(response.body);
-      var suggestions = jsonObject[0];
-      LinkedHashMap temp = jsonObject;
-      suggestions = temp.entries.toList(growable: true);
-      MapEntry tempMap = suggestions[0];
-      List tempList = tempMap.value;
-      print(tempList);
+      var hashMap = jsonDecode(response.body);
+      var suggestions = hashMap.entries.toList(growable: true);
+      List tempList = suggestions[0].value;
       listedSuggestions = tempList.map((e) => {'title': e['title'], 'id': e['id']}).toList() ;
-      print(listedSuggestions.toString());
     }catch (e){
-      print(e);
+      print("Error while getting autocomplete results from Wikimedia: $e");
     }
     return new Future.value(listedSuggestions);
   }
-  /*
-  Future<List<Map<String, String>>> getSuggestions(String pattern) async {
-    if (pattern.isEmpty && pattern.length < 3) {
-      return Future.value([]); // Search Results only start to get shown after 3 entered chars
-    }
-    String request = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/title?q=' + pattern + '&limit=3';
-    Response response = await get(Uri.parse(request));
-    List<Suggestion> suggestions = [];
-    if (response.statusCode == 200) {
-      print("3");
-      print(response.body);
-      var jsonObject = jsonDecode(response.body);
-      print("1");
-      suggestions = List<Suggestion>.from(jsonObject.map((model)  {
-        print("4");
-        return Suggestion.fromJson(model);
-      }));
-      print("2");
-    } else {
-      throw ErrorSummary("Could not get search results.");
-    }
-    return Future.value(suggestions.map((e) => {'title': e.title, 'tag': e.tag.toString()}).toList());
-  }
-   */
-
-
 }
+
+
 class Suggestion {
   List<Pages>? pages;
-
   Suggestion({this.pages});
 
   Suggestion.fromJson(Map<String, dynamic> json) {
