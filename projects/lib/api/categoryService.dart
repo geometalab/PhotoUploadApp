@@ -6,10 +6,9 @@ import 'package:http/http.dart';
 
 
 class CategoryService{
-
   Future<List<Map<String, dynamic>>> getSuggestions(String pattern) async {
     var listedSuggestions;
-    String request = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/title?q=' + pattern + '&limit=3';
+    String request = 'https://api.wikimedia.org/core/v1/commons/search/title?q=' + pattern + '&limit=3';
     try{
       if (pattern.isEmpty || pattern.length < 2) {
         return Future.value([]); // Search Results only start to get shown after 2 entered chars

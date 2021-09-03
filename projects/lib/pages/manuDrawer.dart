@@ -3,6 +3,7 @@ import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
 import 'package:projects/fragments/userFragment.dart';
+import 'package:projects/fragments/mapViewFragment.dart';
 
 
 class DrawerItem {
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
   final  drawerItems = [
     new DrawerItem("Home", Icons.not_started_outlined),
     new DrawerItem("Upload to Wikimedia", Icons.upload_file),
+    new DrawerItem("Find nearby Categories", Icons.add_location_outlined),
     new DrawerItem("Divider", null),
     new DrawerItem("Account Settings", Icons.person),
     new DrawerItem("Divider", null),
@@ -37,9 +39,11 @@ class HomePageState extends State<HomePage> {
         return new HomeFragment();
       case 1:
         return new SelectImageFragment();
-      case 3:
+      case 2:
+        return new MapFragment();
+      case 4:
         return new UserFragment();
-      case 5:
+      case 6:
         return new SettingsFragment();
 
       default:

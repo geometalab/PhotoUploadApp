@@ -39,6 +39,7 @@ class SelectImageFragment extends StatelessWidget {
             ),
             Padding(
                 padding: EdgeInsets.all(2),
+
                 child: OutlinedButton(
                   onPressed: () async {
                     image = await _picker.pickImage(source: ImageSource.camera);
