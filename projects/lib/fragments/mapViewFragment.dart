@@ -15,7 +15,6 @@ class StatefulMapFragment extends StatefulWidget {
 
 class _MapFragment extends State<StatefulMapFragment> {
   List<Marker> markerList = List.empty(growable: true);
-  bool firstInit = true;
   MapController mapController = new MapController();
   NearbyCategoriesService ncs = new NearbyCategoriesService();
 
@@ -37,16 +36,15 @@ class _MapFragment extends State<StatefulMapFragment> {
               subdomains: ['a', 'b', 'c']),
           LocationMarkerLayerOptions(),
           MarkerLayerOptions(
-            markers: _getMarkerList(),
+            markers: getMarkerList(),
           ),
         ],
       ),
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: () {
-          this.setState(() {
-            ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateRadius())).then((value) {
-              markerList = value;
-            });
+          ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateRadius())).then((value) {
+            markerList = value;
+            setState(() { });
           });
         },
         label: Text("Search in this area"),
@@ -60,19 +58,7 @@ class _MapFragment extends State<StatefulMapFragment> {
     return 4;
   }
 
-  List<Marker> _getMarkerList () {
-    if(!firstInit){
-      List<Marker> returnValue = List.empty(growable: true);
-      (ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateRadius()))).then((value) {
-        returnValue = value;
-      });
-      print(returnValue.toString());
-      return markerList;
-    }else{
-      firstInit = false;
-      return List<Marker>.empty();
-    }
-
-
+  List<Marker> getMarkerList () {
+    return markerList;
   }
 }
