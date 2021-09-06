@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage> {
       case 1:
         return new SelectImageFragment();
       case 2:
-        return new MapFragment();
+        return new StatefulMapFragment();
       case 4:
         return new UserFragment();
       case 6:
