@@ -1,0 +1,83 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:projects/api/imageService.dart';
+
+// TODO tabbed view? for more information (see todos below)
+// TODO add a View in Web/App function (requires QTag probably)
+// TODO display short description (and maybe more) through QTag -> Wikimedia
+
+
+class StatefulViewCategoryFragment extends StatefulWidget {
+  final Marker marker;
+  StatefulViewCategoryFragment(this.marker, {Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _ViewCategoryFragment(marker);
+}
+
+class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
+  final Marker _marker;
+  _ViewCategoryFragment(this._marker);
+  
+  
+
+  @override
+  Widget build(BuildContext context) {
+    var categoryTitle =  _marker.key.toString().substring(3, _marker.key.toString().length - 3);
+    List<Card> cards = List.empty(growable: true);
+
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text(categoryTitle),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget> [
+           FutureBuilder(
+              future: ImageService().getCategoryImages(categoryTitle, 200, 100),
+              builder: (BuildContext context, AsyncSnapshot<List<ImageURL>> snapshot) {
+                if(snapshot.hasData) {
+                  List<ImageURL> images = snapshot.data!;
+                  for (int i = 0; i < images.length; i++){
+                    cards.add(
+                      new Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.network(images[i].url),
+                            Text(images[i].name),
+                          ],
+                        ),
+                      )
+                    );
+                  }
+                  return Expanded(
+                      child: ListView(
+                        children: cards,
+                      )
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // TODO Implement
+        },
+        label: Text("Upload to this Category"),
+        icon: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+
+  }
+
+}

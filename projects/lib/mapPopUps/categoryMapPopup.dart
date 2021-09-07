@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
+import 'package:projects/fragments/viewCategoryFragment.dart';
 
 class CategoryPopup extends StatefulWidget {
   final Marker marker;
-
   CategoryPopup(this.marker, {Key? key}) : super(key: key);
 
   @override
@@ -13,7 +13,6 @@ class CategoryPopup extends StatefulWidget {
 
 class _CategoryPopupState extends State<CategoryPopup> {
   final Marker _marker;
-
   _CategoryPopupState(this._marker);
 
   @override
@@ -21,7 +20,11 @@ class _CategoryPopupState extends State<CategoryPopup> {
     return Card(
       child: InkWell(
         onTap: () => setState(() {
-          // TODO implement
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StatefulViewCategoryFragment(_marker)),
+          );
         }),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -35,8 +38,8 @@ class _CategoryPopupState extends State<CategoryPopup> {
                     future: ImageService().getCategoryThumbnail(_marker.key.toString().substring(3, _marker.key.toString().length - 3)),
                     builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
                       Widget thumbnail;
-                      if(snapshot.hasData) {
-                        thumbnail = snapshot.data!;
+                      if(snapshot.hasData) {                  // TODO Investigate case with late image popup
+                        thumbnail = snapshot.data!;           // Sometimes (maybe because of file type or res), the progress indicator appears, but it still takes a few seconds for image to appear
                       } else if (snapshot.hasError) {
                         throw("Could not display thumbnail");
                       } else {

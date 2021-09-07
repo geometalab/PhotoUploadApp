@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:projects/MapPopUp/categoryMapPopup.dart';
+import 'package:projects/MapPopUps/categoryMapPopup.dart';
 import 'package:projects/api/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 
@@ -19,10 +19,10 @@ class _MapFragment extends State<StatefulMapFragment> {
 
   // TODO make it impossible to zoom out so far that background of fragment can be seen
 
-  List<Marker> markerList = List.empty(growable: true);
-  MapController mapController = new MapController();
-  NearbyCategoriesService ncs = new NearbyCategoriesService();
+  List<Marker> _markerList = List.empty(growable: true);
 
+  final MapController mapController = new MapController();
+  final NearbyCategoriesService ncs = new NearbyCategoriesService();
   final PopupController _popupLayerController = PopupController();
 
   @override
@@ -46,7 +46,6 @@ class _MapFragment extends State<StatefulMapFragment> {
         LocationMarkerLayerOptions(),
         MarkerClusterLayerOptions(
           // TODO get markers to rotate as well
-          // TODO get popup to be closer to marker
           popupOptions: PopupOptions(
               popupBuilder: (BuildContext context, Marker marker) => CategoryPopup(marker),
               popupController: _popupLayerController,
@@ -54,27 +53,29 @@ class _MapFragment extends State<StatefulMapFragment> {
           ),
           builder: (BuildContext context, List<Marker> markers) {
             return FloatingActionButton(
-                child: Text(markers.length.toString()),
-                onPressed: () {}); // TODO Implement zoom in on tap
-            },
-            markers: getMarkerList(),
-            maxClusterRadius: 120,
-            size: Size(40, 40),
-            fitBoundsOptions: FitBoundsOptions(
-              padding: EdgeInsets.all(50),
-            ),
+              child: Text(markers.length.toString()),
+              onPressed: () {},
+              heroTag: "clusterBtn",
+            ); // TODO Implement zoom in on tap
+          },
+          markers: getMarkerList(),
+          maxClusterRadius: 120,
+          size: Size(40, 40),
+          fitBoundsOptions: FitBoundsOptions(
+            padding: EdgeInsets.all(50),
           ),
-        ],
-      ),
+        ),
+      ]),
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: () {
           ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateRadius())).then((value) {
-            markerList = value;
-            setState(() { });
+            _markerList = value;
+            setState(() {});
           });
         },
         label: Text("Search in this area"),
         icon: Icon(Icons.search),
+        heroTag: "searchBtn",
       ),
     );
   }
@@ -85,6 +86,6 @@ class _MapFragment extends State<StatefulMapFragment> {
   }
 
   List<Marker> getMarkerList () {
-    return markerList;
+    return _markerList;
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/categoryService.dart';
 
+// TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
+
 // Upload Details
 late final XFile? image;
 late List<String> imageCategories;
