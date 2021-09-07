@@ -3,9 +3,10 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:flutter/foundation.dart';
 
+// TODO Improve look & feel
+// TODO Implement Warning Messaging when no internet connection
 
 void main() => runApp(new MyApp());
-
 
 class MyApp extends StatelessWidget {
 
@@ -14,13 +15,11 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'NavigationDrawer Demo',
       theme: new ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue, // TODO Choose a Color Scheme
       ),
       home: new HomePage(),
     );
-
   }
-
 }
 @override
 void initState() {

@@ -49,12 +49,12 @@ class NearbyCategoriesService{
     for (int i = 0; i < locations.length; i++){
       markers.add(
         Marker(
-            width: 80.0,
-            height: 80.0,
+            width: 40,
+            height: 40,
             point: LatLng(locations[i].lat, locations[i].lng),
             builder: (ctx) =>
                 Container(
-                    child: Icon(Icons.location_pin, color: Colors.blue)
+                    child: Icon(Icons.location_pin, color: Colors.blue, size: 40)
                 ),
             key: new Key(locations[i].commons),
           rotate: true,

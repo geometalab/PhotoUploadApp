@@ -37,6 +37,8 @@ dependencies:
   xml: ^5.1.2
   flutter_map_location_marker: any
   geolocator: ^7.6.0
+  flutter_map_marker_cluster: ^0.4.0
+  crypto: ^3.0.1
 
 dev_dependencies:
   flutter_test:
