@@ -1,7 +1,4 @@
-import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:crypto/crypto.dart';
@@ -11,7 +8,7 @@ class ImageService {
     List<String> urls = await getImageURLs(category, 150);
     return Image.network(urls[0]);
 
-    // Ressources:
+    // Resources:
     // https://magnus-toolserver.toolforge.org/commonsapi.php
     // https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtype=file&cmtitle=Category:Hochstollen&format=json
   }

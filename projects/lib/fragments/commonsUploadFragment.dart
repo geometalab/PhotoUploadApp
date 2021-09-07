@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/categoryService.dart';
-import 'package:projects/main.dart';
 
 // Upload Details
 late final XFile? image;

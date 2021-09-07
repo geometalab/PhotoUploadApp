@@ -53,7 +53,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
             ),
             _cardDescription(context),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 10),
+              padding: EdgeInsets.only(left: 20, right: 15),
               child: Icon(Icons.edit),
             ),
           ],
@@ -73,7 +73,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              _marker.key.toString().substring(3, _marker.key.toString().length - 3), // marker keys come with unecessairy chars at
+              _marker.key.toString().substring(3, _marker.key.toString().length - 3), // marker keys come with unnecessary chars at
               overflow: TextOverflow.fade,
               softWrap: false,
               style: const TextStyle(

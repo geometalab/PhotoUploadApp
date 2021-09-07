@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:projects/api/categoryService.dart';
 import 'package:xml/xml.dart';
 
 class NearbyCategoriesService{
