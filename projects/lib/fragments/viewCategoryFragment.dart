@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
+import 'package:projects/fragments/commonsUploadFragment.dart';
 
-// TODO tabbed view? for more information (see todos below)
+// TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)
 // TODO display short description (and maybe more) through QTag -> Wikimedia
 
@@ -36,27 +37,32 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget> [
-           FutureBuilder(
-              future: ImageService().getCategoryImages(categoryTitle, 200, 100),
-              builder: (BuildContext context, AsyncSnapshot<List<ImageURL>> snapshot) {
+            FutureBuilder(
+              future: ImageService().getCategoryImages(categoryTitle, 400, 10), // TODO? at the moment only 10 first pics get shown, maybe someting like "load more" at the end?
+              builder: (BuildContext context, AsyncSnapshot<List<ImageURL>> snapshot) { // TODO Loading Indicator for Images as they might take quite a long time to load
                 if(snapshot.hasData) {
                   List<ImageURL> images = snapshot.data!;
                   for (int i = 0; i < images.length; i++){
                     cards.add(
-                      new Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.network(images[i].url),
-                            Text(images[i].name),
-                          ],
-                        ),
-                      )
+                        new Card(
+                          child: Padding( padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.network(images[i].url, fit: BoxFit.fitWidth,), // TODO Implement fullscreen viewer for Images (on image click)
+                                Padding( padding: EdgeInsets.only(top: 10),
+                                  child: Text(images[i].name, style: TextStyle(fontStyle: FontStyle.italic)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                     );
                   }
                   return Expanded(
                       child: ListView(
+                        padding: EdgeInsets.all(7),
                         children: cards,
                       )
                   );
@@ -70,7 +76,13 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO Implement
+          setState(() {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SelectImageFragment()),
+            );
+          });
         },
         label: Text("Upload to this Category"),
         icon: Icon(Icons.add),

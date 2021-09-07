@@ -5,14 +5,13 @@ import 'package:projects/api/categoryService.dart';
 
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
 
-// Upload Details
 late final XFile? image;
 late List<String> imageCategories;
 
 class SelectImageFragment extends StatelessWidget {
-  //TODO Support Video Files
-  //TODO Support Audio Files
-  //TODO Support multiple Files
+  //TODO? Support Video Files?
+  //TODO? Support Audio Files?
+  //TODO? Support multiple Files?
 
   final ImagePicker _picker = ImagePicker();
 
