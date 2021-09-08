@@ -77,6 +77,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           setState(() {
+            InformationCollector.preFillContent = categoryTitle;
             Navigator.push(
               context,
               MaterialPageRoute(

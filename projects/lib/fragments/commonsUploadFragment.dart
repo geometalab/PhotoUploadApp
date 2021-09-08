@@ -5,8 +5,6 @@ import 'package:projects/api/categoryService.dart';
 
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
 
-late final XFile? image;
-late List<String> imageCategories;
 
 class SelectImageFragment extends StatelessWidget {
   //TODO? Support Video Files?
@@ -26,7 +24,7 @@ class SelectImageFragment extends StatelessWidget {
               padding: EdgeInsets.all(2),
               child: OutlinedButton(
                 onPressed: () async {
-                  image = await _picker.pickImage(source: ImageSource.gallery);
+                  InformationCollector.image = await _picker.pickImage(source: ImageSource.gallery);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -41,7 +39,7 @@ class SelectImageFragment extends StatelessWidget {
 
                 child: OutlinedButton(
                   onPressed: () async {
-                    image = await _picker.pickImage(source: ImageSource.camera);
+                    InformationCollector.image = await _picker.pickImage(source: ImageSource.camera);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -67,12 +65,19 @@ class StatefulSelectCategoryFragment extends StatefulWidget {
 class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
 
   List<String> addedCategories = [];
-  List<IconData> addedCategoriesImages = []; // TODO Replace with images later
+  List<IconData> addedCategoriesImages = [];
   CategoryService cs = new CategoryService();
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _typeAheadController = TextEditingController();
+    String prefillContent;
+    if(InformationCollector.preFillContent != null) {
+      prefillContent = InformationCollector.preFillContent!;
+    } else {
+      prefillContent = "";
+    }
+    final TextEditingController _typeAheadController = TextEditingController(text: prefillContent);
+    addedCategories = InformationCollector.imageCategories;
 
     return new Scaffold(
         body: Column(children: <Widget>[
@@ -80,7 +85,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
             title: Text('Add Categories'),
             actions: [
               IconButton(onPressed: () {
-                imageCategories = addedCategories;
+                InformationCollector.imageCategories = addedCategories;
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => StatefulInformationFragment()),
                 );
@@ -166,6 +171,7 @@ class StatefulInformationFragment extends StatefulWidget {
 }
 
 class _InformationFragment extends State<StatefulInformationFragment> {
+
   DateTime selectedDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -259,7 +265,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                    //TODO Implement with API
+                      //TODO Implement with API
                     },
                     child: Text('Submit to Commons'),
                   )
@@ -270,7 +276,14 @@ class _InformationFragment extends State<StatefulInformationFragment> {
     );
   }
 
+
+
 }
 
+class InformationCollector {
+  static XFile? image;
+  static List<String> imageCategories = List.empty(growable: true);
+  static String? preFillContent; // Is loaded into typeahead field
+}
 
 
