@@ -22,7 +22,7 @@ class SelectImageFragment extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(2),
-              child: OutlinedButton(
+              child: ElevatedButton(
                 onPressed: () async {
                   InformationCollector.image = await _picker.pickImage(source: ImageSource.gallery);
                   Navigator.push(
@@ -31,13 +31,25 @@ class SelectImageFragment extends StatelessWidget {
                         builder: (context) => StatefulSelectCategoryFragment()),
                   );
                 },
-                child: Text("Select Image from Files"),
+                  child: SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget> [
+                          Icon(Icons.file_copy_outlined),
+                          Padding(padding: EdgeInsets.only(left: 5)),
+                          Text("Select Image from Files"),
+                        ]
+                    ),
+                  )
               ),
             ),
             Padding(
                 padding: EdgeInsets.all(2),
 
-                child: OutlinedButton(
+                child: ElevatedButton(
                   onPressed: () async {
                     InformationCollector.image = await _picker.pickImage(source: ImageSource.camera);
                     Navigator.push(
@@ -46,7 +58,19 @@ class SelectImageFragment extends StatelessWidget {
                           builder: (context) => StatefulSelectCategoryFragment()),
                     );
                   },
-                  child: Text("Capture a Photo"),
+                    child: SizedBox(
+                      width: 200,
+                      height: 40,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget> [
+                            Icon(Icons.camera_alt_outlined),
+                            Padding(padding: EdgeInsets.only(left: 5)),
+                            Text("Capture a Photo"),
+                          ]
+                      ),
+                    )
                 )
             )
           ],
