@@ -11,7 +11,7 @@ import 'dart:io';
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
 
 
-class SelectImageFragment extends StatelessWidget {
+class SelectImageFragment extends StatelessWidget {   // TODO to have a full screen, just for two buttons is way to much space (idk how to fix)
   //TODO? Support Video Files?
   //TODO? Support Audio Files?
   //TODO? Support multiple Files?
@@ -20,7 +20,9 @@ class SelectImageFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
+    return new Scaffold(
+      backgroundColor: ThemeData.light().canvasColor,
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,49 +38,50 @@ class SelectImageFragment extends StatelessWidget {
                         builder: (context) => StatefulSelectCategoryFragment()),
                   );
                 },
-                  child: SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget> [
-                          Icon(Icons.file_copy_outlined),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          Text("Select Image from Files"),
-                        ]
-                    ),
-                  )
+                child: SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget> [
+                        Icon(Icons.file_copy_outlined),
+                        Padding(padding: EdgeInsets.only(left: 5)),
+                        Text("Select Image from Files"),
+                      ]
+                  ),
+                )
               ),
             ),
             Padding(
-                padding: EdgeInsets.all(2),
+              padding: EdgeInsets.all(2),
 
-                child: ElevatedButton(
-                  onPressed: () async {
-                    InformationCollector.image = await _picker.pickImage(source: ImageSource.camera);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StatefulSelectCategoryFragment()),
-                    );
-                  },
-                    child: SizedBox(
-                      width: 200,
-                      height: 40,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget> [
-                            Icon(Icons.camera_alt_outlined),
-                            Padding(padding: EdgeInsets.only(left: 5)),
-                            Text("Capture a Photo"),
-                          ]
-                      ),
-                    )
+              child: ElevatedButton(
+                onPressed: () async {
+                  InformationCollector.image = await _picker.pickImage(source: ImageSource.camera);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StatefulSelectCategoryFragment()),
+                  );
+                },
+                child: SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget> [
+                        Icon(Icons.camera_alt_outlined),
+                        Padding(padding: EdgeInsets.only(left: 5)),
+                        Text("Capture a Photo"),
+                      ]
+                  ),
                 )
+              )
             )
           ],
+        )
       )
     );
   }
@@ -128,7 +131,6 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
           Padding(padding: EdgeInsets.all(2)),
           Padding(
               padding: EdgeInsets.all(10),
-
               // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
               child: TypeAheadField(
                 debounceDuration: Duration(milliseconds: 150), // Wait for 150 ms of no typing before starting to get the results
