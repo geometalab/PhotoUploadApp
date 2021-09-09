@@ -1,7 +1,12 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/categoryService.dart';
+import 'package:projects/api/uploadService.dart';
+import 'dart:io';
 
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
 
@@ -195,7 +200,7 @@ class StatefulInformationFragment extends StatefulWidget {
 }
 
 class _InformationFragment extends State<StatefulInformationFragment> {
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = InformationCollector.date;
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -204,14 +209,14 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
+        InformationCollector.date = picked;
         selectedDate = picked;
       });
     }
   }
 
   // Find field info here: https://commons.wikimedia.org/wiki/Template:Information
-  // TODO implement source
-  // TODO implement permission
+  // TODO implement additional fields if needed
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -223,6 +228,10 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
+                    initialValue: InformationCollector.title,
+                    onChanged: (value) {
+                      InformationCollector.title = value;
+                    },
                     decoration: const InputDecoration(
                       icon: Icon(Icons.file_copy_outlined),
                       labelText: 'File Name',
@@ -234,6 +243,10 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                 padding: EdgeInsets.all(10),
                 child:
                 TextFormField(
+                    initialValue: InformationCollector.description,
+                    onChanged: (value) {
+                      InformationCollector.description = value;
+                    },
                     decoration: const InputDecoration(
                       icon: Icon(Icons.text_fields_outlined),
                       labelText: 'Description',
@@ -244,6 +257,10 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               ),
               Padding(padding: EdgeInsets.all(10),
                 child: TextFormField(
+                    initialValue: InformationCollector.author,
+                    onChanged: (value) {
+                      InformationCollector.author = value;
+                    },
                   decoration: const InputDecoration(
                     icon: Icon(Icons.person),
                     labelText: 'Author',
@@ -327,7 +344,17 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                      //TODO Implement with API
+                      try {
+                        UploadService().uploadImage(
+                            InformationCollector().getXFileImage(),
+                            InformationCollector.title!,
+                            InformationCollector.description!,
+                            InformationCollector.author!,
+                            InformationCollector.license!,
+                            InformationCollector.date);
+                      } catch (e) {
+                        print(e);
+                      }
                     },
                     child: Text('Submit to Commons'),
                   )
@@ -346,7 +373,21 @@ class InformationCollector {
   static XFile? image;
   static List<String> imageCategories = List.empty(growable: true);
   static String? preFillContent; // Is loaded into typeahead field
+  static String? title;
+  static String? description;
+  static String? author;
   static String? license = 'CC0';
+  static DateTime date = DateTime.now();
+
+  Image getXFileImage () {
+    if (image != null) {
+      Image tempImage;
+      tempImage = Image.file(File(image!.path));
+      return tempImage;
+    } else {
+      throw "Tried to convert an Image which does not exist";
+    }
+  }
 }
 
 
