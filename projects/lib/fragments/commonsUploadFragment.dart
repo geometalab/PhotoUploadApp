@@ -136,7 +136,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                       color: Colors.black
                     ),
                     decoration: InputDecoration(
-                        labelText: "Enter fitting Keywords",
+                        labelText: "Enter fitting keywords",
                         border: OutlineInputBorder()
                     )
                 ),
@@ -195,7 +195,6 @@ class StatefulInformationFragment extends StatefulWidget {
 }
 
 class _InformationFragment extends State<StatefulInformationFragment> {
-
   DateTime selectedDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -252,6 +251,45 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   )
                 ),
               ),
+              Padding(padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.description_outlined, color: Colors.grey[600],),
+                        Padding(padding: EdgeInsets.only(left: 18)),
+                        Text("License: ", textScaleFactor: 1.2, style: TextStyle(color: Colors.grey[700]),),
+                      ],
+                    ),
+                    DropdownButton<String>(
+                      value: InformationCollector.license,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          InformationCollector.license = newValue!;
+                        });
+                      },
+                      icon: const Icon(Icons.arrow_downward),
+                      iconSize: 24,
+                      elevation: 16,
+                      underline: Container(
+                        height: 2,
+                        color: ThemeData.light().accentColor,
+                      ),
+                      items: <String>['CC0', 'Attribution 3.0', 'Attribution-ShareAlike 3.0', 'Attribution 4.0', 'Attribution-ShareAlike 4.0']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Row(
@@ -263,13 +301,13 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(Icons.calendar_today, color: Colors.grey,),
+                          Icon(Icons.calendar_today, color: Colors.grey[600],),
                           Padding(padding: EdgeInsets.only(left: 18)),
                           Text('Date:', textScaleFactor: 1.2, style: TextStyle(color: Colors.grey[700]),),
                         ],),
                     ),
-                    Container(
-                      child: Row(
+                    Container( // TODO date should be on the other side, next to label "Date:"
+                      child: Row( // TODO make clean bc this shits itself once the resolution is a bit different
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -308,6 +346,7 @@ class InformationCollector {
   static XFile? image;
   static List<String> imageCategories = List.empty(growable: true);
   static String? preFillContent; // Is loaded into typeahead field
+  static String? license = 'CC0';
 }
 
 

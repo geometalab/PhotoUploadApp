@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 // TODO find a name
 // TODO Image caching and maybe other network traffic optimisations
 // TODO Responsive design for tablets (and landscape mode?)
+// TODO Licencing
 
 void main() => runApp(new MyApp());
 
