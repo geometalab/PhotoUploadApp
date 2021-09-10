@@ -30,7 +30,7 @@ dependencies:
   flutter_typeahead: ^3.2.0
   flutter_branch_sdk: ^3.4.0
   uni_links: ^0.5.1
-  shared_preferences: ^2.0.7
+  shared_preferences: any
   url_launcher: ^6.0.9
   http: ^0.13.3
   flutter_map: ^0.13.1
@@ -39,6 +39,7 @@ dependencies:
   geolocator: ^7.6.0
   flutter_map_marker_cluster: ^0.4.0
   crypto: ^3.0.1
+  easy_dynamic_theme: ^2.2.0
 
 dev_dependencies:
   flutter_test:

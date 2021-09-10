@@ -45,7 +45,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                   for (int i = 0; i < images.length; i++){
                     cards.add(
                         new Card(
-                          child: Padding( padding: EdgeInsets.all(10),
+                          child: Padding(padding: EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +61,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                     );
                   }
                   return Expanded(
-                      child: ListView(
+                      child: ListView(  // TODO The last Image on page gets cut off a bit because of the button
                         padding: EdgeInsets.all(7),
                         children: cards,
                       )
