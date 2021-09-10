@@ -65,7 +65,7 @@ class ArticleList {
     articles.clear();
   }
 
-  List<Card> generateCards (BuildContext context) {
+  List<Card> generateCards (BuildContext context) { // TODO Implement option to add a full size image to card
     List<Card> cards = new List.empty(growable: true);
     List<Article> articles = ArticleList.articles;
 
@@ -88,21 +88,21 @@ class ArticleList {
                     }
                   },
                   child: Padding(
-                    padding: EdgeInsets.all(2),
+                    padding: EdgeInsets.all(8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                            padding: EdgeInsets.fromLTRB(02, 2, 0, 12),
+                            padding: EdgeInsets.all(8),
                             child: Text(
                               article.title,
                               style: customStyles.articleTitle,
                             )
                         ),
-                        if(article.image != null) article.image as Widget,
+                        if(article.image != null) Padding(padding: EdgeInsets.fromLTRB(8,0,8,8), child: article.image as Widget),
                         Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.fromLTRB(8,0,8,8),
                           child: Text(
                             article.description,
                             style: customStyles.articleDescription,
