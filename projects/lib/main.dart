@@ -1,8 +1,10 @@
+import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:flutter/foundation.dart';
+import 'package:projects/theme/themes.dart' as customThemes;
 
 // TODO Improve look & feel
 // TODO Implement Warning Messaging when no internet connection
@@ -14,7 +16,14 @@ import 'package:flutter/foundation.dart';
 // TODO Licensing
 // TODO images don't load in browser
 
-void main() => runApp(new MyApp());
+void main() async {
+  runApp(
+    EasyDynamicThemeWidget(
+      child: MyApp(),
+    ),
+  );
+}
+
 
 class MyApp extends StatelessWidget {
 
@@ -22,11 +31,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'NavigationDrawer Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue, // TODO Choose a Color Scheme
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: customThemes.lightTheme,
+      darkTheme: customThemes.darkTheme,
+      themeMode: EasyDynamicTheme.of(context).themeMode,
       home: new HomePage(),
     );
+  }
+
+  changeTheme() {
+
   }
 }
 @override

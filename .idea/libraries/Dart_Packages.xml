@@ -72,6 +72,13 @@
             </list>
           </value>
         </entry>
+        <entry key="easy_dynamic_theme">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/easy_dynamic_theme-2.2.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="fake_async">
           <value>
             <list>
@@ -635,9 +642,10 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.2.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.1+4/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.1+5/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/easy_dynamic_theme-2.2.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />

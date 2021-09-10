@@ -21,7 +21,7 @@ class SelectImageFragment extends StatelessWidget {   // TODO to have a full scr
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: ThemeData.light().canvasColor,
+      backgroundColor: Theme.of(context).canvasColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -296,7 +296,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                       elevation: 16,
                       underline: Container(
                         height: 2,
-                        color: ThemeData.light().accentColor,
+                        color: Theme.of(context).accentColor,
                       ),
                       items: <String>['CC0', 'Attribution 3.0', 'Attribution-ShareAlike 3.0', 'Attribution 4.0', 'Attribution-ShareAlike 4.0']
                           .map<DropdownMenuItem<String>>((String value) {
