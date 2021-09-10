@@ -20,7 +20,7 @@ class SettingsFragment extends StatelessWidget {
     } else if (themeMode == ThemeMode.system) {
       dropdownValue = "Use System Theme";
     } else {
-      throw("App style could not be determined");
+      throw("App theme could not be determined");
     }
     return new Center(
       child: Column(
