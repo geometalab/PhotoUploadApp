@@ -32,11 +32,11 @@ class SettingsFragment extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(8),
                 child: Text("App Theme"),
               ),
               Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(8),
                   child: DropdownButton<String>(
                     // TODO 3rd option: Use system theme
                     value: dropdownValue,

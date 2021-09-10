@@ -18,10 +18,10 @@ class UserFragment extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.all(10),
+                  Padding(padding: EdgeInsets.all(8),
                     child: Text("Not signed to Wikimedia")
                   ),
-                  Padding(padding: EdgeInsets.all(10),
+                  Padding(padding: EdgeInsets.all(8),
                       child: SizedBox(
                           width: 200,
                           height: 50,
@@ -38,7 +38,7 @@ class UserFragment extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.all(10),
+                  Padding(padding: EdgeInsets.all(8),
                       child: Text("Signed in as " + username)
                   ),
                 ],

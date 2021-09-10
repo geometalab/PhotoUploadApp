@@ -366,6 +366,13 @@
             </list>
           </value>
         </entry>
+        <entry key="photo_view">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/photo_view-0.12.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="platform">
           <value>
             <list>
@@ -684,6 +691,7 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.3/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.1.0/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/photo_view-0.12.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.0.2/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/positioned_tap_detector_2-1.0.0/lib" />

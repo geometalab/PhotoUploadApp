@@ -7,6 +7,7 @@ import 'package:projects/style/themes.dart' as customThemes;
 // TODO Improve look & feel
 // TODO Implement Warning Messaging when no internet connection
 // TODO Look if making map no rotatable is possible/appropriate?
+// TODO Block file uploading when not logged in (or better yet, redirect to login screen)
 // TODO create a Logo
 // TODO find a name
 // TODO Image caching and maybe other network traffic optimisations

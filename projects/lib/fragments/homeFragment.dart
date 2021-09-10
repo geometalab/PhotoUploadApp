@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 final titleFont = new TextStyle(height: 30);
@@ -15,8 +16,9 @@ class HomeFragment extends StatelessWidget {
     // ----- Add Articles below -----
 
     articleList.add(new Article(
-        title: "Title 1",
-        description: "sdf sdaf sdafkjklsdaf sadlökfjsaöldf sdasafsfad"
+        title: "Upload Guide",
+        description: "This short guide gives an overview over what you can upload to Wikimedia Commons.",
+        onTap: new UploadGuideFragment()
     ));
     articleList.add(new Article(
         title: "Title 3",
@@ -40,7 +42,7 @@ class HomeFragment extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(7),
+              padding: EdgeInsets.all(8),
               child: Row(
                 children: articleList.generateLists(context, articleList.generateCards(context)),
               ),
@@ -100,7 +102,7 @@ class ArticleList {
                         ),
                         if(article.image != null) article.image as Widget,
                         Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(8),
                           child: Text(
                             article.description,
                             style: customStyles.articleDescription,

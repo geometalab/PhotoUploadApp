@@ -33,7 +33,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
               width: 100,
               height: 70,
               child: Padding(
-                padding: EdgeInsets.all(7),
+                padding: EdgeInsets.all(8),
                 child: FutureBuilder(
                     future: ImageService().getCategoryThumbnail(_marker.key.toString().substring(3, _marker.key.toString().length - 3)),
                     builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
@@ -67,7 +67,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
 
   Widget _cardDescription(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       child: Container(
         constraints: BoxConstraints(minWidth: 100, maxWidth: 200),
         child: Column(

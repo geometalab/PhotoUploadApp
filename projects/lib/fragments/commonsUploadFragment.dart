@@ -127,7 +127,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
           ),
           Padding(padding: EdgeInsets.all(2)),
           Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(8),
               // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
               child: TypeAheadField(
                 debounceDuration: Duration(milliseconds: 150), // Wait for 150 ms of no typing before starting to get the results
@@ -225,7 +225,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                 title: Text('Enter File Details'),
               ),
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(8),
                 child: TextFormField(
                     initialValue: InformationCollector.title,
                     onChanged: (value) {
@@ -239,7 +239,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(8),
                 child:
                 TextFormField(
                     initialValue: InformationCollector.description,
@@ -254,7 +254,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                     )
                 ),
               ),
-              Padding(padding: EdgeInsets.all(10),
+              Padding(padding: EdgeInsets.all(8),
                 child: TextFormField(
                     initialValue: InformationCollector.author,
                     onChanged: (value) {
@@ -267,7 +267,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   )
                 ),
               ),
-              Padding(padding: EdgeInsets.all(10),
+              Padding(padding: EdgeInsets.all(8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -307,7 +307,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -338,7 +338,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   ],
                 ),
               ),
-              Padding(padding: EdgeInsets.all(10),
+              Padding(padding: EdgeInsets.all(8),
                 child: SizedBox(
                   height: 45,
                   child: ElevatedButton(
