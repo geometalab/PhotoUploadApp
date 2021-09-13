@@ -25,7 +25,8 @@ class UploadGuideFragment extends StatelessWidget {
               "You need an account on Wikipedia or Wikimedia Commons to upload files."]),
             Text("What can I upload?", style: customStyles.headerText,),
             Divider(),
-            Text("Images that you upload to Wikimedia Commons have to be educational and freely licensed. While \"educational\" may be a vague category, \"freely licensed\" is quite specific: "),
+            Text("Images that you upload to Wikimedia Commons have to be educational and freely licensed. While \"educational\" may be a vague category, \"freely licensed\" is quite specific: ",),
+            Padding(padding: EdgeInsets.only(bottom: 8)),
             UnorderedList([
               "We can accept most images that you create entirely by yourself, so long as your image does not itself depict another copyrighted work.",
               "We can accept images created by others as long as the copyright holder of that image is willing to license/ has already licensed it freely.",

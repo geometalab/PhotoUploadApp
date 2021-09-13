@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -54,7 +57,9 @@ class _MapFragment extends State<StatefulMapFragment> {
           builder: (BuildContext context, List<Marker> markers) {
             return FloatingActionButton(
               child: Text(markers.length.toString()),
-              onPressed: () {},
+              onPressed: () {
+                mapController.fitBounds(getMarkerListMiddle(markers, 0.01));
+              },
               heroTag: "clusterBtn",
             ); // TODO Implement zoom in on tap
           },
@@ -88,4 +93,16 @@ class _MapFragment extends State<StatefulMapFragment> {
   List<Marker> getMarkerList () {
     return _markerList;
   }
+
+  LatLngBounds getMarkerListMiddle(List<Marker> markers, double margin) {
+    double minLat = 1000, maxLat = -1000, minLng = 1000, maxLng = -1000;
+    for(Marker marker in markers) {
+      if(marker.point.latitude < minLat){ minLat = marker.point.latitude; }
+      if(marker.point.latitude > maxLat){ maxLat = marker.point.latitude; }
+      if(marker.point.longitude < minLng){ minLng = marker.point.longitude; }
+      if(marker.point.longitude > maxLng){ maxLng = marker.point.longitude; }
+    }
+    return LatLngBounds.fromPoints([LatLng(maxLat + margin, minLng - margin), LatLng(minLat - margin, maxLng + margin)]);
+  }
+
 }
