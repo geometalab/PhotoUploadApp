@@ -34,7 +34,11 @@ class NearbyCategoriesService{
         var lat = coordinateString.split(" ")[0];
         var lng = coordinateString.split(" ")[1];
         
-        resultList.add(new CategoryLocation(commonsString, double.parse(lng), double.parse(lat)));
+        if(!resultList.any((CategoryLocation cl) => cl.commons == commonsString)) {
+          resultList.add(new CategoryLocation(
+              commonsString, double.parse(lng), double.parse(lat)));
+        }
+
       }
       return resultList;
     }else{

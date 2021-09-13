@@ -58,7 +58,7 @@ class _MapFragment extends State<StatefulMapFragment> {
             return FloatingActionButton(
               child: Text(markers.length.toString()),
               onPressed: () {
-                mapController.fitBounds(getMarkerListMiddle(markers, 0.01));
+                mapController.fitBounds(getMarkerListMiddle(markers));
               },
               heroTag: "clusterBtn",
             ); // TODO Implement zoom in on tap
@@ -94,7 +94,7 @@ class _MapFragment extends State<StatefulMapFragment> {
     return _markerList;
   }
 
-  LatLngBounds getMarkerListMiddle(List<Marker> markers, double margin) {
+  LatLngBounds getMarkerListMiddle(List<Marker> markers) {
     double minLat = 1000, maxLat = -1000, minLng = 1000, maxLng = -1000;
     for(Marker marker in markers) {
       if(marker.point.latitude < minLat){ minLat = marker.point.latitude; }
@@ -102,6 +102,7 @@ class _MapFragment extends State<StatefulMapFragment> {
       if(marker.point.longitude < minLng){ minLng = marker.point.longitude; }
       if(marker.point.longitude > maxLng){ maxLng = marker.point.longitude; }
     }
+    double margin = (maxLng - minLng) / 10;
     return LatLngBounds.fromPoints([LatLng(maxLat + margin, minLng - margin), LatLng(minLat - margin, maxLng + margin)]);
   }
 
