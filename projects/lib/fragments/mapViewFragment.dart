@@ -58,10 +58,10 @@ class _MapFragment extends State<StatefulMapFragment> {
             return FloatingActionButton(
               child: Text(markers.length.toString()),
               onPressed: () {
-                mapController.fitBounds(getMarkerListMiddle(markers));
+                mapController.fitBounds(getMarkerListMiddle(markers)); // TODO when in very high zoom, clicking a cluster button doesn't zoom anymore, which it still should
               },
               heroTag: "clusterBtn",
-            ); // TODO Implement zoom in on tap
+            );
           },
           markers: getMarkerList(),
           maxClusterRadius: 120,
