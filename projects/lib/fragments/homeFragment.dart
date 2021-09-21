@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
+import 'package:projects/style/buttonNavigationWidget.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 final titleFont = new TextStyle(height: 30);
@@ -52,56 +53,25 @@ class HomeFragment extends StatelessWidget {
           )
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      floatingActionButton: ButtonNavigationBar(
+        padding: EdgeInsets.zero,
         children: [
-          SizedBox(
-            child: ElevatedButton(
+          ButtonNavigationItem(
               onPressed: () { },
-              child: Icon(Icons.camera_alt_outlined),
-              style: ElevatedButton.styleFrom(shape:
-                new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.only(bottomLeft: Radius.circular(20), topLeft: Radius.circular(20)),
-                ),
-              ),
-            ),
-            height: 55,
-            width: 80,
+              label: "Hey"
           ),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 1.5)),
-          SizedBox(
-            child: ElevatedButton(
-              onPressed: () { },
-              child: Icon(Icons.map_outlined),
-              style: ElevatedButton.styleFrom(shape:
-              new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.all(Radius.zero),
-              ),
-              ),
-            ),
-            height: 55,
-            width: 80,
+          ButtonNavigationItem(
+            onPressed: () { },
+            label: "Text",
+            icon: Icons.height
           ),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 1.5)),
-          SizedBox(
-            child: ElevatedButton(
-              onPressed: () { },
-              child: Icon(Icons.file_copy_outlined),
-              style: ElevatedButton.styleFrom(shape:
-                new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.only(bottomRight: Radius.circular(20), topRight: Radius.circular(20)),
-                ),
-              ),
-            ),
-            height: 55,
-            width: 80,
-          ),
-        ]
-      ),
-
+          ButtonNavigationItem(
+            onPressed: () { },
+            icon: Icons.ac_unit
+          )
+        ],
+      )
     );
-
   }
 }
 
