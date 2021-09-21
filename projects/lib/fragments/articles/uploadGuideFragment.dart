@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
-import 'package:projects/style/unorderedListItem.dart';
+import 'package:projects/style/unorderedListWidget.dart';
 
 // From https://commons.wikimedia.org/wiki/Commons:First_steps/Uploading_files
 // and https://commons.wikimedia.org/wiki/File:Licensing_tutorial_en.svg

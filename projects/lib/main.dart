@@ -23,13 +23,12 @@ void main() async {
   );
 }
 
-
 class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'NavigationDrawer Demo',
+      title: 'Wikimedia Commons Uploader',
       debugShowCheckedModeBanner: false,
       theme: customThemes.lightTheme,
       darkTheme: customThemes.darkTheme,
@@ -37,11 +36,8 @@ class MyApp extends StatelessWidget {
       home: new HomePage(),
     );
   }
-
-  changeTheme() {
-
-  }
 }
+
 @override
 void initState() {
   // TODO remove once deeplinks are working
