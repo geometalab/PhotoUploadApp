@@ -36,21 +36,23 @@ class HomeFragment extends StatelessWidget {
 
     // ------------------------------
 
-
-    return new Center(
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                children: articleList.generateLists(context, articleList.generateCards(context)),
+    return new Scaffold(
+      body: Center(
+          child: Column(
+            children: [
+              Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Row(
+                      children: articleList.generateLists(context, articleList.generateCards(context)),
+                    ),
+                  )
               ),
-            )
-          ),
-        ],
-      )
+            ],
+          )
+      ),
     );
+
   }
 }
 
