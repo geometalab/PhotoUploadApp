@@ -1,8 +1,9 @@
 import 'dart:core';
-
+import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
-import 'package:projects/style/buttonNavigationWidget.dart';
+import 'package:projects/fragments/commonsUploadFragment.dart';
+import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 final titleFont = new TextStyle(height: 30);
@@ -54,20 +55,34 @@ class HomeFragment extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ButtonNavigationBar(
-        padding: EdgeInsets.zero,
         children: [
           ButtonNavigationItem(
-              onPressed: () { },
-              label: "Hey"
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StatefulMapFragment()),
+                );
+              },
+              icon: Icons.map_outlined
           ),
           ButtonNavigationItem(
-            onPressed: () { },
-            label: "Text",
-            icon: Icons.height
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SelectImageFragment()),
+              );
+            },
+            width: 155,
+            label: "Upload Media",
+            icon: Icons.add
           ),
           ButtonNavigationItem(
-            onPressed: () { },
-            icon: Icons.ac_unit
+            onPressed: () {
+              // TODO Implement search
+            },
+            icon: Icons.search
           )
         ],
       )
