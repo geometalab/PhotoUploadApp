@@ -23,7 +23,7 @@ class HomeFragment extends StatelessWidget {
         onTap: new UploadGuideFragment()
     ));
     articleList.add(new Article(
-        title: "Title 3",
+        title: "Title 2",
         description: "sdf sdaf sdafkjklsdaf sadlökfjssda fsad fsafsda fsa fsdfa dfsa fsadf sad faöldf sdasafsfad"
     ));
     articleList.add(new Article(

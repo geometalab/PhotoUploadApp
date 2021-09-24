@@ -15,13 +15,17 @@ import 'package:projects/style/themes.dart' as customThemes;
 // TODO Licensing
 // TODO images don't load in browser
 
+
 void main() async {
-  runApp(
-    EasyDynamicThemeWidget(
-      child: MyApp(),
-    ),
-  );
+WidgetsFlutterBinding.ensureInitialized();
+//FlutterBranchSdk.validateSDKIntegration();
+runApp(
+  EasyDynamicThemeWidget(
+    child: MyApp(),
+  ),
+);
 }
+
 
 class MyApp extends StatelessWidget {
 
