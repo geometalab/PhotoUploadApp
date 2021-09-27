@@ -64,7 +64,7 @@ class HomeFragment extends StatelessWidget {
                       builder: (context) => StatefulMapFragment()),
                 );
               },
-              icon: Icons.map_outlined
+              icon: Icon(Icons.map_outlined),
           ),
           ButtonNavigationItem(
             onPressed: () {
@@ -76,13 +76,13 @@ class HomeFragment extends StatelessWidget {
             },
             width: 155,
             label: "Upload Media",
-            icon: Icons.add
+            icon: Icon(Icons.add)
           ),
           ButtonNavigationItem(
             onPressed: () {
               // TODO Implement search
             },
-            icon: Icons.search
+            icon: Icon(Icons.search)
           )
         ],
       )

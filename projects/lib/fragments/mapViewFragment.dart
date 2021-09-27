@@ -34,7 +34,7 @@ class _MapFragment extends State<StatefulMapFragment> {
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(
-            onTap: (_) => _popupLayerController.hidePopup(),
+            onTap: (tapPosition, latLng) => _popupLayerController.hidePopup(),
             controller: mapController,
             center: LatLng(46.8, 8.22), // TODO Start on users Location
             zoom: 8.0,
