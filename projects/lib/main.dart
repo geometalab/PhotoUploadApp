@@ -4,6 +4,7 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 
+
 // TODO Improve look & feel
 // TODO Implement Warning Messaging when no internet connection
 // TODO Look if making map no rotatable is possible/appropriate?
@@ -17,15 +18,14 @@ import 'package:projects/style/themes.dart' as customThemes;
 
 
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 //FlutterBranchSdk.validateSDKIntegration();
-runApp(
-  EasyDynamicThemeWidget(
-    child: MyApp(),
-  ),
-);
+  runApp(
+    EasyDynamicThemeWidget(
+      child: MyApp(),
+    ),
+  );
 }
-
 
 class MyApp extends StatelessWidget {
 

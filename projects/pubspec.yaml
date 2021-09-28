@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  data_connection_checker: ^0.3.4
   fluttertoast: ^8.0.8
   image_picker: ^0.8.3+3
   cupertino_icons: ^1.0.2
