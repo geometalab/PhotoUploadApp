@@ -27,6 +27,8 @@ class _MapFragment extends State<StatefulMapFragment> {
   final NearbyCategoriesService ncs = new NearbyCategoriesService();
   final PopupController _popupLayerController = PopupController();
 
+
+  // TODO Implement a "fix the map button" as recommended by osm (https://operations.osmfoundation.org/policies/tiles/)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +75,7 @@ class _MapFragment extends State<StatefulMapFragment> {
       ]),
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: () {
-          ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateRadius())).then((value) {
+          ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateKmRadius())).then((value) {
             _markerList = value;
             setState(() {});
           });
@@ -85,34 +87,26 @@ class _MapFragment extends State<StatefulMapFragment> {
     );
   }
 
-  int calculateRadius() {
+  int calculateKmRadius() {
     // Resources:
     // https://wiki.openstreetmap.org/wiki/Zoom_levels
     // https://en.wikipedia.org/wiki/Haversine_formula
 
-    double _deg2rad(deg) {
-      return deg * (Math.pi/180);
+    // Zoom lvl | distance from nw / se (measured manually)
+    // 12 | 17 km
+    // 13 | 9.5 km
+    // 15 | 3.4 km
+    // 17 | 0.766
+
+    if(mapController.zoom > 17.0){
+      return 1;
+    } else if (mapController.zoom > 15.0) {
+      return 3;
+    } else if (mapController.zoom > 13){
+      return 5;
+    } else {
+      return 8;
     }
-    
-    double getDistanceFromLatLon(lat1,lon1,lat2,lon2) { // With the haversine formula
-      var R = 6371; // Radius of the earth in km
-      var dLat = _deg2rad(lat2-lat1);
-      var dLon = _deg2rad(lon2-lon1);
-      var a =
-          Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(_deg2rad(lat1)) * Math.cos(_deg2rad(lat2)) *
-                  Math.sin(dLon/2) * Math.sin(dLon/2)
-      ;
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      var d = R * c; // Distance in km
-      return d;
-    }
-
-
-
-    
-    
-    return 4;
   }
 
 
