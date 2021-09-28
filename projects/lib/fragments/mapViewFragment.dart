@@ -35,18 +35,21 @@ class _MapFragment extends State<StatefulMapFragment> {
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(
-            // TODO finetune map handling
             onTap: (tapPosition, latLng) => _popupLayerController.hidePopup(),
             controller: mapController,
             center: LatLng(46.8, 8.22), // TODO Start on users Location
             zoom: 8.0,
+            enableMultiFingerGestureRace: true,
+            minZoom: 2,
+            maxZoom: 18,
+            enableScrollWheel: true,
             plugins: <MapPlugin>[
               LocationMarkerPlugin(),
               MarkerClusterPlugin()
             ]),
       layers: [
         TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", // TODO andere osm themes anschauen
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", // TODO maybe get a maptiler key for better map themes (and dark theme)
             subdomains: ['a', 'b', 'c']),
         LocationMarkerLayerOptions(),
         MarkerClusterLayerOptions(
