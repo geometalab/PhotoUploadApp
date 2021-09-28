@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:projects/MapPopUps/categoryMapPopup.dart';
 import 'package:projects/api/nearbyCategoriesService.dart';
@@ -31,13 +32,19 @@ class _MapFragment extends State<StatefulMapFragment> {
   // TODO Implement a "fix the map button" as recommended by osm (https://operations.osmfoundation.org/policies/tiles/)
   @override
   Widget build(BuildContext context) {
+    getStartPosition().then((latLng) {
+      if(latLng != null){
+        mapController.move(latLng, 14);
+      }
+    });
+
     return Scaffold(
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(
             onTap: (tapPosition, latLng) => _popupLayerController.hidePopup(),
             controller: mapController,
-            center: LatLng(46.8, 8.22), // TODO Start on users Location
+            center: LatLng(46.8, 8.22), // Starting pos when gps access is denied
             zoom: 8.0,
             enableMultiFingerGestureRace: true,
             minZoom: 2,
@@ -110,6 +117,19 @@ class _MapFragment extends State<StatefulMapFragment> {
     } else {
       return 8;
     }
+  }
+
+  Future<LatLng?> getStartPosition() async{ // TODO position still has some delay, improve for later
+
+    final LatLng? latLng;
+    final permission = await Geolocator.checkPermission();
+      if(permission == LocationPermission.always || permission == LocationPermission.whileInUse){
+        Position pos = await Geolocator.getCurrentPosition();
+        latLng = LatLng(pos.latitude, pos.longitude);
+      }else{
+        latLng = null;
+      }
+      return latLng;
   }
 
 
