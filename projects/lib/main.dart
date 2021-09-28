@@ -1,7 +1,6 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
-import 'package:projects/api/loginHandler.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 
@@ -19,11 +18,12 @@ import 'package:projects/style/themes.dart' as customThemes;
 
 void main() async {
 WidgetsFlutterBinding.ensureInitialized();
-runApp(
-  EasyDynamicThemeWidget(
-    child: MyApp(),
-  ),
-);
+// FlutterBranchSdk.validateSDKIntegration();
+  runApp(
+    EasyDynamicThemeWidget(
+      child: MyApp(),
+    ),
+  );
 }
 
 
@@ -41,3 +41,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

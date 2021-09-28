@@ -44,9 +44,10 @@ class _CategoryPopupState extends State<CategoryPopup> {
                         throw("Could not display thumbnail");
                       } else {
                         thumbnail = Padding(padding: EdgeInsets.zero,
-                          child: AspectRatio( // TODO improve progress indicator visually
-                            aspectRatio: 1/1,
-                            child:  CircularProgressIndicator()
+                          child: Center(
+                            child:  CircularProgressIndicator(
+                              strokeWidth: 1.5,
+                            )
                           ),
                         );
                       }
