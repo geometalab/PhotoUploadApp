@@ -14,6 +14,7 @@ import 'package:projects/style/themes.dart' as customThemes;
 // TODO Responsive design for tablets (and landscape mode?)
 // TODO Licensing
 // TODO images don't load in browser
+// TODO make branch reroute page more beautiful (e.g. "Return to App" button & "Login successful" text)
 
 
 void main() async {

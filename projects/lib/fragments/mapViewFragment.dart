@@ -20,7 +20,7 @@ class StatefulMapFragment extends StatefulWidget {
 
 class _MapFragment extends State<StatefulMapFragment> {
 
-  // TODO make it impossible to zoom out so far that background of fragment can be seen
+  // TODO improve color scheme in this fragment (e.g. markers and cluster markers colors should fit)
 
   List<Marker> _markerList = List.empty(growable: true);
 

@@ -86,20 +86,4 @@ class SettingsFragment extends StatelessWidget {
       ),
     );
   }
-
-  setSharedPreferences(String key, String value) {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setString(key, value);
-    });
-  }
-
-  Future<String> getSharedPreferences(String key) async {
-    prefs = await SharedPreferences.getInstance();
-    String? key = prefs!.getString('stringValue');
-    if (key != null) {
-      return key;
-    } else {
-      return "no value";
-    }
-  }
 }

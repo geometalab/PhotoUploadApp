@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/api/loginHandler.dart';
 
 class SuccessfulLogin extends StatelessWidget{
-  String userCode;
+  final String userCode;
 
   SuccessfulLogin(
       this.userCode,
@@ -10,6 +11,7 @@ class SuccessfulLogin extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    LoginHandler().getAccessToken(userCode);
     return Scaffold(
       appBar: AppBar(
         title: Text("Successfully logged in"),
