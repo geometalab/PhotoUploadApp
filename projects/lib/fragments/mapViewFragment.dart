@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -8,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:projects/MapPopUps/categoryMapPopup.dart';
 import 'package:projects/api/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import'dart:math' as Math;
 
 
 
@@ -28,6 +27,8 @@ class _MapFragment extends State<StatefulMapFragment> {
   final NearbyCategoriesService ncs = new NearbyCategoriesService();
   final PopupController _popupLayerController = PopupController();
 
+
+  // TODO Implement a "fix the map button" as recommended by osm (https://operations.osmfoundation.org/policies/tiles/)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +39,17 @@ class _MapFragment extends State<StatefulMapFragment> {
             controller: mapController,
             center: LatLng(46.8, 8.22), // TODO Start on users Location
             zoom: 8.0,
+            enableMultiFingerGestureRace: true,
+            minZoom: 2,
+            maxZoom: 18,
+            enableScrollWheel: true,
             plugins: <MapPlugin>[
               LocationMarkerPlugin(),
               MarkerClusterPlugin()
             ]),
       layers: [
         TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", // TODO maybe get a maptiler key for better map themes (and dark theme)
             subdomains: ['a', 'b', 'c']),
         LocationMarkerLayerOptions(),
         MarkerClusterLayerOptions(
@@ -73,7 +78,7 @@ class _MapFragment extends State<StatefulMapFragment> {
       ]),
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: () {
-          ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateRadius())).then((value) {
+          ncs.markerBuilder(ncs.getNearbyCategories(mapController.center.latitude, mapController.center.longitude, calculateKmRadius())).then((value) {
             _markerList = value;
             setState(() {});
           });
@@ -85,10 +90,28 @@ class _MapFragment extends State<StatefulMapFragment> {
     );
   }
 
-  int calculateRadius() {
-    // TODO Implement
-    return 4;
+  int calculateKmRadius() {
+    // Resources:
+    // https://wiki.openstreetmap.org/wiki/Zoom_levels
+    // https://en.wikipedia.org/wiki/Haversine_formula
+
+    // Zoom lvl | distance from nw / se (measured manually)
+    // 12 | 17 km
+    // 13 | 9.5 km
+    // 15 | 3.4 km
+    // 17 | 0.766
+
+    if(mapController.zoom > 17.0){
+      return 1;
+    } else if (mapController.zoom > 15.0) {
+      return 3;
+    } else if (mapController.zoom > 13){
+      return 5;
+    } else {
+      return 8;
+    }
   }
+
 
   List<Marker> getMarkerList () {
     return _markerList;
