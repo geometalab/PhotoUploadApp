@@ -42,9 +42,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-@override
-void initState() {
-  // TODO remove once deeplinks are working
-  FlutterBranchSdk.initSession();
-  FlutterBranchSdk.validateSDKIntegration();
-}
