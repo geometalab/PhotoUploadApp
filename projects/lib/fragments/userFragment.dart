@@ -27,7 +27,7 @@ class UserFragment extends StatelessWidget {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              loginHandler.openURL("https://google.com"); // TODO Add correct url for wiki login
+                              loginHandler.openWebLogin(); // TODO Add correct url for wiki login
                             }, child: new Text("Log in"),
                           )
                       )

@@ -1,9 +1,13 @@
 import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
+import 'package:projects/fragments/settingsFragment.dart';
+import 'package:projects/fragments/singlePage/successfulLogin.dart';
+import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 final titleFont = new TextStyle(height: 30);
@@ -11,6 +15,8 @@ final titleFont = new TextStyle(height: 30);
 class HomeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    new LoginHandler().listenDeepLinkData(context);
 
     var articleList = new ArticleList();
     articleList.clear();
@@ -61,7 +67,7 @@ class HomeFragment extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => StatefulMapFragment()),
+                      builder: (context) => StatefulMapFragment())
                 );
               },
               icon: Icon(Icons.map_outlined),

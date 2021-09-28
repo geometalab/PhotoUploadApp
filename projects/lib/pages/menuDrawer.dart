@@ -46,9 +46,8 @@ class HomePageState extends State<HomePage> {
         return new UserFragment();
       case 7:
         return new SettingsFragment();
-
       default:
-        return new Text("Error");
+        return new Text("Widget could not be returned for _getDrawerItemWidget");
     }
   }
 

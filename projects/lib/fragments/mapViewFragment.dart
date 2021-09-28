@@ -32,7 +32,8 @@ class _MapFragment extends State<StatefulMapFragment> {
   // TODO Implement a "fix the map button" as recommended by osm (https://operations.osmfoundation.org/policies/tiles/)
   @override
   Widget build(BuildContext context) {
-    getStartPosition().then((latLng) {
+
+    getStartPosition().then((latLng) { // Center on position if available
       if(latLng != null){
         mapController.move(latLng, 14);
       }
@@ -120,7 +121,6 @@ class _MapFragment extends State<StatefulMapFragment> {
   }
 
   Future<LatLng?> getStartPosition() async{ // TODO position still has some delay, improve for later
-
     final LatLng? latLng;
     final permission = await Geolocator.checkPermission();
       if(permission == LocationPermission.always || permission == LocationPermission.whileInUse){
