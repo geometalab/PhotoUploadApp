@@ -51,7 +51,7 @@ class LoginHandler {
 
   getAccessToken(String authCode) async {
 
-    // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#App_authentication
+    // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
 
     await dotenv.load(fileName: ".env");
     String? clientSecret = dotenv.env['SECRET_TOKEN']; // Get the secret token from the local .env file
@@ -59,13 +59,18 @@ class LoginHandler {
       throw("Secret token is not provided in .env");
     }
 
+    String redirectUri = 'https://dygy9.app.link/successful-registration';
+
+
     Future<http.Response> response = http.post( // Send the authentication request with authCode, ClientID and ClientSecret
       Uri.parse('https://meta.wikimedia.org/w/rest.php/oauth2/access_token'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
         'grant_type' : 'authorization_code',
+        'redirect_uri' : Uri.decodeFull(redirectUri),
         'code' : authCode,
         'client_id' : CLIENT_ID,
         'client_secret' : clientSecret,
@@ -76,33 +81,7 @@ class LoginHandler {
       print(response.body);
     });
   }
-
-
-
 }
 
-class DeepLinkListener{
 
-  // Making class a singleton
-  static final DeepLinkListener _deepLinkListener = DeepLinkListener._internal();
-  factory DeepLinkListener(){
-    return _deepLinkListener;
-  }
-  DeepLinkListener._internal();
-
-  void listenDeepLinkData(BuildContext context) async {
-    FlutterBranchSdk.initSession().listen((data) {
-      if (data.containsKey("code")) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SuccessfulLogin(data["code"]), fullscreenDialog: true));
-        print(data.values);
-      }
-    }, onError: (error) {
-      PlatformException platformException = error as PlatformException;
-      print('${platformException.code} - ${platformException.message} ay ay'); // TODO remove "ay ay"
-    });
-  }
-}
 

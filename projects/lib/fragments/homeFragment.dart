@@ -16,8 +16,6 @@ class HomeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    new DeepLinkListener().listenDeepLinkData(context);
-
     var articleList = new ArticleList();
     articleList.clear();
 

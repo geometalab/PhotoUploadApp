@@ -4,6 +4,8 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 
+import 'api/deepLinkListener.dart';
+
 // TODO Improve look & feel
 // TODO Implement Warning Messaging when no internet connection
 // TODO Look if making map no rotatable is possible/appropriate?
@@ -18,8 +20,7 @@ import 'package:projects/style/themes.dart' as customThemes;
 
 
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();
-// FlutterBranchSdk.validateSDKIntegration();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     EasyDynamicThemeWidget(
       child: MyApp(),
@@ -29,7 +30,6 @@ WidgetsFlutterBinding.ensureInitialized();
 
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -40,6 +40,8 @@ class MyApp extends StatelessWidget {
       themeMode: EasyDynamicTheme.of(context).themeMode,
       home: new HomePage(),
     );
+
   }
+
 }
 

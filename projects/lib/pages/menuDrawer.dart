@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
@@ -32,6 +33,12 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    DeepLinkListener _deepLinkListener = DeepLinkListener();
+  }
+
   int _selectedDrawerIndex = 0;
 
   _getDrawerItemWidget(int pos) {
