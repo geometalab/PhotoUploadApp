@@ -4,11 +4,11 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 
+import 'api/ConnectionStatus.dart';
 import 'api/deepLinkListener.dart';
 
 // TODO Improve look & feel
 // TODO Implement Warning Messaging when no internet connection
-// TODO Look if making map no rotatable is possible/appropriate?
 // TODO Block file uploading when not logged in (or better yet, redirect to login screen)
 // TODO create a Logo
 // TODO find a name
@@ -21,6 +21,10 @@ import 'api/deepLinkListener.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance(); // Initialize the connection listener
+  connectionStatus.initialize();
+
   runApp(
     EasyDynamicThemeWidget(
       child: MyApp(),

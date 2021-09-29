@@ -8,6 +8,9 @@
 .buildlog/
 .history
 .svn/
+
+# Authentication/Login related
+credentials.json
 *.env
 
 # IntelliJ related

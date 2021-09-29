@@ -60,9 +60,6 @@ class LoginHandler {
       throw("Secret token is not provided in .env");
     }
 
-
-    String redirectUri = 'https://dygy9.app.link/successful-registration';
-
     Future<http.Response> response = http.post(
         Uri.parse('https://meta.wikimedia.org/w/rest.php/oauth2/access_token'),
         headers: <String, String>{

@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/api/ConnectionStatus.dart';
 import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
@@ -33,13 +37,32 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  late StreamSubscription _connectionChangeStream;
+  bool isOffline = false;
+  int _selectedDrawerIndex = 0;
+
   @override
   void initState() {
     super.initState();
-    DeepLinkListener _deepLinkListener = DeepLinkListener();
+    DeepLinkListener _deepLinkListener = DeepLinkListener(); // Listen to redirect events from a web link
+
+    ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
+    _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+
   }
 
-  int _selectedDrawerIndex = 0;
+  @override
+  void dispose() {
+    super.dispose();
+    _connectionChangeStream.cancel();
+  }
+
+  void connectionChanged(dynamic hasConnection) {
+    setState(() {
+      isOffline = !hasConnection;
+      print(isOffline);
+    });
+  }
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -82,20 +105,32 @@ class HomePageState extends State<HomePage> {
         );
       }
     }
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
-      ),
-      drawer: new Drawer(
-        child: new Column(
-          children: <Widget>[
-            // TODO DrawerMenu header (maybe display wikimedia account when logged in)
-            DrawerHeader(child: Text("TODO: Header")),
-            new Column(children: drawerOptions)
-          ],
+
+    if(isOffline){ // If no network connection is detected, display this message
+      return Center(
+        // TODO Remoooooooo
+      );
+    }else{
+      return new Scaffold(
+        appBar: new AppBar(
+          title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
         ),
-      ),
-      body: _getDrawerItemWidget(_selectedDrawerIndex),
-    );
+        drawer: new Drawer(
+          child: new Column(
+            children: <Widget>[
+              // TODO DrawerMenu header (maybe display wikimedia account when logged in)
+              DrawerHeader(child: Text("TODO: Header")),
+              new Column(children: drawerOptions)
+            ],
+          ),
+        ),
+        body: _getDrawerItemWidget(_selectedDrawerIndex),
+      );
+    }
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamSubscription>('_connectionChangeStream', _connectionChangeStream));
   }
 }
