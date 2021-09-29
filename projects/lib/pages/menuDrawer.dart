@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/api/ConnectionStatus.dart';
 import 'package:projects/api/deepLinkListener.dart';
+import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
@@ -48,6 +49,8 @@ class HomePageState extends State<HomePage> {
 
     ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
     _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+
+    LoginHandler().checkCredentials(); // Get user information if user has logged in on this device
 
   }
 

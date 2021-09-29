@@ -10,8 +10,15 @@ import 'package:projects/fragments/singlePage/successfulLogin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
+import 'package:path_provider/path_provider.dart';
+
+// TODO Cover access token expiry after 4h and maybe refresh token expiry after a year
 
 class LoginHandler {
+  static const CLIENT_ID = "f99a469a26bd7ae8f1d32bef1fa38cb3";
+  static const CREDENTIALS_FILE = "credentials.json";
+
+  Userdata userdata = Userdata();
 
   // Making class a singleton
   static final LoginHandler _loginHandler = LoginHandler._internal();
@@ -20,18 +27,13 @@ class LoginHandler {
   }
   LoginHandler._internal();
 
-  static const CLIENT_ID = "f99a469a26bd7ae8f1d32bef1fa38cb3";
-
-  Future<String> _readMemory(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key) ?? "0";
-  }
-
-  Future<void> _openURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw "Could not launch $url";
+  checkCredentials() async{
+    try{
+      String jsonString = await _readFromFile(CREDENTIALS_FILE);
+      userdata = Userdata().fromJson(jsonString);
+      refreshAccessToken();
+    }catch(e){
+      print("Could not check Credentials successfully. Error: " + e.toString());
     }
   }
 
@@ -40,18 +42,7 @@ class LoginHandler {
     _openURL(url);
   }
 
-  _writeMemory(String key, String value) {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setString(key, value);
-    });
-  }
-
-  Future<String> getUsername() async {
-    return await _readMemory('username');
-  }
-
   getAccessToken(String authCode) async {
-
     // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
 
     await dotenv.load(fileName: ".env");
@@ -74,10 +65,83 @@ class LoginHandler {
     );
     
     response.then((response) {
-      print(response.body);
+      var responseData = json.decode(response.body);
+      print(responseData['access_token']);
     });
   }
+
+  refreshAccessToken(){
+
+    throw UnimplementedError;
+  }
+
+  saveUserData(Userdata data){
+    _writeToFile(CREDENTIALS_FILE, data.toJson());
+  }
+
+  Future<Userdata?> getUserInformation() async {
+    String jsonString = await _readFromFile(CREDENTIALS_FILE);
+    return Userdata().fromJson(jsonString);
+  }
+
+  Future<void> _openURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw "Could not launch $url";
+    }
+  }
+
+  _writeToFile(String dir, String text) async {
+    Directory appDocDirectory = await getApplicationDocumentsDirectory();
+    final file = File(appDocDirectory.path + "/" + dir);
+    return file.writeAsString(text);
+  }
+
+  Future<String> _readFromFile(String dir) async {
+    Directory appDocDirectory = await getApplicationDocumentsDirectory();
+    final file = File(appDocDirectory.path + "/" + dir);
+    return file.readAsString();
+  }
+
 }
 
+class Userdata {
+  String username;
+  String email;
+  int editCount;
+  String accessToken;
+  String refreshToken;
+
+  Userdata({this.username = "", this.email = "", this.editCount = 0, this.accessToken = "", this.refreshToken = ""});
+
+  Userdata fromJson(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
+    return new Userdata(
+        username: json['username'],
+        accessToken: json['accessToken'],
+        refreshToken: json['refreshToken'],
+        email: json['email'],
+        editCount: int.parse(json['editCount'])
+    );
+
+  }
+
+  String toJson(){
+    return jsonEncode(_toMap());
+  }
+
+  Map<String, dynamic> _toMap(){
+    return {
+      'username': username,
+      'email': email,
+      'editCount': editCount.toString(),
+      'accessToken': accessToken,
+      'refreshToken': refreshToken
+    };
+  }
+
+
+}
 
 

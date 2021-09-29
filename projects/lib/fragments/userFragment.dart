@@ -8,13 +8,13 @@ class UserFragment extends StatelessWidget {
     LoginHandler loginHandler = new LoginHandler();
     return new Center(
       child: FutureBuilder(
-        future: loginHandler.getUsername(),
+        future: loginHandler.getUserInformation(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting){
             return Center(child: CircularProgressIndicator());
           }else{
-            String username = snapshot.data.toString();
-            if(username == "0"){
+            Userdata? data = snapshot.data as Userdata?;
+            if(data == null){
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -27,7 +27,7 @@ class UserFragment extends StatelessWidget {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              loginHandler.openWebLogin(); // TODO Add correct url for wiki login
+                              loginHandler.openWebLogin();
                             }, child: new Text("Log in"),
                           )
                       )
@@ -39,7 +39,7 @@ class UserFragment extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(padding: EdgeInsets.all(8),
-                      child: Text("Signed in as " + username)
+                      child: Text("Signed in as " + data.username)
                   ),
                 ],
               );
