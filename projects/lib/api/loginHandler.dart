@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,22 +60,20 @@ class LoginHandler {
       throw("Secret token is not provided in .env");
     }
 
+
     String redirectUri = 'https://dygy9.app.link/successful-registration';
 
-
-    Future<http.Response> response = http.post( // Send the authentication request with authCode, ClientID and ClientSecret
-      Uri.parse('https://meta.wikimedia.org/w/rest.php/oauth2/access_token'),
-      headers: <String, String>{
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, String>{
-        'grant_type' : 'authorization_code',
-        'redirect_uri' : Uri.decodeFull(redirectUri),
-        'code' : authCode,
-        'client_id' : CLIENT_ID,
-        'client_secret' : clientSecret,
-      }),
+    Future<http.Response> response = http.post(
+        Uri.parse('https://meta.wikimedia.org/w/rest.php/oauth2/access_token'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        },
+        body: <String, String>{
+          'grant_type': 'authorization_code',
+          'code': authCode,
+          'client_id': CLIENT_ID,
+          'client_secret': clientSecret,
+        }
     );
     
     response.then((response) {
