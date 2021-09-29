@@ -33,12 +33,6 @@ class _MapFragment extends State<StatefulMapFragment> {
   @override
   Widget build(BuildContext context) {
 
-    getStartPosition().then((latLng) { // Center on position if available
-      if(latLng != null){
-        mapController.move(latLng, 14);
-      }
-    });
-
     return Scaffold(
       body: FlutterMap(
         mapController: mapController,
@@ -96,6 +90,16 @@ class _MapFragment extends State<StatefulMapFragment> {
         heroTag: "searchBtn",
       ),
     );
+  }
+
+  @override
+  initState(){
+    super.initState();
+    getStartPosition().then((latLng) { // Center on position if available
+      if(latLng != null){
+        mapController.move(latLng, 14);
+      }
+    });
   }
 
   int calculateKmRadius() {
