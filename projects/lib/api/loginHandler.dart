@@ -17,8 +17,9 @@ import 'package:path_provider/path_provider.dart';
 class LoginHandler {
   static const CLIENT_ID = "f99a469a26bd7ae8f1d32bef1fa38cb3";
   static const CREDENTIALS_FILE = "credentials.json";
+  static const WIKIMEDIA_REST = "https://meta.wikimedia.org/w/rest.php/";
 
-  Userdata userdata = Userdata();
+  Userdata? userdata = Userdata();
 
   // Making class a singleton
   static final LoginHandler _loginHandler = LoginHandler._internal();
@@ -28,21 +29,30 @@ class LoginHandler {
   LoginHandler._internal();
 
   checkCredentials() async{
-    try{
-      String jsonString = await _readFromFile(CREDENTIALS_FILE);
-      userdata = Userdata().fromJson(jsonString);
-      refreshAccessToken();
+    try{ // TODO is this the correct way to check?
+      userdata = await getUserInformationFromFile();
+      if(userdata != null){
+        refreshAccessToken();
+        userdata = await getUserInformationFromAPI(userdata!);
+      } else {
+        throw("Userdata is null");
+      }
     }catch(e){
       print("Could not check Credentials successfully. Error: " + e.toString());
     }
   }
 
+  logOut(){
+    // TODO Implement
+    throw UnimplementedError();
+  }
+
   openWebLogin() {
-    String url = "https://meta.wikimedia.org/w/rest.php/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+    String url = WIKIMEDIA_REST + "oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
     _openURL(url);
   }
 
-  getAccessToken(String authCode) async {
+  Future<Userdata> getTokens(String authCode) async {
     // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
 
     await dotenv.load(fileName: ".env");
@@ -63,15 +73,17 @@ class LoginHandler {
           'client_secret': clientSecret,
         }
     );
-    
-    response.then((response) {
-      var responseData = json.decode(response.body);
-      print(responseData['access_token']);
-    });
+
+    var responseJson = await response;
+    var responseData = json.decode(responseJson.body);
+    Userdata data = Userdata(
+        refreshToken: responseData['refresh_token'],
+        accessToken: responseData['access_token']);
+    return data;
   }
 
   refreshAccessToken(){
-
+    // TODO Implement
     throw UnimplementedError;
   }
 
@@ -79,9 +91,28 @@ class LoginHandler {
     _writeToFile(CREDENTIALS_FILE, data.toJson());
   }
 
-  Future<Userdata?> getUserInformation() async {
+  Future<Userdata?> getUserInformationFromFile() async {
     String jsonString = await _readFromFile(CREDENTIALS_FILE);
     return Userdata().fromJson(jsonString);
+  }
+
+  Future<Userdata> getUserInformationFromAPI(Userdata data) async {
+    if(data.accessToken != ""){
+      Future<http.Response> response = http.get(
+        Uri.parse(WIKIMEDIA_REST + 'oauth2/resource/profile'),
+        headers: <String, String>{
+          'Authorization': 'Bearer ${data.accessToken}',
+        },
+      );
+      var responseJson = await response;
+      var responseData = json.decode(responseJson.body);
+      Userdata tokenData = Userdata( // TODO Read more information if given (e.g. email, real name)
+          username: responseData['username'],
+          editCount: responseData['editcount']);
+      return tokenData;
+    }else{
+      throw(Exception("Access Token is empty"));
+    }
   }
 
   Future<void> _openURL(String url) async {

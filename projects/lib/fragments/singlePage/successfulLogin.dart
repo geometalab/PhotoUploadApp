@@ -11,7 +11,7 @@ class SuccessfulLogin extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    LoginHandler().getAccessToken(userCode);
+    LoginHandler().getTokens(userCode);
     return Scaffold(
       appBar: AppBar(
         title: Text("Successfully logged in"),

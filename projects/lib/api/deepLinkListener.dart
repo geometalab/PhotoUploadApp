@@ -11,10 +11,11 @@ class DeepLinkListener{
   }
 
   void listenDeepLinkData() async {
-    FlutterBranchSdk.initSession().listen((data) {
-      if (data.containsKey("code")) {
-        LoginHandler().getAccessToken(data["code"]);
-        print("handler");
+    FlutterBranchSdk.initSession().listen((listenerData) async {
+      if (listenerData.containsKey("code")) {
+        Userdata userData = await LoginHandler().getTokens(listenerData["code"]);
+        userData = await LoginHandler().getUserInformationFromAPI(userData);
+        LoginHandler().saveUserData(userData);
       }
     }, onError: (error) {
       PlatformException platformException = error as PlatformException;

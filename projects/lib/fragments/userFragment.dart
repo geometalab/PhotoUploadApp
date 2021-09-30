@@ -8,7 +8,7 @@ class UserFragment extends StatelessWidget {
     LoginHandler loginHandler = new LoginHandler();
     return new Center(
       child: FutureBuilder(
-        future: loginHandler.getUserInformation(),
+        future: loginHandler.getUserInformationFromFile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting){
             return Center(child: CircularProgressIndicator());
