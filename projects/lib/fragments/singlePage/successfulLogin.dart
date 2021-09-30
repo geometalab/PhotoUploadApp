@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/api/loginHandler.dart';
 
-class SuccessfulLogin extends StatelessWidget{
+class SuccessfulLogin extends StatelessWidget {
   final String userCode;
 
   SuccessfulLogin(
-      this.userCode,
+    this.userCode,
   );
 
   @override
@@ -21,5 +21,4 @@ class SuccessfulLogin extends StatelessWidget{
       ),
     );
   }
-
 }

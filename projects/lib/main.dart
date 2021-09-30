@@ -4,7 +4,7 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 
-import 'api/ConnectionStatus.dart';
+import 'api/connectionStatus.dart';
 import 'api/deepLinkListener.dart';
 
 // TODO Improve look & feel
@@ -18,11 +18,11 @@ import 'api/deepLinkListener.dart';
 // TODO images don't load in browser
 // TODO make branch reroute page more beautiful (e.g. "Return to App" button & "Login successful" text)
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance(); // Initialize the connection listener
+  ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton
+      .getInstance(); // Initialize the connection listener
   connectionStatus.initialize();
 
   runApp(
@@ -31,7 +31,6 @@ void main() async {
     ),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -44,8 +43,5 @@ class MyApp extends StatelessWidget {
       themeMode: EasyDynamicTheme.of(context).themeMode,
       home: new HomePage(),
     );
-
   }
-
 }
-

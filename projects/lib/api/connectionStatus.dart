@@ -4,13 +4,15 @@ import 'package:connectivity/connectivity.dart';
 
 class ConnectionStatusSingleton {
   // Make Singleton
-  static final ConnectionStatusSingleton _singleton = new ConnectionStatusSingleton._internal();
+  static final ConnectionStatusSingleton _singleton =
+      new ConnectionStatusSingleton._internal();
   ConnectionStatusSingleton._internal();
   static ConnectionStatusSingleton getInstance() => _singleton;
 
   bool hasConnection = false;
 
-  StreamController connectionChangeController = new StreamController.broadcast();
+  StreamController connectionChangeController =
+      new StreamController.broadcast();
 
   final Connectivity _connectivity = Connectivity();
 
@@ -18,6 +20,7 @@ class ConnectionStatusSingleton {
     _connectivity.onConnectivityChanged.listen(_connectionChange);
     checkConnection();
   }
+
   Stream get connectionChange => connectionChangeController.stream;
 
   void dispose() {
@@ -38,7 +41,7 @@ class ConnectionStatusSingleton {
       } else {
         hasConnection = false;
       }
-    } on SocketException catch(_) {
+    } on SocketException catch (_) {
       hasConnection = false;
     }
 

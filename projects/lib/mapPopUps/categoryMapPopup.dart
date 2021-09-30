@@ -35,20 +35,25 @@ class _CategoryPopupState extends State<CategoryPopup> {
               child: Padding(
                 padding: EdgeInsets.all(8),
                 child: FutureBuilder(
-                    future: ImageService().getCategoryThumbnail(_marker.key.toString().substring(3, _marker.key.toString().length - 3)),
-                    builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
+                    future: ImageService().getCategoryThumbnail(_marker.key
+                        .toString()
+                        .substring(3, _marker.key.toString().length - 3)),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<Image> snapshot) {
                       Widget thumbnail;
-                      if(snapshot.hasData) {                  // TODO Investigate case with late image popup
-                        thumbnail = snapshot.data!;           // Sometimes (maybe because of file type or res), the progress indicator appears, but it still takes a few seconds for image to appear
+                      if (snapshot.hasData) {
+                        // TODO Investigate case with late image popup
+                        thumbnail = snapshot
+                            .data!; // Sometimes (maybe because of file type or res), the progress indicator appears, but it still takes a few seconds for image to appear
                       } else if (snapshot.hasError) {
-                        throw("Could not display thumbnail");
+                        throw ("Could not display thumbnail");
                       } else {
-                        thumbnail = Padding(padding: EdgeInsets.zero,
+                        thumbnail = Padding(
+                          padding: EdgeInsets.zero,
                           child: Center(
-                            child:  CircularProgressIndicator(
-                              strokeWidth: 1.5,
-                            )
-                          ),
+                              child: CircularProgressIndicator(
+                            strokeWidth: 1.5,
+                          )),
                         );
                       }
                       return thumbnail;
@@ -77,7 +82,10 @@ class _CategoryPopupState extends State<CategoryPopup> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              _marker.key.toString().substring(3, _marker.key.toString().length - 3), // marker keys come with unnecessary chars at
+              _marker.key.toString().substring(
+                  3,
+                  _marker.key.toString().length -
+                      3), // marker keys come with unnecessary chars at
               overflow: TextOverflow.fade,
               softWrap: false,
               style: const TextStyle(

@@ -17,52 +17,48 @@ import 'package:path_provider/path_provider.dart';
 class LoginHandler {
   static const CLIENT_ID = "f99a469a26bd7ae8f1d32bef1fa38cb3";
   static const CREDENTIALS_FILE = "credentials.json";
-  static const WIKIMEDIA_REST = "https://meta.wikimedia.org/w/rest.php/";
-
-  Userdata? userdata = Userdata();
+  static const WIKIMEDIA_REST = "https://meta.wikimedia.org/w/rest.php";
 
   // Making class a singleton
   static final LoginHandler _loginHandler = LoginHandler._internal();
-  factory LoginHandler(){
+  factory LoginHandler() {
     return _loginHandler;
   }
   LoginHandler._internal();
+  
+  debugFilePrint(){
+    _readFromFile(CREDENTIALS_FILE).then((value) => print("File content" + value));
+  }
 
-  checkCredentials() async{
-    try{ // TODO is this the correct way to check?
-      userdata = await getUserInformationFromFile();
-      if(userdata != null){
+  checkCredentials() async {
+    try {
+      Userdata? data = await getUserInformationFromFile();
+      if (data != null) {
         refreshAccessToken();
-        userdata = await getUserInformationFromAPI(userdata!);
-      } else {
-        throw("Userdata is null");
+        data = await getUserInformationFromAPI(data);
+      }else{
+        deleteUserDataInFile();
       }
-    }catch(e){
+    } catch (e) {
       print("Could not check Credentials successfully. Error: " + e.toString());
     }
   }
 
-  logOut(){
-    // TODO Implement
-    throw UnimplementedError();
+  logOut() {
+    deleteUserDataInFile();
   }
 
   openWebLogin() {
-    String url = WIKIMEDIA_REST + "oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+    String url = "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
     _openURL(url);
   }
 
   Future<Userdata> getTokens(String authCode) async {
     // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
 
-    await dotenv.load(fileName: ".env");
-    String? clientSecret = dotenv.env['SECRET_TOKEN']; // Get the secret token from the local .env file
-    if(clientSecret == null){
-      throw("Secret token is not provided in .env");
-    }
-
+    String clientSecret = await _getClientSecret();
     Future<http.Response> response = http.post(
-        Uri.parse('https://meta.wikimedia.org/w/rest.php/oauth2/access_token'),
+        Uri.parse('$WIKIMEDIA_REST/oauth2/access_token'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
         },
@@ -71,47 +67,112 @@ class LoginHandler {
           'code': authCode,
           'client_id': CLIENT_ID,
           'client_secret': clientSecret,
-        }
-    );
+        });
 
-    var responseJson = await response;
-    var responseData = json.decode(responseJson.body);
-    Userdata data = Userdata(
-        refreshToken: responseData['refresh_token'],
-        accessToken: responseData['access_token']);
-    return data;
+    var responseData = await response;
+    if(responseData.statusCode == 200){
+      var responseJson = json.decode(responseData.body);
+      Userdata data = Userdata(
+          refreshToken: responseJson['refresh_token'],
+          accessToken: responseJson['access_token']);
+      return data;
+    }else{
+      throw("Could not get tokens. Response Code ${responseData.bodyBytes}");
+    }
+
   }
 
-  refreshAccessToken(){
-    // TODO Implement
-    throw UnimplementedError;
+  refreshAccessToken() async {
+    Userdata? userdata = await getUserInformationFromFile();
+    String clientSecret = await _getClientSecret();
+    if (userdata == null || userdata.refreshToken == ""){
+      throw("Tried to refresh access token but userdata.refreshToken is null or empty");
+    } else {
+      Future<http.Response> response = http.post(
+          Uri.parse('$WIKIMEDIA_REST/oauth2/access_token'),
+          headers: <String, String>{
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+          },
+          body: <String, String>{
+            'grant_type': 'refresh_token',
+            'refresh_token': userdata.refreshToken,
+            'client_id': CLIENT_ID,
+            'client_secret': clientSecret,
+          });
+      var responseData = await response;
+      if(responseData.statusCode == 200){
+        var responseJson = json.decode(responseData.body);
+        Userdata data = Userdata(
+            accessToken: responseJson['access_token']);
+        return data;
+      }else{
+        throw("Could not refresh access token. Status code ${responseData.statusCode}");
+      }
+    }
+
   }
 
-  saveUserData(Userdata data){
+  deleteUserDataInFile(){
+    _writeToFile(CREDENTIALS_FILE, "");
+  }
+
+  saveUserDataToFile(Userdata data) async {
+    Userdata? dataFromFile = await getUserInformationFromFile();
+    if(dataFromFile != null){ // Only new information replaces old information if passed Userdata does not have every field filled out.
+      if(data.refreshToken != ""){
+        dataFromFile.refreshToken = data.refreshToken;
+      }
+      if(data.accessToken != ""){
+        dataFromFile.accessToken = data.accessToken;
+      }
+      if(data.username != ""){
+        dataFromFile.username = data.username;
+      }
+      if(data.email != ""){
+          dataFromFile.email = data.email;
+      }
+      if(data.editCount != 0){
+        dataFromFile.editCount = data.editCount;
+      }
+      data = dataFromFile;
+    }
     _writeToFile(CREDENTIALS_FILE, data.toJson());
   }
 
   Future<Userdata?> getUserInformationFromFile() async {
     String jsonString = await _readFromFile(CREDENTIALS_FILE);
-    return Userdata().fromJson(jsonString);
+    if(jsonString == ""){
+      return null;
+    }else{
+      Userdata userdata = Userdata().fromJson(jsonString);
+      if (userdata.refreshToken == "" || userdata.accessToken == "") {
+        return null;
+      } else {
+        return userdata;
+      }
+    }
+
   }
 
   Future<Userdata> getUserInformationFromAPI(Userdata data) async {
-    if(data.accessToken != ""){
+    if (data.accessToken != "") {
       Future<http.Response> response = http.get(
-        Uri.parse(WIKIMEDIA_REST + 'oauth2/resource/profile'),
+        Uri.parse('$WIKIMEDIA_REST/oauth2/resource/profile'),
         headers: <String, String>{
           'Authorization': 'Bearer ${data.accessToken}',
         },
       );
       var responseJson = await response;
       var responseData = json.decode(responseJson.body);
-      Userdata tokenData = Userdata( // TODO Read more information if given (e.g. email, real name)
+      Userdata tokenData = Userdata(
+          // TODO Read more information if given (e.g. email, real name)
           username: responseData['username'],
-          editCount: responseData['editcount']);
+          editCount: responseData['editcount'],
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken);
       return tokenData;
-    }else{
-      throw(Exception("Access Token is empty"));
+    } else {
+      throw (Exception("Access Token is empty"));
     }
   }
 
@@ -135,6 +196,15 @@ class LoginHandler {
     return file.readAsString();
   }
 
+  Future<String> _getClientSecret() async {
+    await dotenv.load(fileName: ".env");
+    String? clientSecret = dotenv
+        .env['SECRET_TOKEN']; // Get the secret token from the local .env file
+    if (clientSecret == null) {
+      throw ("Secret token is not provided in .env");
+    }
+    return clientSecret;
+  }
 }
 
 class Userdata {
@@ -144,7 +214,12 @@ class Userdata {
   String accessToken;
   String refreshToken;
 
-  Userdata({this.username = "", this.email = "", this.editCount = 0, this.accessToken = "", this.refreshToken = ""});
+  Userdata(
+      {this.username = "",
+      this.email = "",
+      this.editCount = 0,
+      this.accessToken = "",
+      this.refreshToken = ""});
 
   Userdata fromJson(String jsonString) {
     Map<String, dynamic> json = jsonDecode(jsonString);
@@ -153,16 +228,14 @@ class Userdata {
         accessToken: json['accessToken'],
         refreshToken: json['refreshToken'],
         email: json['email'],
-        editCount: int.parse(json['editCount'])
-    );
-
+        editCount: int.parse(json['editCount']));
   }
 
-  String toJson(){
+  String toJson() {
     return jsonEncode(_toMap());
   }
 
-  Map<String, dynamic> _toMap(){
+  Map<String, dynamic> _toMap() {
     return {
       'username': username,
       'email': email,
@@ -171,8 +244,4 @@ class Userdata {
       'refreshToken': refreshToken
     };
   }
-
-
 }
-
-

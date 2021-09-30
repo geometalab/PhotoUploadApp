@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/api/ConnectionStatus.dart';
+import 'package:projects/api/connectionStatus.dart';
 import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/homeFragment.dart';
@@ -11,7 +11,6 @@ import 'package:projects/fragments/settingsFragment.dart';
 import 'package:projects/fragments/userFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 
-
 class DrawerItem {
   String title;
   IconData? icon;
@@ -19,7 +18,7 @@ class DrawerItem {
 }
 
 class HomePage extends StatefulWidget {
-  final  drawerItems = [
+  final drawerItems = [
     new DrawerItem("Home", Icons.home_filled),
     new DrawerItem("Divider", null),
     new DrawerItem("Upload to Wikimedia", Icons.upload_file),
@@ -29,7 +28,6 @@ class HomePage extends StatefulWidget {
     new DrawerItem("Divider", null),
     new DrawerItem("Settings", Icons.settings)
   ];
-
 
   @override
   State<StatefulWidget> createState() {
@@ -45,13 +43,16 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    DeepLinkListener _deepLinkListener = DeepLinkListener(); // Listen to redirect events from a web link
+    DeepLinkListener _deepLinkListener =
+        DeepLinkListener(); // Listen to redirect events from a web link
 
-    ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
-    _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+    ConnectionStatusSingleton connectionStatus =
+        ConnectionStatusSingleton.getInstance();
+    _connectionChangeStream =
+        connectionStatus.connectionChange.listen(connectionChanged);
 
-    LoginHandler().checkCredentials(); // Get user information if user has logged in on this device
-
+    LoginHandler()
+        .checkCredentials(); // Get user information if user has logged in on this device
   }
 
   @override
@@ -80,7 +81,8 @@ class HomePageState extends State<HomePage> {
       case 7:
         return new SettingsFragment();
       default:
-        return new Text("Widget could not be returned for _getDrawerItemWidget");
+        return new Text(
+            "Widget could not be returned for _getDrawerItemWidget");
     }
   }
 
@@ -89,31 +91,29 @@ class HomePageState extends State<HomePage> {
     Navigator.of(context).pop();
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Widget> drawerOptions = [];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      if(d.title == "Divider"){
+      if (d.title == "Divider") {
         drawerOptions.add(new Divider());
-      }else{
-        drawerOptions.add(
-            new ListTile(
-              leading: new Icon(d.icon),
-              title: new Text(d.title),
-              selected: i == _selectedDrawerIndex,
-              onTap: () => _onSelectItem(i),
-            )
-        );
+      } else {
+        drawerOptions.add(new ListTile(
+          leading: new Icon(d.icon),
+          title: new Text(d.title),
+          selected: i == _selectedDrawerIndex,
+          onTap: () => _onSelectItem(i),
+        ));
       }
     }
 
-    if(isOffline){ // If no network connection is detected, display this message
+    if (isOffline) {
+      // If no network connection is detected, display this message
       return Center(
-        // TODO Remoooooooo
-      );
-    }else{
+          // TODO Remoooooooo
+          );
+    } else {
       return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
@@ -131,9 +131,11 @@ class HomePageState extends State<HomePage> {
       );
     }
   }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamSubscription>('_connectionChangeStream', _connectionChangeStream));
+    properties.add(DiagnosticsProperty<StreamSubscription>(
+        '_connectionChangeStream', _connectionChangeStream));
   }
 }

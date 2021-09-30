@@ -14,14 +14,14 @@ class SettingsFragment extends StatelessWidget {
 
     ThemeMode? themeMode = EasyDynamicTheme.of(context).themeMode;
     String dropdownValue;
-    if(themeMode == ThemeMode.light) {
+    if (themeMode == ThemeMode.light) {
       dropdownValue = "Light";
     } else if (themeMode == ThemeMode.dark) {
       dropdownValue = "Dark";
     } else if (themeMode == ThemeMode.system) {
       dropdownValue = "Use System Theme";
     } else {
-      throw("App theme could not be determined");
+      throw ("App theme could not be determined");
     }
     return new Center(
       child: Column(
@@ -67,16 +67,14 @@ class SettingsFragment extends StatelessWidget {
                         child: Text(value),
                       );
                     }).toList(),
-                  )
-              )
+                  ))
             ],
           ),
           TextButton.icon(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => AboutFragment()),
+                MaterialPageRoute(builder: (context) => AboutFragment()),
               );
             },
             label: Text("About"),
