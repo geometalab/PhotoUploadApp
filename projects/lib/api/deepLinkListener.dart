@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
-import 'package:projects/pages/menuDrawer.dart';
-
 import 'loginHandler.dart';
 
 class DeepLinkListener {

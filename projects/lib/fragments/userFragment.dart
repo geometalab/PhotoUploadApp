@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
 
 class UserFragment extends StatefulWidget{

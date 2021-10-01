@@ -5,9 +5,6 @@ import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
-import 'package:projects/fragments/settingsFragment.dart';
-import 'package:projects/fragments/singlePage/successfulLogin.dart';
-import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 final titleFont = new TextStyle(height: 30);

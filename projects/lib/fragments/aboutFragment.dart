@@ -1,8 +1,6 @@
-import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/style/textStyles.dart';
-import 'package:projects/style/unorderedListWidget.dart';
 
 class AboutFragment extends StatelessWidget { // TODO what even goes in the about page??
   @override

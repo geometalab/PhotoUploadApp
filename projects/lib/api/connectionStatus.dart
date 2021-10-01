@@ -1,5 +1,5 @@
-import 'dart:io'; //InternetAddress utility
-import 'dart:async'; //For StreamController/Stream
+import 'dart:io';
+import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 
 class ConnectionStatusSingleton {

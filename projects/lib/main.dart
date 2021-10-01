@@ -1,11 +1,8 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
-
 import 'api/connectionStatus.dart';
-import 'api/deepLinkListener.dart';
 
 // TODO Improve look & feel
 // TODO Implement Warning Messaging when no internet connection

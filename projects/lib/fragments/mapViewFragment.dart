@@ -7,8 +7,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:projects/MapPopUps/categoryMapPopup.dart';
 import 'package:projects/api/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
-import 'dart:math' as Math;
-
 class StatefulMapFragment extends StatefulWidget {
   @override
   _MapFragment createState() => _MapFragment();
