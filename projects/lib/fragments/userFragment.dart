@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
 
 class UserFragment extends StatefulWidget{
@@ -12,13 +13,7 @@ class _UserFragmentState extends State<UserFragment> {
   Widget build(BuildContext context) {
     // TODO: implement account management
 
-    return new Focus(
-      onFocusChange: (hasFocus){
-        if(hasFocus){
-          print("REFRESH");
-          setState((){});
-        }
-      },
+    return Container(
         child: FutureBuilder(
             future: loginHandler.getUserInformationFromFile(),
             builder: (context, snapshot) {
@@ -27,39 +22,43 @@ class _UserFragmentState extends State<UserFragment> {
               } else {
                 Userdata? data = snapshot.data as Userdata?;
                 if (data == null) {
-                  return loggedOut();
+                  return RefreshIndicator(child: loggedOut(), onRefresh: _pullRefresh);
                 } else {
-                  return loggedIn(data);
+                  return RefreshIndicator(child: loggedIn(data), onRefresh: _pullRefresh);
                 }
               }
             }));
   }
 
+  Future<void> _pullRefresh() async {
+    Future.delayed(Duration(seconds: 2));
+  }
+
   Widget loggedIn(Userdata userdata) {
-    return Padding(
+    return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Username: ${userdata.username}"),
-            Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."),
-            Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."),
-            Text("Email: ${userdata.email}"),
-            Text("Edit Count: ${userdata.editCount}"),
-            OutlinedButton(
-                onPressed: () {
-                  setState(() {
-                    loginHandler.logOut();
-                  });
-                },
-                child: Text("Log out")
-            )
-          ],
-        ));
+        children: <Widget>[
+          Text("Username: ${userdata.username}"),
+          Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."),
+          Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."),
+          Text("Email: ${userdata.email}"),
+          Text("Edit Count: ${userdata.editCount}"),
+          OutlinedButton(
+              onPressed: () {
+                setState(() {
+                  loginHandler.logOut();
+                });
+              },
+              child: Text("Log out")
+          )
+        ],
+    );
   }
 
   Widget loggedOut() {
-    return Column(
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       children: <Widget>[
         Padding(
             padding: EdgeInsets.all(8), child: Text("Not signed to Wikimedia")),

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/unorderedListWidget.dart';
 
-class AboutFragment extends StatelessWidget {
-  late Image ifsLogo;
-  late Image ostLogo;
-
+class AboutFragment extends StatelessWidget { // TODO what even goes in the about page??
   @override
   Widget build(BuildContext context) {
+    late Image ifsLogo;
+    late Image ostLogo;
+
     Brightness? brightness = Theme.of(context).brightness;
     if(brightness == Brightness.dark){ // TODO Recognize "system default" color
       ifsLogo = Image.asset("assets/media/logos/IFS_dark.png");

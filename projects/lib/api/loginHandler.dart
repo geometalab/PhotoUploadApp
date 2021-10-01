@@ -26,21 +26,22 @@ class LoginHandler {
   }
   LoginHandler._internal();
   
-  debugFilePrint(){
-    _readFromFile(CREDENTIALS_FILE).then((value) => print("File content" + value));
+  debugFilePrint(){ // Prints the stored user info for debugging purposes
+    _readFromFile(CREDENTIALS_FILE).then((value) => print("File content: " + value));
   }
 
   checkCredentials() async {
     try {
       Userdata? data = await getUserInformationFromFile();
       if (data != null) {
-        refreshAccessToken();
+        data = await refreshAccessToken();
         data = await getUserInformationFromAPI(data);
       }else{
         deleteUserDataInFile();
       }
     } catch (e) {
       print("Could not check Credentials successfully. Error: " + e.toString());
+      deleteUserDataInFile();
     }
   }
 
@@ -82,7 +83,7 @@ class LoginHandler {
 
   }
 
-  refreshAccessToken() async {
+  Future<Userdata> refreshAccessToken() async {
     Userdata? userdata = await getUserInformationFromFile();
     String clientSecret = await _getClientSecret();
     if (userdata == null || userdata.refreshToken == ""){
@@ -103,13 +104,13 @@ class LoginHandler {
       if(responseData.statusCode == 200){
         var responseJson = json.decode(responseData.body);
         Userdata data = Userdata(
-            accessToken: responseJson['access_token']);
+            accessToken: responseJson['access_token'],
+            refreshToken: responseJson['refresh_token'] );
         return data;
       }else{
         throw("Could not refresh access token. Status code ${responseData.statusCode}");
       }
     }
-
   }
 
   deleteUserDataInFile(){
@@ -209,6 +210,7 @@ class LoginHandler {
 
 class Userdata {
   String username;
+  String realName;
   String email;
   int editCount;
   String accessToken;
@@ -216,6 +218,7 @@ class Userdata {
 
   Userdata(
       {this.username = "",
+      this.realName = "",
       this.email = "",
       this.editCount = 0,
       this.accessToken = "",
@@ -225,6 +228,7 @@ class Userdata {
     Map<String, dynamic> json = jsonDecode(jsonString);
     return new Userdata(
         username: json['username'],
+        realName: json['realname'],
         accessToken: json['accessToken'],
         refreshToken: json['refreshToken'],
         email: json['email'],
@@ -238,6 +242,7 @@ class Userdata {
   Map<String, dynamic> _toMap() {
     return {
       'username': username,
+      'realname' : realName,
       'email': email,
       'editCount': editCount.toString(),
       'accessToken': accessToken,

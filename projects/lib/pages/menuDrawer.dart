@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/api/connectionStatus.dart';
 import 'package:projects/api/deepLinkListener.dart';
+import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
@@ -53,6 +54,12 @@ class HomePageState extends State<HomePage> {
 
     LoginHandler()
         .checkCredentials(); // Get user information if user has logged in on this device
+
+    WidgetsFlutterBinding.ensureInitialized();
+    WidgetsBinding.instance!.addObserver( // setState(){} on appResumed
+        LifecycleEventHandler(resumeCallBack: () async {
+          setState(() {});
+        }));
   }
 
   @override
@@ -66,6 +73,10 @@ class HomePageState extends State<HomePage> {
       isOffline = !hasConnection;
       print(isOffline);
     });
+  }
+
+  void refresh(){
+    setState(() { });
   }
 
   _getDrawerItemWidget(int pos) {
