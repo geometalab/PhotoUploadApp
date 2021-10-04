@@ -55,10 +55,10 @@ class HomePageState extends State<HomePage> {
         .checkCredentials(); // Get user information if user has logged in on this device
 
     WidgetsFlutterBinding.ensureInitialized();
-    WidgetsBinding.instance!.addObserver( // setState(){} on appResumed
+    WidgetsBinding.instance!.addObserver(// setState(){} on appResumed
         LifecycleEventHandler(resumeCallBack: () async {
-          setState(() {});
-        }));
+      setState(() {});
+    }));
   }
 
   @override
@@ -74,8 +74,8 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  void refresh(){
-    setState(() { });
+  void refresh() {
+    setState(() {});
   }
 
   _getDrawerItemWidget(int pos) {

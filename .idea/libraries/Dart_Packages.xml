@@ -401,13 +401,6 @@
             </list>
           </value>
         </entry>
-        <entry key="oauth2">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/oauth2-2.0.0/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="path">
           <value>
             <list>
@@ -481,7 +474,7 @@
         <entry key="plugin_platform_interface">
           <value>
             <list>
-              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.1/lib" />
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -794,7 +787,6 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/mgrs_dart-2.0.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/oauth2-2.0.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.5/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.0/lib" />
@@ -805,7 +797,7 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.3.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/photo_view-0.12.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.0.2/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.1/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.2/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/positioned_tap_detector_2-1.0.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.3/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/proj4dart-2.0.0/lib" />

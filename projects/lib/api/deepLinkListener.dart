@@ -13,7 +13,7 @@ class DeepLinkListener {
         Userdata userData =
             await LoginHandler().getTokens(listenerData["code"]);
         userData = await LoginHandler().getUserInformationFromAPI(userData);
-        LoginHandler().saveUserDataToFile(userData);
+        await LoginHandler().saveUserDataToFile(userData);
         // TODO refresh after login
       }
     }, onError: (error) {

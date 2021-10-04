@@ -1,5 +1,5 @@
 name: projects
-description: To
+description: App for finding nearby wikimedia commons locations and uploading pictures from your smartphone.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+1a
 
 environment:
   sdk: ">=2.14.0 <3.0.0"
@@ -45,7 +45,6 @@ dependencies:
   photo_view: ^0.12.0
   button_navigation_bar: ^0.1.1
   flutter_dotenv: ^5.0.2
-  oauth2: ^2.0.0
   connectivity: ^3.0.6
   path_provider: ^2.0.5
 
@@ -59,9 +58,9 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/
-    - assets/media/Licensing_tutorial_en.png
-    - assets/queries/minNearbyCategories.url
+    - assets/queries/
+    - assets/media/
+    - assets/media/icons/
     - assets/media/logos/
     - .env
 

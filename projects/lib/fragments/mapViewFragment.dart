@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:projects/MapPopUps/categoryMapPopup.dart';
 import 'package:projects/api/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+
 class StatefulMapFragment extends StatefulWidget {
   @override
   _MapFragment createState() => _MapFragment();
@@ -93,7 +94,8 @@ class _MapFragment extends State<StatefulMapFragment> {
   }
 
   @override
-  initState() { // TODO This fires when drawer is opened. Doesn't break app, but throws Exception.
+  initState() {
+    // TODO This fires when drawer is opened. Doesn't break app, but throws Exception.
     super.initState();
     getStartPosition().then((latLng) {
       // Center on position if available

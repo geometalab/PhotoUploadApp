@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,9 +20,11 @@ class LoginHandler {
     return _loginHandler;
   }
   LoginHandler._internal();
-  
-  debugFilePrint(){ // Prints the stored user info for debugging purposes
-    _readFromFile(CREDENTIALS_FILE).then((value) => print("File content: " + value));
+
+  debugFilePrint() {
+    // Prints the stored user info for debugging purposes
+    _readFromFile(CREDENTIALS_FILE)
+        .then((value) => print("File content: " + value));
   }
 
   checkCredentials() async {
@@ -30,7 +33,8 @@ class LoginHandler {
       if (data != null) {
         data = await refreshAccessToken();
         data = await getUserInformationFromAPI(data);
-      }else{
+        saveUserDataToFile(data);
+      } else {
         deleteUserDataInFile();
       }
     } catch (e) {
@@ -44,7 +48,14 @@ class LoginHandler {
   }
 
   openWebLogin() {
-    String url = "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+    String url =
+        "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+    _openURL(url);
+  }
+
+  openWebSignUp(){
+    String url =
+        "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount&returnto=" + "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
     _openURL(url);
   }
 
@@ -65,23 +76,22 @@ class LoginHandler {
         });
 
     var responseData = await response;
-    if(responseData.statusCode == 200){
+    if (responseData.statusCode == 200) {
       var responseJson = json.decode(responseData.body);
       Userdata data = Userdata(
           refreshToken: responseJson['refresh_token'],
           accessToken: responseJson['access_token']);
       return data;
-    }else{
-      throw("Could not get tokens. Response Code ${responseData.bodyBytes}");
+    } else {
+      throw ("Could not get tokens. Response Code ${responseData.bodyBytes}");
     }
-
   }
 
   Future<Userdata> refreshAccessToken() async {
     Userdata? userdata = await getUserInformationFromFile();
     String clientSecret = await _getClientSecret();
-    if (userdata == null || userdata.refreshToken == ""){
-      throw("Tried to refresh access token but userdata.refreshToken is null or empty");
+    if (userdata == null || userdata.refreshToken == "") {
+      throw ("Tried to refresh access token but userdata.refreshToken is null or empty");
     } else {
       Future<http.Response> response = http.post(
           Uri.parse('$WIKIMEDIA_REST/oauth2/access_token'),
@@ -95,38 +105,39 @@ class LoginHandler {
             'client_secret': clientSecret,
           });
       var responseData = await response;
-      if(responseData.statusCode == 200){
+      if (responseData.statusCode == 200) {
         var responseJson = json.decode(responseData.body);
         Userdata data = Userdata(
             accessToken: responseJson['access_token'],
-            refreshToken: responseJson['refresh_token'] );
+            refreshToken: responseJson['refresh_token']);
         return data;
-      }else{
-        throw("Could not refresh access token. Status code ${responseData.statusCode}");
+      } else {
+        throw ("Could not refresh access token. Status code ${responseData.statusCode}");
       }
     }
   }
 
-  deleteUserDataInFile(){
+  deleteUserDataInFile() {
     _writeToFile(CREDENTIALS_FILE, "");
   }
 
   saveUserDataToFile(Userdata data) async {
     Userdata? dataFromFile = await getUserInformationFromFile();
-    if(dataFromFile != null){ // Only new information replaces old information if passed Userdata does not have every field filled out.
-      if(data.refreshToken != ""){
+    if (dataFromFile != null) {
+      // Only new information replaces old information if passed Userdata does not have every field filled out.
+      if (data.refreshToken != "") {
         dataFromFile.refreshToken = data.refreshToken;
       }
-      if(data.accessToken != ""){
+      if (data.accessToken != "") {
         dataFromFile.accessToken = data.accessToken;
       }
-      if(data.username != ""){
+      if (data.username != "") {
         dataFromFile.username = data.username;
       }
-      if(data.email != ""){
-          dataFromFile.email = data.email;
+      if (data.email != "") {
+        dataFromFile.email = data.email;
       }
-      if(data.editCount != 0){
+      if (data.editCount != 0) {
         dataFromFile.editCount = data.editCount;
       }
       data = dataFromFile;
@@ -136,9 +147,9 @@ class LoginHandler {
 
   Future<Userdata?> getUserInformationFromFile() async {
     String jsonString = await _readFromFile(CREDENTIALS_FILE);
-    if(jsonString == ""){
+    if (jsonString == "") {
       return null;
-    }else{
+    } else {
       Userdata userdata = Userdata().fromJson(jsonString);
       if (userdata.refreshToken == "" || userdata.accessToken == "") {
         return null;
@@ -146,7 +157,6 @@ class LoginHandler {
         return userdata;
       }
     }
-
   }
 
   Future<Userdata> getUserInformationFromAPI(Userdata data) async {
@@ -236,7 +246,7 @@ class Userdata {
   Map<String, dynamic> _toMap() {
     return {
       'username': username,
-      'realname' : realName,
+      'realname': realName,
       'email': email,
       'editCount': editCount.toString(),
       'accessToken': accessToken,
