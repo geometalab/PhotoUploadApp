@@ -53,9 +53,10 @@ class LoginHandler {
     _openURL(url);
   }
 
-  openWebSignUp(){
+  openWebSignUp() {
     String url =
-        "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount&returnto=" + "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+        "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount&returnto=" +
+            "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
     _openURL(url);
   }
 

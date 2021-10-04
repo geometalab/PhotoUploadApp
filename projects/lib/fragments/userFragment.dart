@@ -66,11 +66,24 @@ class _UserFragmentState extends State<UserFragment> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(padding: EdgeInsets.symmetric(vertical: 104),),
-            Icon(Icons.person_off_outlined, size: 80, color: Theme.of(context).disabledColor,),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8),),
-            Text("Not signed into Wikimedia", style: TextStyle(fontSize: 20),),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8),),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 104),
+            ),
+            Icon(
+              Icons.person_off_outlined,
+              size: 80,
+              color: Theme.of(context).disabledColor,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+            ),
+            Text(
+              "Not signed into Wikimedia",
+              style: TextStyle(fontSize: 20),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+            ),
             SizedBox(
               width: 160,
               height: 40,
