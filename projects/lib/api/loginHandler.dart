@@ -54,8 +54,9 @@ class LoginHandler {
   }
 
   openWebSignUp(){
+    // TODO Return to app directly? https://www.mediawiki.org/wiki/Onboarding_new_Wikipedians/Account_creation_pathways
     String url =
-        "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount&returnto=" + "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+        "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount";
     _openURL(url);
   }
 
