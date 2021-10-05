@@ -4,15 +4,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:projects/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Cover access token expiry after 4h and maybe refresh token expiry after a year
 
 class LoginHandler {
-  static const CLIENT_ID = "f99a469a26bd7ae8f1d32bef1fa38cb3";
-  static const CREDENTIALS_FILE = "credentials.json";
-  static const WIKIMEDIA_REST = "https://meta.wikimedia.org/w/rest.php";
+  static const CLIENT_ID = Config.CLIENT_ID;
+  static const CREDENTIALS_FILE = Config.CREDENTIALS_FILE;
+  static const WIKIMEDIA_REST = Config.WIKIMEDIA_REST;
 
   // Making class a singleton
   static final LoginHandler _loginHandler = LoginHandler._internal();
