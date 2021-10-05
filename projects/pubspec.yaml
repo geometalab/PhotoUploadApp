@@ -60,7 +60,6 @@ flutter:
   assets:
     - assets/queries/
     - assets/media/
-    - assets/media/icons/
     - assets/media/logos/
     - .env
 
