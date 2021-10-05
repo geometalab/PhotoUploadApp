@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/style/textStyles.dart';
 
 class UserFragment extends StatefulWidget {
   @override
@@ -8,6 +9,9 @@ class UserFragment extends StatefulWidget {
 
 class _UserFragmentState extends State<UserFragment> {
   LoginHandler loginHandler = new LoginHandler();
+  bool expanded = false;
+  Userdata? userdata;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement account management
@@ -41,11 +45,15 @@ class _UserFragmentState extends State<UserFragment> {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.all(10),
       children: <Widget>[
-        Text("Username: ${userdata.username}"),
-        Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."),
-        Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."),
-        Text("Email: ${userdata.email}"),
-        Text("Edit Count: ${userdata.editCount}"),
+        ExpansionTile(
+            title: Text(userdata.username,style: headerText,),
+            subtitle: Text("View Profile 〉", style: objectDescription),
+            leading: CircleAvatar(
+              child: Icon(Icons.person_outline_rounded,color: Color.fromRGBO(229, 229, 229, 1),),
+              backgroundColor: Theme.of(context).disabledColor,
+            ),
+            children: expandedInfo(userdata),
+        ),
         OutlinedButton(
             onPressed: () {
               setState(() {
@@ -95,5 +103,15 @@ class _UserFragmentState extends State<UserFragment> {
         )
       ],
     );
+  }
+
+  List<Widget> expandedInfo(Userdata userdata) {
+    List<Widget> list = new List.empty(growable: true);
+    list.add(Text("Username: ${userdata.username}"));
+    list.add(Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."));
+    list.add(Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."));
+    list.add(Text("Email: ${userdata.email}"));
+    list.add(Text("Edit Count: ${userdata.editCount}"));
+    return list;
   }
 }

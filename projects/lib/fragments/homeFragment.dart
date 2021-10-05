@@ -138,7 +138,7 @@ class ArticleList {
                       padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
                       child: Text(
                         article.description,
-                        style: customStyles.articleDescription,
+                        style: customStyles.objectDescription,
                       ),
                     )
                   ],

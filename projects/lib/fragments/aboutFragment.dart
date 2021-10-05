@@ -30,7 +30,7 @@ class AboutFragment extends StatelessWidget {
           children: [
             Text("Wikimedia Commons Uploader App", style: fragmentTitle),
             Padding(padding: EdgeInsets.only(bottom: 8)),
-            Text("Developed by:", style: articleDescription),
+            Text("Developed by:", style: objectDescription),
             Padding(padding: EdgeInsets.only(bottom: 4)),
             Text("• Fabio Zahner"),
             Text("• Remo Steiner"),
