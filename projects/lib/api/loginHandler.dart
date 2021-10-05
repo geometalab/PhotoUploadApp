@@ -53,7 +53,7 @@ class LoginHandler {
     _openURL(url);
   }
 
-  openWebSignUp(){
+  openWebSignUp() {
     // TODO Return to app directly? https://www.mediawiki.org/wiki/Onboarding_new_Wikipedians/Account_creation_pathways
     String url =
         "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount";
