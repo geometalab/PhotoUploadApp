@@ -14,7 +14,7 @@ class SelectImageFragment extends StatelessWidget {
   //TODO? Support multiple Files?
 
   final ImagePicker _picker = ImagePicker();
-  InformationCollector collector = new InformationCollector();
+  final InformationCollector collector = new InformationCollector();
 
   @override
   Widget build(BuildContext context) {
@@ -22,61 +22,65 @@ class SelectImageFragment extends StatelessWidget {
         backgroundColor: Theme.of(context).canvasColor,
         body: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(2),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    collector.image =
-                        await _picker.pickImage(source: ImageSource.gallery);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              StatefulSelectCategoryFragment()),
-                    );
-                  },
-                  child: SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.file_copy_outlined),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          Text("Select Image from Files"),
-                        ]),
-                  )),
-            ),
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      collector.image =
-                          await _picker.pickImage(source: ImageSource.camera);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                StatefulSelectCategoryFragment()),
-                      );
-                    },
-                    child: SizedBox(
-                      width: 200,
-                      height: 40,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.camera_alt_outlined),
-                            Padding(padding: EdgeInsets.only(left: 5)),
-                            Text("Capture a Photo"),
-                          ]),
-                    )))
-          ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(2),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        collector.image =
+                            await _picker.pickImage(source: ImageSource.gallery);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  StatefulSelectCategoryFragment()),
+                        );
+                      },
+                      child: SizedBox(
+                        width: 200,
+                        height: 40,
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.file_copy_outlined),
+                              Padding(padding: EdgeInsets.only(left: 5)),
+                              Text("Select Image from Files"),
+                            ]),
+                      )),
+                ),
+                Padding(
+                    padding: EdgeInsets.all(2),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          collector.image =
+                              await _picker.pickImage(source: ImageSource.camera);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StatefulSelectCategoryFragment()),
+                          );
+                        },
+                        child: SizedBox(
+                          width: 200,
+                          height: 40,
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.camera_alt_outlined),
+                                Padding(padding: EdgeInsets.only(left: 5)),
+                                Text("Capture a Photo"),
+                              ]),
+                        ))),
+                OutlinedButton(
+                    onPressed: () {UploadService().getCsrfToken();},
+                    child: Text("CSRF Token")
+                )
+              ],
         )));
   }
 }

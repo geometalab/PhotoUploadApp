@@ -5,8 +5,8 @@ class Config {
   }
   Config._internal();
 
-  static const WIKIMEDIA_REST = "https://meta.wikimedia.org/w/rest.php";
-  static const WIKIMEDIA_API = "https://test.wikipedia.org/w/api.php";
+  static const WIKIMEDIA_REST = "https://commons.wikimedia.org/w/rest.php";
+  static const WIKIMEDIA_API = "https://commons.wikimedia.org/w/api.php";
   static const CLIENT_ID = "f99a469a26bd7ae8f1d32bef1fa38cb3";
   static const CREDENTIALS_FILE = "credentials.json";
 }

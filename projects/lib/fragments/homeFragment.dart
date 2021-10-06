@@ -12,7 +12,6 @@ final titleFont = new TextStyle(height: 30);
 class HomeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LoginHandler().debugFilePrint(); // TODO remove
     var articleList = new ArticleList();
     articleList.clear();
 

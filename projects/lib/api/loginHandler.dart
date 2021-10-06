@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Cover access token expiry after 4h and maybe refresh token expiry after a year
+// TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
 
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
@@ -63,7 +64,6 @@ class LoginHandler {
 
   Future<Userdata> getTokens(String authCode) async {
     // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
-
     String clientSecret = await _getClientSecret();
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_REST/oauth2/access_token'),

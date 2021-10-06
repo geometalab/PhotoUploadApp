@@ -36,7 +36,7 @@ class _UserFragmentState extends State<UserFragment> {
   }
 
   Future<void> pullRefresh() async {
-    LoginHandler().checkCredentials();
+    await LoginHandler().checkCredentials();
     setState(() {});
   }
 
