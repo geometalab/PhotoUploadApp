@@ -119,7 +119,7 @@ class HomePageState extends State<HomePage> {
       }
     }
 
-    if (true) {
+    if (isOffline) {
       // If no network connection is detected, display this message
           return NoConnection().screen(context);
     } else {
