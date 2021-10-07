@@ -53,6 +53,8 @@ class _UserFragmentState extends State<UserFragment> {
               backgroundColor: Theme.of(context).disabledColor,
             ),
             children: expandedInfo(userdata),
+          expandedAlignment: Alignment.bottomLeft,
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
         ),
         OutlinedButton(
             onPressed: () {
@@ -60,7 +62,14 @@ class _UserFragmentState extends State<UserFragment> {
                 loginHandler.logOut();
               });
             },
-            child: Text("Log out"))
+            child: Text("Log out")),
+        OutlinedButton(
+            onPressed: () {
+              setState(() {
+                loginHandler.openMediaAccount(userdata.username);
+              });
+            },
+            child: Text("Show my uploads"))
       ],
     );
   }
@@ -74,11 +83,24 @@ class _UserFragmentState extends State<UserFragment> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(padding: EdgeInsets.symmetric(vertical: 104),),
-            Icon(Icons.person_off_outlined, size: 80, color: Theme.of(context).disabledColor,),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8),),
-            Text("Not signed into Wikimedia", style: TextStyle(fontSize: 20),),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8),),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 104),
+            ),
+            Icon(
+              Icons.person_off_outlined,
+              size: 80,
+              color: Theme.of(context).disabledColor,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+            ),
+            Text(
+              "Not signed into Wikimedia",
+              style: TextStyle(fontSize: 20),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+            ),
             SizedBox(
               width: 160,
               height: 40,
@@ -105,13 +127,21 @@ class _UserFragmentState extends State<UserFragment> {
     );
   }
 
+
   List<Widget> expandedInfo(Userdata userdata) {
     List<Widget> list = new List.empty(growable: true);
-    list.add(Text("Username: ${userdata.username}"));
-    list.add(Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."));
-    list.add(Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."));
-    list.add(Text("Email: ${userdata.email}"));
-    list.add(Text("Edit Count: ${userdata.editCount}"));
+    final Alignment? expandedAlignment;
+    list.add(Text("Username: ${userdata.username}",
+        textAlign: TextAlign.left)
+    );
+    //list.add(Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."));
+    //list.add(Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."));
+    list.add(Text("Email: ${userdata.email}",
+        textAlign: TextAlign.left)
+    );
+    list.add(Text("Edit Count: ${userdata.editCount}",
+        textAlign: TextAlign.left)
+    );
     return list;
   }
 }

@@ -5,7 +5,6 @@ import 'package:projects/style/themes.dart' as customThemes;
 import 'api/connectionStatus.dart';
 
 // TODO Improve look & feel
-// TODO Implement Warning Messaging when no internet connection
 // TODO Block file uploading when not logged in (or better yet, redirect to login screen)
 // TODO create a Logo
 // TODO find a name
