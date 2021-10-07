@@ -11,7 +11,7 @@ class NoConnection {
            crossAxisAlignment: CrossAxisAlignment.center,
            children: [
              Text("Check your Connection", style: TextStyle(fontSize: 30),),
-             Icon(Icons.wifi_off, size: 60,)
+             Icon(Icons.wifi_off, size: 80,)
            ],
          ),
     ),

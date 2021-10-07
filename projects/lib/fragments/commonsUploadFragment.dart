@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/categoryService.dart';
+import 'package:projects/api/loginHandler.dart';
 import 'package:projects/api/uploadService.dart';
 import 'dart:io';
+
+import 'package:projects/fragments/singlePage/loggedOut.dart';
 
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
 
@@ -16,68 +19,75 @@ class SelectImageFragment extends StatelessWidget {
   final ImagePicker _picker = ImagePicker();
 
 
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: Theme.of(context).canvasColor,
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(2),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    InformationCollector.image =
-                        await _picker.pickImage(source: ImageSource.gallery);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              StatefulSelectCategoryFragment()),
-                    );
-                  },
-                  child: SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.file_copy_outlined),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          Text("Select Image from Files"),
-                        ]),
-                  )),
-            ),
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      InformationCollector.image =
-                          await _picker.pickImage(source: ImageSource.camera);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                StatefulSelectCategoryFragment()),
-                      );
-                    },
-                    child: SizedBox(
-                      width: 200,
-                      height: 40,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.camera_alt_outlined),
-                            Padding(padding: EdgeInsets.only(left: 5)),
-                            Text("Capture a Photo"),
-                          ]),
-                    )))
-          ],
-        )));
+    if (true) {
+      return loggedOut().screen(context);
+    } else {
+      return new Scaffold(
+          backgroundColor: Theme
+              .of(context)
+              .canvasColor,
+          body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(2),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          InformationCollector.image =
+                          await _picker.pickImage(source: ImageSource.gallery);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StatefulSelectCategoryFragment()),
+                          );
+                        },
+                        child: SizedBox(
+                          width: 200,
+                          height: 40,
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.file_copy_outlined),
+                                Padding(padding: EdgeInsets.only(left: 5)),
+                                Text("Select Image from Files"),
+                              ]),
+                        )),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(2),
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            InformationCollector.image =
+                            await _picker.pickImage(source: ImageSource.camera);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      StatefulSelectCategoryFragment()),
+                            );
+                          },
+                          child: SizedBox(
+                            width: 200,
+                            height: 40,
+                            child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.camera_alt_outlined),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text("Capture a Photo"),
+                                ]),
+                          )))
+                ],
+              )));
+    }
   }
 }
 
