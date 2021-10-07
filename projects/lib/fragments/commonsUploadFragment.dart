@@ -76,10 +76,6 @@ class SelectImageFragment extends StatelessWidget {
                                 Text("Capture a Photo"),
                               ]),
                         ))),
-                OutlinedButton(
-                    onPressed: () {UploadService().getCsrfToken();},
-                    child: Text("CSRF Token")
-                )
               ],
         )));
   }
