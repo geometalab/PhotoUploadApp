@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/style/textStyles.dart';
 
@@ -11,6 +12,14 @@ class _UserFragmentState extends State<UserFragment> {
   LoginHandler loginHandler = new LoginHandler();
   bool expanded = false;
   Userdata? userdata;
+  late DeepLinkListener deepLinkListener;
+
+  _UserFragmentState () {
+    deepLinkListener = new DeepLinkListener();
+    deepLinkListener.addListener(() { // On return to app from app, refresh widget
+      pullRefresh();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
