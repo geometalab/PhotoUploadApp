@@ -234,9 +234,9 @@ class Userdata {
   int editCount;
   String accessToken;
   String refreshToken;
-  List<dynamic>? groups;
-  List<dynamic>? rights;
-  List<dynamic>? grants;
+  List<dynamic> groups;
+  List<dynamic> rights;
+  List<dynamic> grants;
 
   Userdata({
     this.username = "",

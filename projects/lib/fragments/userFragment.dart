@@ -50,7 +50,7 @@ class _UserFragmentState extends State<UserFragment> {
     setState(() {});
   }
 
-  Widget loggedIn(Userdata userdata) {
+  Widget loggedIn(Userdata userdata) { // TODO Remove top and bottom border which show while expanded
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.all(10),
@@ -69,8 +69,10 @@ class _UserFragmentState extends State<UserFragment> {
             backgroundColor: Theme.of(context).disabledColor,
           ),
           children: expandedInfo(userdata),
+
           expandedAlignment: Alignment.bottomLeft,
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          initiallyExpanded: true, // TODO Remove
         ),
         OutlinedButton(
             onPressed: () {
@@ -95,17 +97,42 @@ class _UserFragmentState extends State<UserFragment> {
     list.add(infoField(userdata.username, "username"));
     list.add(infoField(userdata.email, "email"));
     list.add(infoField(userdata.editCount.toString(), "number of edits"));
+    if(userdata.realName != ""){
+      list.add(infoField(userdata.realName, "real name"));
+    }
+
+
+    list.add(expansionInfoWidget("rights", userdata.rights));
+    list.add(expansionInfoWidget("grants", userdata.grants));
+    list.add(expansionInfoWidget("groups", userdata.groups));
+    list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
+    return list;
+  }
+
+  Widget expansionInfoWidget(String title, List userdataList){
+    return ExpansionTile(title: Text(title), children: listTileGenerator(userdataList));
+  }
+
+  List<ListTile> listTileGenerator(List userdataList) {
+    List<ListTile> list = List.empty(growable: true);
+    for(String string in userdataList){
+      list.add(ListTile(title: Text(string)));
+    }
     return list;
   }
 
   Widget infoField(String initialValue, String label) {
-    return TextFormField(
-        initialValue: initialValue,
-        decoration: InputDecoration(
-            label: Text(label),
-            disabledBorder: InputBorder.none,
-            contentPadding: EdgeInsets.zero),
-        enabled: false);
+    return Padding(
+      child: Column(
+        children: [
+          Text(label, style: smallLabel),
+          Text(initialValue)
+        ],
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      padding: EdgeInsets.symmetric(vertical: 4),
+    );
   }
 
   Widget loggedOut() {
