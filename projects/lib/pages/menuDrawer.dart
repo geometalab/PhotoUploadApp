@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/api/connectionStatus.dart';
-import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/homeFragment.dart';

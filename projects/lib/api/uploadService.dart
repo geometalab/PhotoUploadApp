@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/loginHandler.dart';
 import '../config.dart';
-import 'package:http_parser/http_parser.dart';
 
 // TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates
 

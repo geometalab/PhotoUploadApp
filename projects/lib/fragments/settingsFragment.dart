@@ -54,7 +54,7 @@ class SettingsFragment extends StatelessWidget {
                     elevation: 16,
                     underline: Container(
                       height: 2,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     items: <String>['Light', 'Dark', 'Use System Theme']
                         .map<DropdownMenuItem<String>>((String value) {
