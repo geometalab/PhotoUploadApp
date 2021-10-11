@@ -118,7 +118,7 @@ class HomePageState extends State<HomePage> {
 
     if (isOffline) {
       // If no network connection is detected, display this message
-          return NoConnection().screen(context);
+      return NoConnection().screen(context);
     } else {
       return new Scaffold(
         appBar: new AppBar(

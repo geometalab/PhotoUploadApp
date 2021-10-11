@@ -14,17 +14,18 @@ class _UserFragmentState extends State<UserFragment> {
   Userdata? userdata;
   late DeepLinkListener deepLinkListener;
 
-  _UserFragmentState () {
+  _UserFragmentState() {
+    // TODO access token is retrieved twice, which should not happen
     deepLinkListener = new DeepLinkListener();
-    deepLinkListener.addListener(() { // On return to app from app, refresh widget
+    deepLinkListener.addListener(() {
+      // On return to app from app, refresh widget
       pullRefresh();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement account management
-
+    // TODO: implement account management (user can change settings)
     return Container(
         child: FutureBuilder(
             future: loginHandler.getUserInformationFromFile(),
@@ -55,16 +56,29 @@ class _UserFragmentState extends State<UserFragment> {
       padding: EdgeInsets.all(10),
       children: <Widget>[
         ExpansionTile(
-            title: Text(userdata.username,style: headerText,),
-            subtitle: Text("View Profile 〉", style: objectDescription),
-            leading: CircleAvatar(
-              child: Icon(Icons.person_outline_rounded,color: Color.fromRGBO(229, 229, 229, 1),),
-              backgroundColor: Theme.of(context).disabledColor,
+          title: Text(
+            userdata.username,
+            style: headerText,
+          ),
+          subtitle: Text("View Profile 〉", style: objectDescription),
+          leading: CircleAvatar(
+            child: Icon(
+              Icons.person_outline_rounded,
+              color: Color.fromRGBO(229, 229, 229, 1),
             ),
-            children: expandedInfo(userdata),
+            backgroundColor: Theme.of(context).disabledColor,
+          ),
+          children: expandedInfo(userdata),
           expandedAlignment: Alignment.bottomLeft,
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
         ),
+        OutlinedButton(
+            onPressed: () {
+              setState(() {
+                loginHandler.openMediaAccount(userdata.username);
+              });
+            },
+            child: Text("My uploads")),
         OutlinedButton(
             onPressed: () {
               setState(() {
@@ -72,15 +86,26 @@ class _UserFragmentState extends State<UserFragment> {
               });
             },
             child: Text("Log out")),
-        OutlinedButton(
-            onPressed: () {
-              setState(() {
-                loginHandler.openMediaAccount(userdata.username);
-              });
-            },
-            child: Text("Show my uploads"))
       ],
     );
+  }
+
+  List<Widget> expandedInfo(Userdata userdata) {
+    List<Widget> list = new List.empty(growable: true);
+    list.add(infoField(userdata.username, "username"));
+    list.add(infoField(userdata.email, "email"));
+    list.add(infoField(userdata.editCount.toString(), "number of edits"));
+    return list;
+  }
+
+  Widget infoField(String initialValue, String label) {
+    return TextFormField(
+        initialValue: initialValue,
+        decoration: InputDecoration(
+            label: Text(label),
+            disabledBorder: InputBorder.none,
+            contentPadding: EdgeInsets.zero),
+        enabled: false);
   }
 
   Widget loggedOut() {
@@ -134,23 +159,5 @@ class _UserFragmentState extends State<UserFragment> {
         )
       ],
     );
-  }
-
-
-  List<Widget> expandedInfo(Userdata userdata) {
-    List<Widget> list = new List.empty(growable: true);
-    final Alignment? expandedAlignment;
-    list.add(Text("Username: ${userdata.username}",
-        textAlign: TextAlign.left)
-    );
-    //list.add(Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."));
-    //list.add(Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."));
-    list.add(Text("Email: ${userdata.email}",
-        textAlign: TextAlign.left)
-    );
-    list.add(Text("Edit Count: ${userdata.editCount}",
-        textAlign: TextAlign.left)
-    );
-    return list;
   }
 }

@@ -16,72 +16,70 @@ class SelectImageFragment extends StatelessWidget {
   final ImagePicker _picker = ImagePicker();
   final InformationCollector collector = new InformationCollector();
 
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         body: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(2),
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        collector.image =
-                            await _picker.pickImage(source: ImageSource.gallery);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  StatefulSelectCategoryFragment()),
-                        );
-                      },
-                      child: SizedBox(
-                        width: 200,
-                        height: 40,
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(Icons.file_copy_outlined),
-                              Padding(padding: EdgeInsets.only(left: 5)),
-                              Text("Select Image from Files"),
-                            ]),
-                      )),
-                ),
-                Padding(
-                    padding: EdgeInsets.all(2),
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          collector.image =
-                              await _picker.pickImage(source: ImageSource.camera);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    StatefulSelectCategoryFragment()),
-                          );
-                        },
-                        child: SizedBox(
-                          width: 200,
-                          height: 40,
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.camera_alt_outlined),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text("Capture a Photo"),
-                              ]),
-                        ))),
-              ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(2),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    collector.image =
+                        await _picker.pickImage(source: ImageSource.gallery);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              StatefulSelectCategoryFragment()),
+                    );
+                  },
+                  child: SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.file_copy_outlined),
+                          Padding(padding: EdgeInsets.only(left: 5)),
+                          Text("Select Image from Files"),
+                        ]),
+                  )),
+            ),
+            Padding(
+                padding: EdgeInsets.all(2),
+                child: ElevatedButton(
+                    onPressed: () async {
+                      collector.image =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                StatefulSelectCategoryFragment()),
+                      );
+                    },
+                    child: SizedBox(
+                      width: 200,
+                      height: 40,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.camera_alt_outlined),
+                            Padding(padding: EdgeInsets.only(left: 5)),
+                            Text("Capture a Photo"),
+                          ]),
+                    ))),
+          ],
         )));
   }
 }
-
 
 class StatefulSelectCategoryFragment extends StatefulWidget {
   @override
@@ -95,7 +93,8 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
   InformationCollector collector = new InformationCollector();
 
   @override
-  Widget build(BuildContext context) { // TODO text in dark mode not readable color
+  Widget build(BuildContext context) {
+    // TODO text in dark mode not readable color
     String prefillContent;
     if (collector.preFillContent != null) {
       prefillContent = collector.preFillContent!;
@@ -371,7 +370,8 @@ class _InformationFragment extends State<StatefulInformationFragment> {
 }
 
 class InformationCollector {
-  static final InformationCollector _informationCollector = InformationCollector._internal();
+  static final InformationCollector _informationCollector =
+      InformationCollector._internal();
 
   factory InformationCollector() {
     return _informationCollector;
@@ -389,9 +389,10 @@ class InformationCollector {
   String? license = 'CC0';
   DateTime date = DateTime.now();
 
-  submitData(){
+  submitData() {
     try {
-      UploadService().uploadImage(image!, fileName!, fileName!, description!, author!, license!, date);
+      UploadService().uploadImage(
+          image!, fileName!, fileName!, description!, author!, license!, date);
     } catch (e) {
       print(e);
     }

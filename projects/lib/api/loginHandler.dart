@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 // TODO Cover access token expiry after 4h and maybe refresh token expiry after a year
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
@@ -62,7 +63,7 @@ class LoginHandler {
     _openURL(url);
   }
 
-  openMediaAccount(String username){
+  openMediaAccount(String username) {
     String url =
         "https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/$username";
     _openURL(url);
@@ -179,12 +180,16 @@ class LoginHandler {
       var responseJson = await response;
       var responseData = json.decode(responseJson.body);
       Userdata tokenData = Userdata(
-          // TODO Read more information if given (e.g. email, real name)
-          username: responseData['username'],
-          editCount: responseData['editcount'],
-          email: responseData['email'],
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken);
+        username: responseData['username'],
+        editCount: responseData['editcount'],
+        email: responseData['email'],
+        realName: responseData['realname'],
+        groups: responseData['groups'],
+        rights: responseData['rights'],
+        grants: responseData['grants'],
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+      );
       return tokenData;
     } else {
       throw (Exception("Access Token is empty"));
@@ -229,14 +234,23 @@ class Userdata {
   int editCount;
   String accessToken;
   String refreshToken;
+  List<dynamic>? groups;
+  List<dynamic>? rights;
+  List<dynamic>? grants;
 
-  Userdata(
-      {this.username = "",
-      this.realName = "",
-      this.email = "",
-      this.editCount = 0,
-      this.accessToken = "",
-      this.refreshToken = ""});
+  Userdata({
+    this.username = "",
+    this.realName = "",
+    this.email = "",
+    this.editCount = 0,
+    this.accessToken = "",
+    this.refreshToken = "",
+    List<dynamic>? groups,
+    List<dynamic>? rights,
+    List<dynamic>? grants,
+  })  : groups = groups ?? List.empty(),
+        rights = rights ?? List.empty(),
+        grants = grants ?? List.empty();
 
   Userdata fromJson(String jsonString) {
     Map<String, dynamic> json = jsonDecode(jsonString);
@@ -246,7 +260,10 @@ class Userdata {
         accessToken: json['accessToken'],
         refreshToken: json['refreshToken'],
         email: json['email'],
-        editCount: int.parse(json['editCount']));
+        editCount: int.parse(json['editCount']),
+        groups: json['groups'],
+        rights: json['rights'],
+        grants: json['grants']);
   }
 
   String toJson() {
@@ -260,7 +277,10 @@ class Userdata {
       'email': email,
       'editCount': editCount.toString(),
       'accessToken': accessToken,
-      'refreshToken': refreshToken
+      'refreshToken': refreshToken,
+      'groups': groups,
+      'rights': rights,
+      'grants': grants
     };
   }
 }
