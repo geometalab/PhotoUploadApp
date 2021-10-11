@@ -8,6 +8,7 @@ import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
+import 'package:projects/fragments/singlePage/noConnection.dart';
 import 'package:projects/fragments/userFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 
@@ -117,9 +118,7 @@ class HomePageState extends State<HomePage> {
 
     if (isOffline) {
       // If no network connection is detected, display this message
-      return Center(
-          // TODO Remoooooooo
-          );
+          return NoConnection().screen(context);
     } else {
       return new Scaffold(
         appBar: new AppBar(

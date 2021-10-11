@@ -62,6 +62,13 @@ class LoginHandler {
     _openURL(url);
   }
 
+  openMediaAccount(String username){
+    String url =
+        "https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/$username";
+    _openURL(url);
+    // TODO make sure what function should do
+  }
+
   Future<Userdata> getTokens(String authCode) async {
     // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
     String clientSecret = await _getClientSecret();
@@ -175,6 +182,7 @@ class LoginHandler {
           // TODO Read more information if given (e.g. email, real name)
           username: responseData['username'],
           editCount: responseData['editcount'],
+          email: responseData['email'],
           accessToken: data.accessToken,
           refreshToken: data.refreshToken);
       return tokenData;

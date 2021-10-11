@@ -16,6 +16,7 @@ class SelectImageFragment extends StatelessWidget {
   final ImagePicker _picker = ImagePicker();
   final InformationCollector collector = new InformationCollector();
 
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -80,6 +81,7 @@ class SelectImageFragment extends StatelessWidget {
         )));
   }
 }
+
 
 class StatefulSelectCategoryFragment extends StatefulWidget {
   @override

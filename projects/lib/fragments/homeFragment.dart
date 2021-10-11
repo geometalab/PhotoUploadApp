@@ -95,7 +95,6 @@ class ArticleList {
   }
 
   List<Card> generateCards(BuildContext context) {
-    // TODO Implement option to add a full size image to card
     List<Card> cards = new List.empty(growable: true);
     List<Article> articles = ArticleList.articles;
 
