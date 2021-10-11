@@ -14,6 +14,7 @@ class SelectImageFragment extends StatelessWidget {
   //TODO? Support multiple Files?
 
   final ImagePicker _picker = ImagePicker();
+  final InformationCollector collector = new InformationCollector();
 
 
   @override
@@ -22,61 +23,61 @@ class SelectImageFragment extends StatelessWidget {
         backgroundColor: Theme.of(context).canvasColor,
         body: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(2),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    InformationCollector.image =
-                        await _picker.pickImage(source: ImageSource.gallery);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              StatefulSelectCategoryFragment()),
-                    );
-                  },
-                  child: SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.file_copy_outlined),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          Text("Select Image from Files"),
-                        ]),
-                  )),
-            ),
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      InformationCollector.image =
-                          await _picker.pickImage(source: ImageSource.camera);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                StatefulSelectCategoryFragment()),
-                      );
-                    },
-                    child: SizedBox(
-                      width: 200,
-                      height: 40,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.camera_alt_outlined),
-                            Padding(padding: EdgeInsets.only(left: 5)),
-                            Text("Capture a Photo"),
-                          ]),
-                    )))
-          ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(2),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        collector.image =
+                            await _picker.pickImage(source: ImageSource.gallery);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  StatefulSelectCategoryFragment()),
+                        );
+                      },
+                      child: SizedBox(
+                        width: 200,
+                        height: 40,
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.file_copy_outlined),
+                              Padding(padding: EdgeInsets.only(left: 5)),
+                              Text("Select Image from Files"),
+                            ]),
+                      )),
+                ),
+                Padding(
+                    padding: EdgeInsets.all(2),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          collector.image =
+                              await _picker.pickImage(source: ImageSource.camera);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StatefulSelectCategoryFragment()),
+                          );
+                        },
+                        child: SizedBox(
+                          width: 200,
+                          height: 40,
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.camera_alt_outlined),
+                                Padding(padding: EdgeInsets.only(left: 5)),
+                                Text("Capture a Photo"),
+                              ]),
+                        ))),
+              ],
         )));
   }
 }
@@ -91,18 +92,19 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
   List<String> addedCategories = [];
   List<IconData> addedCategoriesImages = [];
   CategoryService cs = new CategoryService();
+  InformationCollector collector = new InformationCollector();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // TODO text in dark mode not readable color
     String prefillContent;
-    if (InformationCollector.preFillContent != null) {
-      prefillContent = InformationCollector.preFillContent!;
+    if (collector.preFillContent != null) {
+      prefillContent = collector.preFillContent!;
     } else {
       prefillContent = "";
     }
     final TextEditingController _typeAheadController =
         TextEditingController(text: prefillContent);
-    addedCategories = InformationCollector.imageCategories;
+    addedCategories = collector.imageCategories;
 
     return new Scaffold(
         body: Column(children: <Widget>[
@@ -111,7 +113,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
         actions: [
           IconButton(
               onPressed: () {
-                InformationCollector.imageCategories = addedCategories;
+                collector.imageCategories = addedCategories;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -192,7 +194,9 @@ class StatefulInformationFragment extends StatefulWidget {
 }
 
 class _InformationFragment extends State<StatefulInformationFragment> {
-  DateTime selectedDate = InformationCollector.date;
+  InformationCollector collector = new InformationCollector();
+
+  DateTime selectedDate = InformationCollector().date;
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -201,7 +205,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
-        InformationCollector.date = picked;
+        collector.date = picked;
         selectedDate = picked;
       });
     }
@@ -219,9 +223,9 @@ class _InformationFragment extends State<StatefulInformationFragment> {
       Padding(
         padding: EdgeInsets.all(8),
         child: TextFormField(
-            initialValue: InformationCollector.title,
+            initialValue: collector.fileName,
             onChanged: (value) {
-              InformationCollector.title = value;
+              collector.fileName = value;
             },
             decoration: const InputDecoration(
               icon: Icon(Icons.file_copy_outlined),
@@ -232,9 +236,9 @@ class _InformationFragment extends State<StatefulInformationFragment> {
       Padding(
         padding: EdgeInsets.all(8),
         child: TextFormField(
-            initialValue: InformationCollector.description,
+            initialValue: collector.description,
             onChanged: (value) {
-              InformationCollector.description = value;
+              collector.description = value;
             },
             decoration: const InputDecoration(
               icon: Icon(Icons.text_fields_outlined),
@@ -246,9 +250,9 @@ class _InformationFragment extends State<StatefulInformationFragment> {
       Padding(
         padding: EdgeInsets.all(8),
         child: TextFormField(
-            initialValue: InformationCollector.author,
+            initialValue: collector.author,
             onChanged: (value) {
-              InformationCollector.author = value;
+              collector.author = value;
             },
             decoration: const InputDecoration(
                 icon: Icon(Icons.person),
@@ -278,10 +282,10 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               ],
             ),
             DropdownButton<String>(
-              value: InformationCollector.license,
+              value: collector.license,
               onChanged: (String? newValue) {
                 setState(() {
-                  InformationCollector.license = newValue!;
+                  collector.license = newValue!;
                 });
               },
               icon: const Icon(Icons.arrow_downward),
@@ -289,7 +293,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               elevation: 16,
               underline: Container(
                 height: 2,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               items: <String>[
                 'CC0',
@@ -358,17 +362,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               height: 45,
               child: ElevatedButton(
                 onPressed: () {
-                  try {
-                    UploadService().uploadImage(
-                        InformationCollector().getXFileImage(),
-                        InformationCollector.title!,
-                        InformationCollector.description!,
-                        InformationCollector.author!,
-                        InformationCollector.license!,
-                        InformationCollector.date);
-                  } catch (e) {
-                    print(e);
-                  }
+                  InformationCollector().submitData();
                 },
                 child: Text('Submit to Commons'),
               ))),
@@ -377,14 +371,31 @@ class _InformationFragment extends State<StatefulInformationFragment> {
 }
 
 class InformationCollector {
-  static XFile? image;
-  static List<String> imageCategories = List.empty(growable: true);
-  static String? preFillContent; // Is loaded into typeahead field
-  static String? title;
-  static String? description;
-  static String? author;
-  static String? license = 'CC0';
-  static DateTime date = DateTime.now();
+  static final InformationCollector _informationCollector = InformationCollector._internal();
+
+  factory InformationCollector() {
+    return _informationCollector;
+  }
+
+  InformationCollector._internal();
+
+  XFile? image;
+  String? fileName;
+  List<String> imageCategories = List.empty(growable: true);
+  String? preFillContent; // Is loaded into typeahead field
+  String? title;
+  String? description;
+  String? author;
+  String? license = 'CC0';
+  DateTime date = DateTime.now();
+
+  submitData(){
+    try {
+      UploadService().uploadImage(image!, fileName!, fileName!, description!, author!, license!, date);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Image getXFileImage() {
     if (image != null) {

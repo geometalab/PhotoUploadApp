@@ -19,6 +19,7 @@ class StatefulViewCategoryFragment extends StatefulWidget {
 class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
   final Marker _marker;
   _ViewCategoryFragment(this._marker);
+  InformationCollector collector = new InformationCollector();
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           setState(() {
-            InformationCollector.preFillContent = categoryTitle;
+            collector.preFillContent = categoryTitle;
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SelectImageFragment()),

@@ -44,9 +44,6 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    DeepLinkListener _deepLinkListener =
-        DeepLinkListener(); // Listen to redirect events from a web link
-
     ConnectionStatusSingleton connectionStatus =
         ConnectionStatusSingleton.getInstance();
     _connectionChangeStream =
