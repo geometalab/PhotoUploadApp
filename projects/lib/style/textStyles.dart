@@ -9,3 +9,5 @@ final TextStyle headerText =
     new TextStyle(fontWeight: FontWeight.w400, fontSize: 20);
 final TextStyle fragmentTitle =
     new TextStyle(fontWeight: FontWeight.bold, fontSize: 24, height: 2);
+final TextStyle smallLabel =
+    new TextStyle(fontWeight: FontWeight.w400, fontSize: 11, height: 2, color: Colors.grey);

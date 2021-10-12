@@ -9,9 +9,6 @@ class SettingsFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement settings
-    // TODO maybe multi language support
-
     ThemeMode? themeMode = EasyDynamicTheme.of(context).themeMode;
     String dropdownValue;
     if (themeMode == ThemeMode.light) {
@@ -39,7 +36,6 @@ class SettingsFragment extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.all(8),
                   child: DropdownButton<String>(
-                    // TODO 3rd option: Use system theme
                     value: dropdownValue,
                     onChanged: (String? newValue) {
                       if (newValue == "Light") {
@@ -58,7 +54,7 @@ class SettingsFragment extends StatelessWidget {
                     elevation: 16,
                     underline: Container(
                       height: 2,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     items: <String>['Light', 'Dark', 'Use System Theme']
                         .map<DropdownMenuItem<String>>((String value) {

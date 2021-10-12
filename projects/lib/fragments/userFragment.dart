@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/style/textStyles.dart';
 
@@ -11,11 +12,20 @@ class _UserFragmentState extends State<UserFragment> {
   LoginHandler loginHandler = new LoginHandler();
   bool expanded = false;
   Userdata? userdata;
+  late DeepLinkListener deepLinkListener;
+
+  _UserFragmentState() {
+    // TODO access token is retrieved twice, which should not happen
+    deepLinkListener = new DeepLinkListener();
+    deepLinkListener.addListener(() {
+      // On return to app from app, refresh widget
+      pullRefresh();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement account management
-
+    // TODO: implement account management (user can change settings)
     return Container(
         child: FutureBuilder(
             future: loginHandler.getUserInformationFromFile(),
@@ -36,26 +46,41 @@ class _UserFragmentState extends State<UserFragment> {
   }
 
   Future<void> pullRefresh() async {
-    LoginHandler().checkCredentials();
+    await LoginHandler().checkCredentials();
     setState(() {});
   }
 
-  Widget loggedIn(Userdata userdata) {
+  Widget loggedIn(Userdata userdata) { // TODO Remove top and bottom border which show while expanded
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.all(10),
       children: <Widget>[
         ExpansionTile(
-            title: Text(userdata.username,style: headerText,),
-            subtitle: Text("View Profile 〉", style: objectDescription),
-            leading: CircleAvatar(
-              child: Icon(Icons.person_outline_rounded,color: Color.fromRGBO(229, 229, 229, 1),),
-              backgroundColor: Theme.of(context).disabledColor,
+          title: Text(
+            userdata.username,
+            style: headerText,
+          ),
+          subtitle: Text("View Profile 〉", style: objectDescription),
+          leading: CircleAvatar(
+            child: Icon(
+              Icons.person_outline_rounded,
+              color: Color.fromRGBO(229, 229, 229, 1),
             ),
-            children: expandedInfo(userdata),
+            backgroundColor: Theme.of(context).disabledColor,
+          ),
+          children: expandedInfo(userdata),
+
           expandedAlignment: Alignment.bottomLeft,
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          initiallyExpanded: true, // TODO Remove
         ),
+        OutlinedButton(
+            onPressed: () {
+              setState(() {
+                loginHandler.openMediaAccount(userdata.username);
+              });
+            },
+            child: Text("My uploads")),
         OutlinedButton(
             onPressed: () {
               setState(() {
@@ -63,14 +88,50 @@ class _UserFragmentState extends State<UserFragment> {
               });
             },
             child: Text("Log out")),
-        OutlinedButton(
-            onPressed: () {
-              setState(() {
-                loginHandler.openMediaAccount(userdata.username);
-              });
-            },
-            child: Text("Show my uploads"))
       ],
+    );
+  }
+
+  List<Widget> expandedInfo(Userdata userdata) {
+    List<Widget> list = new List.empty(growable: true);
+    list.add(infoField(userdata.username, "username"));
+    list.add(infoField(userdata.email, "email"));
+    list.add(infoField(userdata.editCount.toString(), "number of edits"));
+    if(userdata.realName != ""){
+      list.add(infoField(userdata.realName, "real name"));
+    }
+
+
+    list.add(expansionInfoWidget("rights", userdata.rights));
+    list.add(expansionInfoWidget("grants", userdata.grants));
+    list.add(expansionInfoWidget("groups", userdata.groups));
+    list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
+    return list;
+  }
+
+  Widget expansionInfoWidget(String title, List userdataList){
+    return ExpansionTile(title: Text(title), children: listTileGenerator(userdataList));
+  }
+
+  List<ListTile> listTileGenerator(List userdataList) {
+    List<ListTile> list = List.empty(growable: true);
+    for(String string in userdataList){
+      list.add(ListTile(title: Text(string)));
+    }
+    return list;
+  }
+
+  Widget infoField(String initialValue, String label) {
+    return Padding(
+      child: Column(
+        children: [
+          Text(label, style: smallLabel),
+          Text(initialValue)
+        ],
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      padding: EdgeInsets.symmetric(vertical: 4),
     );
   }
 
@@ -125,23 +186,5 @@ class _UserFragmentState extends State<UserFragment> {
         )
       ],
     );
-  }
-
-
-  List<Widget> expandedInfo(Userdata userdata) {
-    List<Widget> list = new List.empty(growable: true);
-    final Alignment? expandedAlignment;
-    list.add(Text("Username: ${userdata.username}",
-        textAlign: TextAlign.left)
-    );
-    //list.add(Text("Access Token: ${userdata.accessToken.substring(0, 5)}..."));
-    //list.add(Text("Refresh Token: ${userdata.refreshToken.substring(0, 5)}..."));
-    list.add(Text("Email: ${userdata.email}",
-        textAlign: TextAlign.left)
-    );
-    list.add(Text("Edit Count: ${userdata.editCount}",
-        textAlign: TextAlign.left)
-    );
-    return list;
   }
 }

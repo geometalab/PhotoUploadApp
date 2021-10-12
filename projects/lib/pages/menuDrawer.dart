@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/api/connectionStatus.dart';
-import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/homeFragment.dart';
@@ -44,9 +43,6 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    DeepLinkListener _deepLinkListener =
-        DeepLinkListener(); // Listen to redirect events from a web link
-
     ConnectionStatusSingleton connectionStatus =
         ConnectionStatusSingleton.getInstance();
     _connectionChangeStream =
@@ -121,7 +117,7 @@ class HomePageState extends State<HomePage> {
 
     if (isOffline) {
       // If no network connection is detected, display this message
-          return NoConnection().screen(context);
+      return NoConnection().screen(context);
     } else {
       return new Scaffold(
         appBar: new AppBar(

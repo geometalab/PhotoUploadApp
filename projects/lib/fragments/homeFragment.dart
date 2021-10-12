@@ -1,7 +1,6 @@
 import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/api/loginHandler.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
@@ -12,7 +11,6 @@ final titleFont = new TextStyle(height: 30);
 class HomeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LoginHandler().debugFilePrint(); // TODO remove
     var articleList = new ArticleList();
     articleList.clear();
 
@@ -96,7 +94,6 @@ class ArticleList {
   }
 
   List<Card> generateCards(BuildContext context) {
-    // TODO Implement option to add a full size image to card
     List<Card> cards = new List.empty(growable: true);
     List<Article> articles = ArticleList.articles;
 

@@ -11,7 +11,6 @@ class AboutFragment extends StatelessWidget {
 
     Brightness? brightness = Theme.of(context).brightness;
     if (brightness == Brightness.dark) {
-      // TODO Recognize "system default" color
       ifsLogo = Image.asset("assets/media/logos/IFS_dark.png");
       ostLogo = Image.asset("assets/media/logos/OST_dark.png");
     } else {
