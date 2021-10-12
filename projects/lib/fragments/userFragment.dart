@@ -55,26 +55,29 @@ class _UserFragmentState extends State<UserFragment> {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.all(10),
       children: <Widget>[
-        ExpansionTile(
-          title: Text(
-            userdata.username,
-            style: headerText,
-          ),
-          subtitle: Text("View Profile 〉", style: objectDescription),
-          leading: CircleAvatar(
-            child: Icon(
-              Icons.person_outline_rounded,
-              color: Color.fromRGBO(229, 229, 229, 1),
-            ),
-            backgroundColor: Theme.of(context).disabledColor,
-          ),
-          children: expandedInfo(userdata),
+        Theme(
+            data: ThemeData().copyWith(dividerColor: Colors.transparent), // Make the borders of ExpansionTile invisible
+            child: ExpansionTile(
+              title: Text(
+                userdata.username,
+                style: headerText,
+              ),
+              subtitle: Text("View Profile 〉", style: objectDescription),
+              leading: CircleAvatar(
+                child: Icon(
+                  Icons.person_outline_rounded,
+                  color: Color.fromRGBO(229, 229, 229, 1),
+                ),
+                backgroundColor: Theme.of(context).disabledColor,
+              ),
+              children: expandedInfo(userdata),
 
-          expandedAlignment: Alignment.bottomLeft,
-          expandedCrossAxisAlignment: CrossAxisAlignment.start,
-          initiallyExpanded: true, // TODO Remove
+              expandedAlignment: Alignment.bottomLeft,
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              childrenPadding: EdgeInsets.symmetric(horizontal: 8),
+            ),
         ),
-        OutlinedButton(
+        TextButton(
             onPressed: () {
               setState(() {
                 loginHandler.openMediaAccount(userdata.username);
@@ -101,7 +104,6 @@ class _UserFragmentState extends State<UserFragment> {
       list.add(infoField(userdata.realName, "real name"));
     }
 
-
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
@@ -110,13 +112,13 @@ class _UserFragmentState extends State<UserFragment> {
   }
 
   Widget expansionInfoWidget(String title, List userdataList){
-    return ExpansionTile(title: Text(title), children: listTileGenerator(userdataList));
+    return ExpansionTile(title: Text(title, style: objectDescription,), children: listTileGenerator(userdataList), tilePadding: EdgeInsets.zero,);
   }
 
   List<ListTile> listTileGenerator(List userdataList) {
     List<ListTile> list = List.empty(growable: true);
     for(String string in userdataList){
-      list.add(ListTile(title: Text(string)));
+      list.add(ListTile(title: Text(string), dense: true, visualDensity: VisualDensity(vertical: 0),));
     }
     return list;
   }
@@ -126,7 +128,7 @@ class _UserFragmentState extends State<UserFragment> {
       child: Column(
         children: [
           Text(label, style: smallLabel),
-          Text(initialValue)
+          Text(initialValue, style: objectDescription,)
         ],
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
