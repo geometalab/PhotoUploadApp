@@ -61,11 +61,53 @@ class LoginHandler {
     _openURL(url);
   }
 
-  openMediaAccount(String username) {
+  openLoggedOut(){
+    Widget screen(BuildContext context) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                  padding: EdgeInsets.all(104.0)
+              ),
+              Icon(
+                Icons.login,
+                size: 80,
+                color: Theme
+                    .of(context).disabledColor,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+              ),
+              Text(
+                "Please login to access Page", style: TextStyle(fontSize: 20),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+              ),
+              SizedBox(
+                width: 160,
+                height: 40,
+                child: TextButton(
+                  onPressed: () {
+                    openWebLogin();
+                  },
+                  child: new Text("Log in"),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  openMediaAccount(String username){
     String url =
         "https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/$username";
     _openURL(url);
-    // TODO make sure what function should do
   }
 
   Future<Userdata> getTokens(String authCode) async {
