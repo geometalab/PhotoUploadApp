@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/loginHandler.dart';
 import '../config.dart';
 
-// TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates
+// TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates (or check if already taken)
 
 class UploadService {
   static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
@@ -15,9 +15,9 @@ class UploadService {
       String description, String author, String license, DateTime date) async {
     var map = await _getCsrfToken();
     String token = map["tokens"]["csrftoken"];
-    await _checkCsrfToken(token);
-    // var response = await _sendRequest(image, fileName, title, description, author, license, date, token);
-    // print("Response stream data: " + response.toString());
+    _checkCsrfToken(token);
+    var response = await _sendRequest(image, fileName, title, description, author, license, date, token);
+    print("Response stream data: " + response.toString());
   }
 
   Future<http.Response> _sendRequest(
@@ -34,68 +34,32 @@ class UploadService {
         Uri.parse("$WIKIMEDIA_API?format=json" +
             "&action=upload" +
             "&filename=$fileName"));
+    request.headers['Authorization'] = "Bearer " + await _getAccessToken();
     request.fields['token'] = csrfToken;
     request.files.add(await _convertToMultiPartFile(image, fileName));
-    print(request.fields);
+    print(request.headers.toString());
 
     var streamResponse = await request.send();
     return http.Response.fromStream(streamResponse);
   }
 
-  _checkCsrfToken(String token) async {
+  _checkCsrfToken(String token) async { // For debug purposes
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
         headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded '
+          'Content-Type': 'application/x-www-form-urlencoded ',
+          'Authorization': 'Bearer ${await _getAccessToken()}',
         },
         body: <String, String>{
           'token': token,
         });
     var responseData = await response;
     if (responseData.statusCode == 200) {
-      var responseJson = json.decode(responseData.body);
-      Userdata data = Userdata(
-          refreshToken: responseJson['refresh_token'],
-          accessToken: responseJson['access_token']);
-      return data;
+      return;
     } else {
       throw ("Could not check token. Response Code ${responseData.bodyBytes}");
     }
   }
-  /*
-    Map bodyData = {
-      'token': token
-    };
-    var body = json.encode(bodyData);
-    Future<http.Response> response = http.post(
-        Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
-        headers: <String, String>{
-          'Content-Type': 'application/json'
-        },
-        body: body
-    );
-    */
-
-  /*
-  Future<http.Response> response = http.post(
-        Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
-        headers: <String, String>{
-          'Content-Type': 'application/json'
-        },
-        body: <String, String>{
-          'token': token,
-        });
-   */
-
-  /*
-  var body = "token=$token";
-    Future<http.Response> response = http.post(
-        Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
-        headers: <String, String>{
-          'Content-Type': 'text/plain'
-        },
-        body: body);
-   */
 
   Future<Map> _getCsrfToken() async {
     // Get a CSRF Token (https://www.mediawiki.org/wiki/API:Tokens)

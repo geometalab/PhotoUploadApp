@@ -234,7 +234,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
       ),
       Padding(
         padding: EdgeInsets.all(8),
-        child: TextFormField(
+        child: TextFormField( // TODO big text field doesn't soft wrap
             initialValue: collector.description,
             onChanged: (value) {
               collector.description = value;

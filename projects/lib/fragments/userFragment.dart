@@ -50,7 +50,7 @@ class _UserFragmentState extends State<UserFragment> {
     setState(() {});
   }
 
-  Widget loggedIn(Userdata userdata) { // TODO Remove top and bottom border which show while expanded
+  Widget loggedIn(Userdata userdata) {
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.all(10),
