@@ -14,7 +14,7 @@ class CommonsUploadFragment extends StatefulWidget {
 }
 
 class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
-  int _selectedTab = 0;
+  int selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,12 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
         children: [
           Padding(padding: EdgeInsets.symmetric(vertical: 4)),
           ProgressTabBar(
-            selectedTab: _selectedTab,
+            selectedTab: selectedTab,
             children: [
               ProgressTab(
                   onPressed: () {
                     setState(() {
-                      _selectedTab = 0;
+                      selectedTab = 0;
                     });
                   },
                 label: "Select File"
@@ -37,7 +37,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
               ProgressTab(
                   onPressed: () {
                     setState(() {
-                      _selectedTab = 1;
+                      selectedTab = 1;
                     });
                   },
                   label: "Add keywords"
@@ -45,7 +45,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
               ProgressTab(
                   onPressed: () {
                     setState(() {
-                      _selectedTab = 2;
+                      selectedTab = 2;
                     });
                   },
                   label: "Add information"
@@ -53,7 +53,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
               ProgressTab(
                   onPressed: () {
                     setState(() {
-                      _selectedTab = 3;
+                      selectedTab = 3;
                     });
                   },
                   label: "Review"
@@ -61,7 +61,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
             ],
           ),
           Divider(),
-          _content(_selectedTab)
+          _content(selectedTab)
         ],
       ),
     );
@@ -90,23 +90,40 @@ class SelectImageFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
+    if(collector.image != null){
+      return Image.file(File(collector.image!.path));
+    }else{
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(2),
+            child: ElevatedButton(
+                onPressed: () async {
+                  collector.image =
+                  await _picker.pickImage(source: ImageSource.gallery);
+
+                },
+                child: SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.file_copy_outlined),
+                        Padding(padding: EdgeInsets.only(left: 5)),
+                        Text("Select Image from Files"),
+                      ]),
+                )),
+          ),
+          Padding(
               padding: EdgeInsets.all(2),
               child: ElevatedButton(
                   onPressed: () async {
                     collector.image =
-                        await _picker.pickImage(source: ImageSource.gallery);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              StatefulSelectCategoryFragment()),
-                    );
+                    await _picker.pickImage(source: ImageSource.camera);
                   },
                   child: SizedBox(
                     width: 200,
@@ -115,39 +132,14 @@ class SelectImageFragment extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.file_copy_outlined),
+                          Icon(Icons.camera_alt_outlined),
                           Padding(padding: EdgeInsets.only(left: 5)),
-                          Text("Select Image from Files"),
+                          Text("Capture a Photo"),
                         ]),
-                  )),
-            ),
-            Padding(
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      collector.image =
-                          await _picker.pickImage(source: ImageSource.camera);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                StatefulSelectCategoryFragment()),
-                      );
-                    },
-                    child: SizedBox(
-                      width: 200,
-                      height: 40,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.camera_alt_outlined),
-                            Padding(padding: EdgeInsets.only(left: 5)),
-                            Text("Capture a Photo"),
-                          ]),
-                    ))),
-          ],
-        ));
+                  ))),
+        ],
+      );
+    }
   }
 }
 
