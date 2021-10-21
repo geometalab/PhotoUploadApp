@@ -1,11 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_tab_bar/progress_tab_bar.dart';
 import 'package:projects/api/categoryService.dart';
 import 'package:projects/api/uploadService.dart';
 import 'dart:io';
 
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
+
+class CommonsUploadFragment extends StatefulWidget {
+  @override
+  _CommonsUploadFragmentState createState() => _CommonsUploadFragmentState();
+}
+
+class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
+  int _selectedTab = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      backgroundColor: Theme.of(context).canvasColor,
+      body: Column(
+        children: [
+          Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+          ProgressTabBar(
+            selectedTab: _selectedTab,
+            children: [
+              ProgressTab(
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 0;
+                    });
+                  },
+                label: "Select File"
+              ),
+              ProgressTab(
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 1;
+                    });
+                  },
+                  label: "Add keywords"
+              ),
+              ProgressTab(
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 2;
+                    });
+                  },
+                  label: "Add information"
+              ),
+              ProgressTab(
+                  onPressed: () {
+                    setState(() {
+                      _selectedTab = 3;
+                    });
+                  },
+                  label: "Review"
+              ),
+            ],
+          ),
+          Divider(),
+          _content(_selectedTab)
+        ],
+      ),
+    );
+  }
+
+  Widget _content (int tab) {
+    switch (tab) {
+      case 0: return SelectImageFragment();
+      case 1: return StatefulSelectCategoryFragment();
+      case 2: return StatefulInformationFragment();
+      case 3: return ReviewFragment();
+      default: throw Exception("Invalid tab index");
+    }
+  }
+
+}
 
 class SelectImageFragment extends StatelessWidget {
   // TODO to have a full screen, just for two buttons is way to much space (idk how to fix)
@@ -18,9 +90,7 @@ class SelectImageFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: Theme.of(context).canvasColor,
-        body: Center(
+    return Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,7 +147,7 @@ class SelectImageFragment extends StatelessWidget {
                           ]),
                     ))),
           ],
-        )));
+        ));
   }
 }
 
@@ -105,85 +175,66 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
         TextEditingController(text: prefillContent);
     addedCategories = collector.imageCategories;
 
-    return new Scaffold(
-        body: Column(children: <Widget>[
-      AppBar(
-        title: Text('Add Categories'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                collector.imageCategories = addedCategories;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => StatefulInformationFragment()),
-                );
-              },
-              icon: Icon(Icons.done),
-              color: Colors.white),
+    return Expanded(
+        child: Column(children: <Widget>[
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-          )
-        ],
-      ),
-      Padding(padding: EdgeInsets.all(2)),
-      Padding(
-          padding: EdgeInsets.all(8),
-          // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
-          child: TypeAheadField(
-            debounceDuration: Duration(
-                milliseconds:
+              padding: EdgeInsets.all(8),
+              // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
+              child: TypeAheadField(
+                debounceDuration: Duration(
+                    milliseconds:
                     150), // Wait for 150 ms of no typing before starting to get the results
-            textFieldConfiguration: TextFieldConfiguration(
-                controller: _typeAheadController,
-                autofocus: true,
-                style: TextStyle(height: 1, fontSize: 20, color: Colors.black),
-                decoration: InputDecoration(
-                    labelText: "Enter fitting keywords",
-                    border: OutlineInputBorder())),
-            suggestionsCallback: (pattern) async {
-              return await cs.getSuggestions(pattern);
-            },
-            itemBuilder: (context, Map<String, dynamic> suggestion) {
-              return ListTile(
-                title: Text(suggestion['title']!),
-                subtitle: Text('${suggestion['id']}'),
-              );
-            },
-            onSuggestionSelected: (Map<String, dynamic> suggestion) {
-              // TODO Add Wiki ID in List tile
-              // TODO Add Image thumbnail in List tile
-              setState(() {
-                addedCategories.add(suggestion['title']!);
-                addedCategoriesImages.add(Icons.fireplace);
-              });
-            },
-          )),
-      Expanded(
-        child: ListView.builder(
-          itemCount: addedCategories.length,
-          shrinkWrap: true,
-          padding: EdgeInsets.all(5),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int i) {
-            return Card(
-              child: ListTile(
-                leading: Icon(addedCategoriesImages[i]),
-                title: Text(addedCategories[i]),
-                trailing: Icon(Icons.remove),
-                onTap: () {
+                textFieldConfiguration: TextFieldConfiguration(
+                    controller: _typeAheadController,
+                    autofocus: true,
+                    style: TextStyle(height: 1, fontSize: 20, color: Colors.black),
+                    decoration: InputDecoration(
+                        labelText: "Enter fitting keywords",
+                        border: OutlineInputBorder())),
+                suggestionsCallback: (pattern) async {
+                  return await cs.getSuggestions(pattern);
+                },
+                itemBuilder: (context, Map<String, dynamic> suggestion) {
+                  return ListTile(
+                    title: Text(suggestion['title']!),
+                    subtitle: Text('${suggestion['id']}'),
+                  );
+                },
+                onSuggestionSelected: (Map<String, dynamic> suggestion) {
+                  // TODO Add Wiki ID in List tile
+                  // TODO Add Image thumbnail in List tile
                   setState(() {
-                    _typeAheadController.clear();
-                    addedCategories.removeAt(i);
-                    addedCategoriesImages.removeAt(i);
+                    addedCategories.add(suggestion['title']!);
+                    addedCategoriesImages.add(Icons.fireplace);
                   });
                 },
-              ),
-            );
-          },
-        ),
-      )
-    ]));
+              )),
+          Expanded(
+            child: ListView.builder(
+              itemCount: addedCategories.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.all(5),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (BuildContext context, int i) {
+                return Card(
+                  child: ListTile(
+                    leading: Icon(addedCategoriesImages[i]),
+                    title: Text(addedCategories[i]),
+                    trailing: Icon(Icons.remove),
+                    onTap: () {
+                      setState(() {
+                        _typeAheadController.clear();
+                        addedCategories.removeAt(i);
+                        addedCategoriesImages.removeAt(i);
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          )
+        ])
+    );
   }
 }
 
@@ -212,13 +263,12 @@ class _InformationFragment extends State<StatefulInformationFragment> {
 
   // Find field info here: https://commons.wikimedia.org/wiki/Template:Information
   // TODO implement additional fields if needed
+  // TODO fix overflow exception by retracting keyboard
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        body: ListView(children: <Widget>[
-      AppBar(
-        title: Text('Enter File Details'),
-      ),
+    return ListView(
+      shrinkWrap: true,
+        children: <Widget>[
       Padding(
         padding: EdgeInsets.all(8),
         child: TextFormField(
@@ -355,18 +405,25 @@ class _InformationFragment extends State<StatefulInformationFragment> {
           ],
         ),
       ),
-      Padding(
-          padding: EdgeInsets.all(8),
-          child: SizedBox(
-              height: 45,
-              child: ElevatedButton(
-                onPressed: () {
-                  InformationCollector().submitData();
-                },
-                child: Text('Submit to Commons'),
-              ))),
-    ]));
+    ]);
   }
+}
+
+class ReviewFragment extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(8),
+        child: SizedBox(
+            height: 45,
+            child: ElevatedButton(
+              onPressed: () {
+                InformationCollector().submitData();
+              },
+              child: Text('Submit to Commons'),
+            )));
+  }
+
 }
 
 class InformationCollector {
