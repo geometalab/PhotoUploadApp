@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
+import 'package:projects/fragments/uploadFlow/selectImage.dart';
 
 // TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)

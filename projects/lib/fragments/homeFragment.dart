@@ -2,8 +2,8 @@ import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
-import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
+import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 final titleFont = new TextStyle(height: 30);

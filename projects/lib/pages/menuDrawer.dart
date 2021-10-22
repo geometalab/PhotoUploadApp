@@ -80,7 +80,7 @@ class HomePageState extends State<HomePage> {
       case 0:
         return new HomeFragment();
       case 2:
-        return new SelectImageFragment();
+        return new CommonsUploadFragment();
       case 3:
         return new StatefulMapFragment();
       case 5:

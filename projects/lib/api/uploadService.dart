@@ -16,7 +16,8 @@ class UploadService {
     var map = await _getCsrfToken();
     String token = map["tokens"]["csrftoken"];
     _checkCsrfToken(token);
-    var response = await _sendRequest(image, fileName, title, description, author, license, date, token);
+    var response = await _sendRequest(
+        image, fileName, title, description, author, license, date, token);
     print("Response stream data: " + response.toString());
   }
 
@@ -43,7 +44,8 @@ class UploadService {
     return http.Response.fromStream(streamResponse);
   }
 
-  _checkCsrfToken(String token) async { // For debug purposes
+  _checkCsrfToken(String token) async {
+    // For debug purposes
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
         headers: <String, String>{
