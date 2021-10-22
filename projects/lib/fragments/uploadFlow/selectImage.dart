@@ -221,10 +221,8 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (context) => UploadGuideFragment()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => UploadGuideFragment()));
           },
           child: Text("Learn more"),
         ),

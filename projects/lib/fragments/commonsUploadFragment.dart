@@ -9,8 +9,6 @@ import 'package:projects/fragments/uploadFlow/selectCategory.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'dart:io';
 
-// TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
-
 class CommonsUploadFragment extends StatefulWidget {
   @override
   _CommonsUploadFragmentState createState() => _CommonsUploadFragmentState();
@@ -21,6 +19,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO better colors for tab bar in dark mode
     return new Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       resizeToAvoidBottomInset: false,
@@ -62,7 +61,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
           ),
           Divider(),
           Expanded(
-                child: _content(selectedTab),
+            child: _content(selectedTab),
           ),
         ],
       ),
@@ -85,7 +84,8 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   }
 }
 
-class InformationCollector { // Singleton that saves all data from the different upload steps
+class InformationCollector {
+  // Singleton that saves all data from the different upload steps
   static final InformationCollector _informationCollector =
       InformationCollector._internal();
 
