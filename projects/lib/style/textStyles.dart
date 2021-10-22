@@ -10,4 +10,8 @@ final TextStyle headerText =
 final TextStyle fragmentTitle =
     new TextStyle(fontWeight: FontWeight.bold, fontSize: 24, height: 2);
 final TextStyle smallLabel = new TextStyle(
-    fontWeight: FontWeight.w400, fontSize: 11, height: 2, color: Colors.grey);
+    fontWeight: FontWeight.w400,
+    fontSize: 11,
+    height: 2,
+    color: Colors.grey,
+    overflow: TextOverflow.fade);

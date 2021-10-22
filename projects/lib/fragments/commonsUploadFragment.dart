@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_tab_bar/progress_tab_bar.dart';
 import 'package:projects/api/categoryService.dart';
 import 'package:projects/api/uploadService.dart';
+import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'dart:io';
 
 import 'package:projects/style/textStyles.dart';
@@ -78,161 +80,6 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       default:
         throw Exception("Invalid tab index");
     }
-  }
-}
-
-class SelectImageFragment extends StatefulWidget {
-  @override
-  SelectImageFragmentState createState() => SelectImageFragmentState();
-}
-
-class SelectImageFragmentState extends State<SelectImageFragment> {
-  // TODO? Support Video Files?
-  // TODO? Support Audio Files?
-  // TODO? Support multiple Files?
-
-  final ImagePicker _picker = ImagePicker();
-  final InformationCollector collector = new InformationCollector();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            contentContainer(introText()),
-            contentContainer(imageSelect()),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget contentContainer(Widget? child) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      child: Card(
-        elevation: 0,
-        color: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
-            side: BorderSide(
-              color: Colors.grey.withOpacity(0.2),
-              width: 1,
-            )),
-        child: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: child,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget imageSelect() {
-    if (collector.image != null) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Image.file(File(collector.image!.path), height: 50,),
-              Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
-              Text("Selected Media"),
-            ],
-          ),
-          IconButton(onPressed: () {
-            setState(() {
-              collector.image = null;
-            });
-            }, icon:Icon(Icons.delete)),
-        ],
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(2),
-            child: TextButton(
-                onPressed: () async {
-                  collector.image =
-                      await _picker.pickImage(source: ImageSource.gallery);
-                },
-                child: SizedBox(
-                  width: 200,
-                  height: 40,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.file_copy_outlined),
-                        Padding(padding: EdgeInsets.only(left: 5)),
-                        Text("Select Image from Files"),
-                      ]),
-                )),
-          ),
-          SizedBox(
-              width: 100,
-              child: Row(children: <Widget>[
-                Expanded(child: Divider()),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    "OR",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-                Expanded(child: Divider()),
-              ])),
-          Padding(
-              padding: EdgeInsets.all(2),
-              child: TextButton(
-                  onPressed: () async {
-                    collector.image =
-                        await _picker.pickImage(source: ImageSource.camera);
-                  },
-                  child: SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.camera_alt_outlined),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          Text("Capture a Photo"),
-                        ]),
-                  ))),
-        ],
-      );
-    }
-  }
-
-  Widget introText () { // TODO revise text
-   double paragraphSpacing = 2.0;
-    return Column(
-      children: [
-        Text("Before you start...", style: articleTitle,),
-        Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
-        Text("Make sure that you are aware of what content can and should be "
-            "uploaded to Wikimedia Commons. ", style: objectDescription,),
-        Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
-        Text("Once uploaded, you cannot delete any content you submitted to "
-            "Commons. You may only upload works that are created entirely by you, "
-            "with a few exceptions. ", style: objectDescription,),
-        Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
-        Text("If you are not familiar with the Upload "
-            "guidelines, you can learn more through the upload guide.", style: objectDescription,),
-        TextButton(onPressed: () {}, child: Text("Learn more"),),
-      ],
-    );
   }
 }
 
