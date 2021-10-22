@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/style/textStyles.dart';
 
 import '../commonsUploadFragment.dart';
@@ -219,7 +220,12 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
           style: objectDescription,
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => UploadGuideFragment()));
+          },
           child: Text("Learn more"),
         ),
       ],

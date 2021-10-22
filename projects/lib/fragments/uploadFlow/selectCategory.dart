@@ -11,13 +11,12 @@ class StatefulSelectCategoryFragment extends StatefulWidget {
 }
 
 class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
-  List<String> addedCategories = [];
-  List<IconData> addedCategoriesImages = [];
   CategoryService cs = new CategoryService();
   InformationCollector collector = new InformationCollector();
 
   @override
   Widget build(BuildContext context) {
+    // TODO add help menu
     // TODO text in dark mode not readable color
     String prefillContent;
     if (collector.preFillContent != null) {
@@ -27,7 +26,6 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
     }
     final TextEditingController _typeAheadController =
     TextEditingController(text: prefillContent);
-    addedCategories = collector.imageCategories;
 
     return Expanded(
         child: Column(children: <Widget>[
@@ -58,28 +56,28 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                   // TODO Add Wiki ID in List tile
                   // TODO Add Image thumbnail in List tile
                   setState(() {
-                    addedCategories.add(suggestion['title']!);
-                    addedCategoriesImages.add(Icons.fireplace);
+                    collector.categories.add(suggestion['title']!);
+                    collector.categoriesThumb.add(Icons.fireplace);
                   });
                 },
               )),
           Expanded(
             child: ListView.builder(
-              itemCount: addedCategories.length,
+              itemCount: collector.categories.length,
               shrinkWrap: true,
               padding: EdgeInsets.all(5),
               scrollDirection: Axis.vertical,
               itemBuilder: (BuildContext context, int i) {
                 return Card(
                   child: ListTile(
-                    leading: Icon(addedCategoriesImages[i]),
-                    title: Text(addedCategories[i]),
+                    leading: Icon(collector.categoriesThumb[i]),
+                    title: Text(collector.categories[i]),
                     trailing: Icon(Icons.remove),
                     onTap: () {
                       setState(() {
                         _typeAheadController.clear();
-                        addedCategories.removeAt(i);
-                        addedCategoriesImages.removeAt(i);
+                        collector.categories.removeAt(i);
+                        collector.categoriesThumb.removeAt(i);
                       });
                     },
                   ),

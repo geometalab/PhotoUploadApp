@@ -21,7 +21,7 @@ class UploadGuideFragment extends StatelessWidget {
           Text("Before you begin:", style: customStyles.headerText),
           Divider(),
           UnorderedList([
-            "You need to have the image file you want to upload on your computer.",
+            "You need to have the image file you want to upload on your device.",
             "You need an account on Wikipedia or Wikimedia Commons to upload files."
           ]),
           Text(
