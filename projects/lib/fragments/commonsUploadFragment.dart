@@ -32,32 +32,28 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                       selectedTab = 0;
                     });
                   },
-                label: "Select File"
-              ),
+                  label: "Select File"),
               ProgressTab(
                   onPressed: () {
                     setState(() {
                       selectedTab = 1;
                     });
                   },
-                  label: "Add keywords"
-              ),
+                  label: "Add keywords"),
               ProgressTab(
                   onPressed: () {
                     setState(() {
                       selectedTab = 2;
                     });
                   },
-                  label: "Add information"
-              ),
+                  label: "Add information"),
               ProgressTab(
                   onPressed: () {
                     setState(() {
                       selectedTab = 3;
                     });
                   },
-                  label: "Review"
-              ),
+                  label: "Review"),
             ],
           ),
           Divider(),
@@ -67,43 +63,85 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
     );
   }
 
-  Widget _content (int tab) {
+  Widget _content(int tab) {
     switch (tab) {
-      case 0: return SelectImageFragment();
-      case 1: return StatefulSelectCategoryFragment();
-      case 2: return StatefulInformationFragment();
-      case 3: return ReviewFragment();
-      default: throw Exception("Invalid tab index");
+      case 0:
+        return SelectImageFragment();
+      case 1:
+        return StatefulSelectCategoryFragment();
+      case 2:
+        return StatefulInformationFragment();
+      case 3:
+        return ReviewFragment();
+      default:
+        throw Exception("Invalid tab index");
     }
   }
-
 }
 
 class SelectImageFragment extends StatelessWidget {
-  // TODO to have a full screen, just for two buttons is way to much space (idk how to fix)
-  //TODO? Support Video Files?
-  //TODO? Support Audio Files?
-  //TODO? Support multiple Files?
+  // TODO? Support Video Files?
+  // TODO? Support Audio Files?
+  // TODO? Support multiple Files?
 
   final ImagePicker _picker = ImagePicker();
   final InformationCollector collector = new InformationCollector();
 
   @override
   Widget build(BuildContext context) {
-    if(collector.image != null){
+    return Container(
+      width: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            contentCard(Text("yuh"), 200),
+            contentCard(imageSelect(), 300),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget contentCard(Widget? child, double height) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: Card(
+        elevation: 0,
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(26),
+            side: BorderSide(
+              color: Colors.grey.withOpacity(0.2),
+              width: 1,
+            )),
+        child: SizedBox(
+          height: height,
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget imageSelect() {
+    if (collector.image != null) {
       return Image.file(File(collector.image!.path));
-    }else{
+    } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: EdgeInsets.all(2),
-            child: ElevatedButton(
+            child: TextButton(
                 onPressed: () async {
                   collector.image =
-                  await _picker.pickImage(source: ImageSource.gallery);
-
+                      await _picker.pickImage(source: ImageSource.gallery);
                 },
                 child: SizedBox(
                   width: 200,
@@ -118,12 +156,25 @@ class SelectImageFragment extends StatelessWidget {
                       ]),
                 )),
           ),
+          SizedBox(
+              width: 100,
+              child: Row(children: <Widget>[
+                Expanded(child: Divider()),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    "OR",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Expanded(child: Divider()),
+              ])),
           Padding(
               padding: EdgeInsets.all(2),
-              child: ElevatedButton(
+              child: TextButton(
                   onPressed: () async {
                     collector.image =
-                    await _picker.pickImage(source: ImageSource.camera);
+                        await _picker.pickImage(source: ImageSource.camera);
                   },
                   child: SizedBox(
                     width: 200,
@@ -169,64 +220,63 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
 
     return Expanded(
         child: Column(children: <Widget>[
-          Padding(
-              padding: EdgeInsets.all(8),
-              // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
-              child: TypeAheadField(
-                debounceDuration: Duration(
-                    milliseconds:
+      Padding(
+          padding: EdgeInsets.all(8),
+          // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
+          child: TypeAheadField(
+            debounceDuration: Duration(
+                milliseconds:
                     150), // Wait for 150 ms of no typing before starting to get the results
-                textFieldConfiguration: TextFieldConfiguration(
-                    controller: _typeAheadController,
-                    autofocus: true,
-                    style: TextStyle(height: 1, fontSize: 20, color: Colors.black),
-                    decoration: InputDecoration(
-                        labelText: "Enter fitting keywords",
-                        border: OutlineInputBorder())),
-                suggestionsCallback: (pattern) async {
-                  return await cs.getSuggestions(pattern);
-                },
-                itemBuilder: (context, Map<String, dynamic> suggestion) {
-                  return ListTile(
-                    title: Text(suggestion['title']!),
-                    subtitle: Text('${suggestion['id']}'),
-                  );
-                },
-                onSuggestionSelected: (Map<String, dynamic> suggestion) {
-                  // TODO Add Wiki ID in List tile
-                  // TODO Add Image thumbnail in List tile
+            textFieldConfiguration: TextFieldConfiguration(
+                controller: _typeAheadController,
+                autofocus: true,
+                style: TextStyle(height: 1, fontSize: 20, color: Colors.black),
+                decoration: InputDecoration(
+                    labelText: "Enter fitting keywords",
+                    border: OutlineInputBorder())),
+            suggestionsCallback: (pattern) async {
+              return await cs.getSuggestions(pattern);
+            },
+            itemBuilder: (context, Map<String, dynamic> suggestion) {
+              return ListTile(
+                title: Text(suggestion['title']!),
+                subtitle: Text('${suggestion['id']}'),
+              );
+            },
+            onSuggestionSelected: (Map<String, dynamic> suggestion) {
+              // TODO Add Wiki ID in List tile
+              // TODO Add Image thumbnail in List tile
+              setState(() {
+                addedCategories.add(suggestion['title']!);
+                addedCategoriesImages.add(Icons.fireplace);
+              });
+            },
+          )),
+      Expanded(
+        child: ListView.builder(
+          itemCount: addedCategories.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(5),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (BuildContext context, int i) {
+            return Card(
+              child: ListTile(
+                leading: Icon(addedCategoriesImages[i]),
+                title: Text(addedCategories[i]),
+                trailing: Icon(Icons.remove),
+                onTap: () {
                   setState(() {
-                    addedCategories.add(suggestion['title']!);
-                    addedCategoriesImages.add(Icons.fireplace);
+                    _typeAheadController.clear();
+                    addedCategories.removeAt(i);
+                    addedCategoriesImages.removeAt(i);
                   });
                 },
-              )),
-          Expanded(
-            child: ListView.builder(
-              itemCount: addedCategories.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.all(5),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (BuildContext context, int i) {
-                return Card(
-                  child: ListTile(
-                    leading: Icon(addedCategoriesImages[i]),
-                    title: Text(addedCategories[i]),
-                    trailing: Icon(Icons.remove),
-                    onTap: () {
-                      setState(() {
-                        _typeAheadController.clear();
-                        addedCategories.removeAt(i);
-                        addedCategoriesImages.removeAt(i);
-                      });
-                    },
-                  ),
-                );
-              },
-            ),
-          )
-        ])
-    );
+              ),
+            );
+          },
+        ),
+      )
+    ]));
   }
 }
 
@@ -258,9 +308,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
   // TODO fix overflow exception by retracting keyboard
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-        children: <Widget>[
+    return ListView(shrinkWrap: true, children: <Widget>[
       Padding(
         padding: EdgeInsets.all(8),
         child: TextFormField(
@@ -276,7 +324,8 @@ class _InformationFragment extends State<StatefulInformationFragment> {
       ),
       Padding(
         padding: EdgeInsets.all(8),
-        child: TextFormField( // TODO big text field doesn't soft wrap
+        child: TextFormField(
+            // TODO big text field doesn't soft wrap
             initialValue: collector.description,
             onChanged: (value) {
               collector.description = value;
@@ -415,7 +464,6 @@ class ReviewFragment extends StatelessWidget {
               child: Text('Submit to Commons'),
             )));
   }
-
 }
 
 class InformationCollector {
