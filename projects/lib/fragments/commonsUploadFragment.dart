@@ -23,6 +23,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -60,7 +61,9 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
             ],
           ),
           Divider(),
-          _content(selectedTab)
+          Expanded(
+                child: _content(selectedTab),
+          ),
         ],
       ),
     );
@@ -82,7 +85,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   }
 }
 
-class InformationCollector {
+class InformationCollector { // Singleton that saves all data from the different upload steps
   static final InformationCollector _informationCollector =
       InformationCollector._internal();
 

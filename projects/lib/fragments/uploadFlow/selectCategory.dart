@@ -27,8 +27,8 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
     final TextEditingController _typeAheadController =
     TextEditingController(text: prefillContent);
 
-    return Expanded(
-        child: Column(children: <Widget>[
+    return Column(
+        children: <Widget>[
           Padding(
               padding: EdgeInsets.all(8),
               // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
@@ -85,6 +85,6 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
               },
             ),
           )
-        ]));
+        ]);
   }
 }
