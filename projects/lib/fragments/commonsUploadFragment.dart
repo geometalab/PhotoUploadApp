@@ -6,6 +6,8 @@ import 'package:projects/api/categoryService.dart';
 import 'package:projects/api/uploadService.dart';
 import 'dart:io';
 
+import 'package:projects/style/textStyles.dart';
+
 // TODO check if process still works when going back one fragment (no errors, correct data still filled in etc.)
 
 class CommonsUploadFragment extends StatefulWidget {
@@ -79,7 +81,12 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   }
 }
 
-class SelectImageFragment extends StatelessWidget {
+class SelectImageFragment extends StatefulWidget {
+  @override
+  SelectImageFragmentState createState() => SelectImageFragmentState();
+}
+
+class SelectImageFragmentState extends State<SelectImageFragment> {
   // TODO? Support Video Files?
   // TODO? Support Audio Files?
   // TODO? Support multiple Files?
@@ -96,15 +103,15 @@ class SelectImageFragment extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            contentCard(Text("yuh"), 200),
-            contentCard(imageSelect(), 300),
+            contentContainer(introText()),
+            contentContainer(imageSelect()),
           ],
         ),
       ),
     );
   }
 
-  Widget contentCard(Widget? child, double height) {
+  Widget contentContainer(Widget? child) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Card(
@@ -117,7 +124,6 @@ class SelectImageFragment extends StatelessWidget {
               width: 1,
             )),
         child: SizedBox(
-          height: height,
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -130,7 +136,23 @@ class SelectImageFragment extends StatelessWidget {
 
   Widget imageSelect() {
     if (collector.image != null) {
-      return Image.file(File(collector.image!.path));
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Image.file(File(collector.image!.path), height: 50,),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
+              Text("Selected Media"),
+            ],
+          ),
+          IconButton(onPressed: () {
+            setState(() {
+              collector.image = null;
+            });
+            }, icon:Icon(Icons.delete)),
+        ],
+      );
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -191,6 +213,26 @@ class SelectImageFragment extends StatelessWidget {
         ],
       );
     }
+  }
+
+  Widget introText () { // TODO revise text
+   double paragraphSpacing = 2.0;
+    return Column(
+      children: [
+        Text("Before you start...", style: articleTitle,),
+        Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
+        Text("Make sure that you are aware of what content can and should be "
+            "uploaded to Wikimedia Commons. ", style: objectDescription,),
+        Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
+        Text("Once uploaded, you cannot delete any content you submitted to "
+            "Commons. You may only upload works that are created entirely by you, "
+            "with a few exceptions. ", style: objectDescription,),
+        Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
+        Text("If you are not familiar with the Upload "
+            "guidelines, you can learn more through the upload guide.", style: objectDescription,),
+        TextButton(onPressed: () {}, child: Text("Learn more"),),
+      ],
+    );
   }
 }
 
