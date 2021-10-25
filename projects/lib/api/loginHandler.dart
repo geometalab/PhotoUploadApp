@@ -7,7 +7,6 @@ import 'package:projects/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
-// TODO Cover access token expiry after 4h and maybe refresh token expiry after a year
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
 
 class LoginHandler {
@@ -41,7 +40,12 @@ class LoginHandler {
 
   Future<bool> isLoggedIn () async {
     Userdata? data = await getUserInformationFromFile();
-    if(data != null && data.username != "") return true;
+    if(data != null && data.username != "") {
+      if(data.lastCheck.isBefore(DateTime.now().subtract(Duration(hours: 1)))) {
+        checkCredentials(); // If the last check happened more than a hour ago, refresh tokens & data
+      }
+      return true;
+    }
     else return false;
   }
 

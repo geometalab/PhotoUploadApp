@@ -34,7 +34,6 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
             return _body();
           }
         },
-
       )
     );
   }

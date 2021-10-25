@@ -109,7 +109,7 @@ class _UserFragmentState extends State<UserFragment> {
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
-    list.add(infoField(DateFormat().format(userdata.lastCheck), "last refresh"));
+    list.add(infoField(DateFormat().format(userdata.lastCheck), "last refresh")); // TODO Is there an easy way to localize date time format?
     list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
     return list;
   }
