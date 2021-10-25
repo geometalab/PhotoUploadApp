@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class NoConnection {
   Widget screen(BuildContext context) {
     return Scaffold(
+      // TODO improve visually (sry remo)
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -16,6 +17,7 @@ class NoConnection {
             Icon(
               Icons.wifi_off,
               size: 60,
+              color: Theme.of(context).disabledColor,
             )
           ],
         ),

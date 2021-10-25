@@ -7,7 +7,6 @@ import 'package:projects/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
-// TODO Cover access token expiry after 4h and maybe refresh token expiry after a year
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
 
 class LoginHandler {
@@ -22,30 +21,37 @@ class LoginHandler {
   }
   LoginHandler._internal();
 
-  debugFilePrint() {
-    // Prints the stored user info for debugging purposes
-    _readFromFile(CREDENTIALS_FILE)
-        .then((value) => print("File content: " + value));
-  }
-
   checkCredentials() async {
     try {
       Userdata? data = await getUserInformationFromFile();
       if (data != null) {
         data = await refreshAccessToken();
         data = await getUserInformationFromAPI(data);
+        data.lastCheck = DateTime.now();
         saveUserDataToFile(data);
       } else {
-        deleteUserDataInFile();
+        _deleteUserDataInFile();
       }
     } catch (e) {
       print("Could not check Credentials successfully. Error: " + e.toString());
-      deleteUserDataInFile();
+      _deleteUserDataInFile();
     }
   }
 
+  Future<bool> isLoggedIn() async {
+    Userdata? data = await getUserInformationFromFile();
+    if (data != null && data.username != "") {
+      if (data.lastCheck
+          .isBefore(DateTime.now().subtract(Duration(hours: 1)))) {
+        checkCredentials(); // If the last check happened more than a hour ago, refresh tokens & data
+      }
+      return true;
+    } else
+      return false;
+  }
+
   logOut() {
-    deleteUserDataInFile();
+    _deleteUserDataInFile();
   }
 
   openWebLogin() {
@@ -123,10 +129,6 @@ class LoginHandler {
         throw ("Could not refresh access token. Status code ${responseData.statusCode}");
       }
     }
-  }
-
-  deleteUserDataInFile() {
-    _writeToFile(CREDENTIALS_FILE, "");
   }
 
   saveUserDataToFile(Userdata data) async {
@@ -214,6 +216,10 @@ class LoginHandler {
     return file.readAsString();
   }
 
+  _deleteUserDataInFile() {
+    _writeToFile(CREDENTIALS_FILE, "");
+  }
+
   Future<String> _getClientSecret() async {
     await dotenv.load(fileName: ".env");
     String? clientSecret = dotenv
@@ -235,6 +241,7 @@ class Userdata {
   List<dynamic> groups;
   List<dynamic> rights;
   List<dynamic> grants;
+  DateTime lastCheck;
 
   Userdata({
     this.username = "",
@@ -246,9 +253,11 @@ class Userdata {
     List<dynamic>? groups,
     List<dynamic>? rights,
     List<dynamic>? grants,
+    DateTime? lastCheck,
   })  : groups = groups ?? List.empty(),
         rights = rights ?? List.empty(),
-        grants = grants ?? List.empty();
+        grants = grants ?? List.empty(),
+        lastCheck = DateTime.now();
 
   Userdata fromJson(String jsonString) {
     Map<String, dynamic> json = jsonDecode(jsonString);
@@ -261,7 +270,8 @@ class Userdata {
         editCount: int.parse(json['editCount']),
         groups: json['groups'],
         rights: json['rights'],
-        grants: json['grants']);
+        grants: json['grants'],
+        lastCheck: DateTime.parse(json['lastCheck']));
   }
 
   String toJson() {
@@ -278,7 +288,8 @@ class Userdata {
       'refreshToken': refreshToken,
       'groups': groups,
       'rights': rights,
-      'grants': grants
+      'grants': grants,
+      'lastCheck': lastCheck.toString()
     };
   }
 }

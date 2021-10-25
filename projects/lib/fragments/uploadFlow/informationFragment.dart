@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../commonsUploadFragment.dart';
 
@@ -110,6 +111,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 items: <String>[
+                  // TODO help menu/guide or something for licenses
                   'CC0',
                   'Attribution 3.0',
                   'Attribution-ShareAlike 3.0',
@@ -148,7 +150,8 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     Text(
-                      "${selectedDate.toLocal()}".split(' ')[0],
+                      DateFormat.yMd()
+                          .format(collector.date), // TODO local format as well
                       textScaleFactor: 1.1,
                     ),
                   ],

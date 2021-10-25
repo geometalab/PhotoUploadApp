@@ -16,6 +16,7 @@ class DeepLinkListener extends ChangeNotifier {
         Userdata userData =
             await LoginHandler().getTokens(listenerData["code"]);
         userData = await LoginHandler().getUserInformationFromAPI(userData);
+        userData.lastCheck = DateTime.now();
         await LoginHandler().saveUserDataToFile(userData);
         notifyListeners();
       }

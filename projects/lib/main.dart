@@ -5,7 +5,6 @@ import 'package:projects/style/themes.dart' as customThemes;
 import 'api/connectionStatus.dart';
 
 // TODO Improve look & feel
-// TODO Block file uploading when not logged in (or better yet, redirect to login screen)
 // TODO create a Logo
 // TODO find a name
 // TODO Image caching and maybe other network traffic optimisations

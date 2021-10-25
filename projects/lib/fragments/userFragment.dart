@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 
 class UserFragment extends StatefulWidget {
@@ -56,7 +58,7 @@ class _UserFragmentState extends State<UserFragment> {
       padding: EdgeInsets.all(10),
       children: <Widget>[
         Theme(
-          data: ThemeData().copyWith(
+          data: Theme.of(context).copyWith(
               dividerColor: Colors
                   .transparent), // Make the borders of ExpansionTile invisible
           child: ExpansionTile(
@@ -72,7 +74,7 @@ class _UserFragmentState extends State<UserFragment> {
               ),
               backgroundColor: Theme.of(context).disabledColor,
             ),
-            children: expandedInfo(userdata),
+            children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
             childrenPadding: EdgeInsets.symmetric(horizontal: 8),
@@ -96,20 +98,33 @@ class _UserFragmentState extends State<UserFragment> {
     );
   }
 
-  List<Widget> expandedInfo(Userdata userdata) {
+  List<Widget> expandedInfo(Userdata userdata, double spaceBetween) {
     List<Widget> list = new List.empty(growable: true);
-    list.add(infoField(userdata.username, "username"));
-    list.add(infoField(userdata.email, "email"));
-    list.add(infoField(userdata.editCount.toString(), "number of edits"));
+    list.add(ValueLabelField(userdata.username, "username"));
+    list.add(ValueLabelField(userdata.email, "email"));
+    list.add(ValueLabelField(userdata.editCount.toString(), "number of edits"));
     if (userdata.realName != "") {
-      list.add(infoField(userdata.realName, "real name"));
+      list.add(ValueLabelField(userdata.realName, "real name"));
     }
-
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
+    list.add(ValueLabelField(DateFormat().format(userdata.lastCheck),
+        "last refresh")); // TODO Is there an easy way to localize date time format?
     list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
-    return list;
+    return addPadding(list, spaceBetween);
+  }
+
+  List<Widget> addPadding(List<Widget> widgets, double padding) {
+    List<Widget> newList = List.empty(growable: true);
+    for (int i = 0; i < widgets.length; i++) {
+      newList.add(widgets[i]);
+      if (i < widgets.length - 1) {
+        newList
+            .add(Padding(padding: EdgeInsets.symmetric(vertical: padding / 2)));
+      }
+    }
+    return newList;
   }
 
   Widget expansionInfoWidget(String title, List userdataList) {
@@ -133,23 +148,6 @@ class _UserFragmentState extends State<UserFragment> {
       ));
     }
     return list;
-  }
-
-  Widget infoField(String initialValue, String label) {
-    return Padding(
-      child: Column(
-        children: [
-          Text(label, style: smallLabel),
-          Text(
-            initialValue,
-            style: objectDescription,
-          )
-        ],
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      padding: EdgeInsets.symmetric(vertical: 4),
-    );
   }
 
   Widget loggedOut() {

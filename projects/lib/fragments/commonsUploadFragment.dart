@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_tab_bar/progress_tab_bar.dart';
+import 'package:projects/api/loginHandler.dart';
 import 'package:projects/api/uploadService.dart';
+import 'package:projects/fragments/singlePage/notLoggedIn.dart';
 import 'package:projects/fragments/uploadFlow/informationFragment.dart';
 import 'package:projects/fragments/uploadFlow/reviewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectCategory.dart';
@@ -20,51 +22,65 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO better colors for tab bar in dark mode
+    // TODO noticeable frame drop when switching tabs
     return new Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-          ProgressTabBar(
-            selectedTab: selectedTab,
-            children: [
-              ProgressTab(
-                  onPressed: () {
-                    setState(() {
-                      selectedTab = 0;
-                    });
-                  },
-                  label: "Select File"),
-              ProgressTab(
-                  onPressed: () {
-                    setState(() {
-                      selectedTab = 1;
-                    });
-                  },
-                  label: "Add keywords"),
-              ProgressTab(
-                  onPressed: () {
-                    setState(() {
-                      selectedTab = 2;
-                    });
-                  },
-                  label: "Add information"),
-              ProgressTab(
-                  onPressed: () {
-                    setState(() {
-                      selectedTab = 3;
-                    });
-                  },
-                  label: "Review"),
-            ],
-          ),
-          Divider(),
-          Expanded(
-            child: _content(selectedTab),
-          ),
-        ],
-      ),
+        backgroundColor: Theme.of(context).canvasColor,
+        resizeToAvoidBottomInset: false,
+        body: FutureBuilder(
+          future: LoginHandler().isLoggedIn(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData && snapshot.data == false) {
+              return NotLoggedIn();
+            } else {
+              return _body();
+            }
+          },
+        ));
+  }
+
+  Widget _body() {
+    return Column(
+      children: [
+        Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+        ProgressTabBar(
+          selectedTab: selectedTab,
+          children: [
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 0;
+                  });
+                },
+                label: "Select File"),
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 1;
+                  });
+                },
+                label:
+                    "Add keywords"), // TODO user official wikimedia commons terms for these things
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 2;
+                  });
+                },
+                label: "Add information"),
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 3;
+                  });
+                },
+                label: "Review"),
+          ],
+        ),
+        Divider(),
+        Expanded(
+          child: _content(selectedTab),
+        ),
+      ],
     );
   }
 
