@@ -38,15 +38,16 @@ class LoginHandler {
     }
   }
 
-  Future<bool> isLoggedIn () async {
+  Future<bool> isLoggedIn() async {
     Userdata? data = await getUserInformationFromFile();
-    if(data != null && data.username != "") {
-      if(data.lastCheck.isBefore(DateTime.now().subtract(Duration(hours: 1)))) {
+    if (data != null && data.username != "") {
+      if (data.lastCheck
+          .isBefore(DateTime.now().subtract(Duration(hours: 1)))) {
         checkCredentials(); // If the last check happened more than a hour ago, refresh tokens & data
       }
       return true;
-    }
-    else return false;
+    } else
+      return false;
   }
 
   logOut() {

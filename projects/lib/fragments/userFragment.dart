@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 
 class UserFragment extends StatefulWidget {
@@ -99,17 +100,18 @@ class _UserFragmentState extends State<UserFragment> {
 
   List<Widget> expandedInfo(Userdata userdata) {
     List<Widget> list = new List.empty(growable: true);
-    list.add(infoField(userdata.username, "username"));
-    list.add(infoField(userdata.email, "email"));
-    list.add(infoField(userdata.editCount.toString(), "number of edits"));
+    list.add(KeyValueField(userdata.username, "username"));
+    list.add(KeyValueField(userdata.email, "email"));
+    list.add(KeyValueField(userdata.editCount.toString(), "number of edits"));
     if (userdata.realName != "") {
-      list.add(infoField(userdata.realName, "real name"));
+      list.add(KeyValueField(userdata.realName, "real name"));
     }
 
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
-    list.add(infoField(DateFormat().format(userdata.lastCheck), "last refresh")); // TODO Is there an easy way to localize date time format?
+    list.add(KeyValueField(DateFormat().format(userdata.lastCheck),
+        "last refresh")); // TODO Is there an easy way to localize date time format?
     list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
     return list;
   }
@@ -135,23 +137,6 @@ class _UserFragmentState extends State<UserFragment> {
       ));
     }
     return list;
-  }
-
-  Widget infoField(String initialValue, String label) {
-    return Padding(
-      child: Column(
-        children: [
-          Text(label, style: smallLabel),
-          Text(
-            initialValue,
-            style: objectDescription,
-          )
-        ],
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      padding: EdgeInsets.symmetric(vertical: 4),
-    );
   }
 
   Widget loggedOut() {

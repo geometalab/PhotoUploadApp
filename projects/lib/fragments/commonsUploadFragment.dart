@@ -22,23 +22,23 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO better colors for tab bar in dark mode
+    // TODO noticeable frame drop when switching tabs
     return new Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-      resizeToAvoidBottomInset: false,
-      body: FutureBuilder (
-        future: LoginHandler().isLoggedIn(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if(snapshot.hasData && snapshot.data == false) {
-            return NotLoggedIn();
-          } else {
-            return _body();
-          }
-        },
-      )
-    );
+        backgroundColor: Theme.of(context).canvasColor,
+        resizeToAvoidBottomInset: false,
+        body: FutureBuilder(
+          future: LoginHandler().isLoggedIn(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData && snapshot.data == false) {
+              return NotLoggedIn();
+            } else {
+              return _body();
+            }
+          },
+        ));
   }
 
-  Widget _body () {
+  Widget _body() {
     return Column(
       children: [
         Padding(padding: EdgeInsets.symmetric(vertical: 4)),

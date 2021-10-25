@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class NoConnection {
   Widget screen(BuildContext context) {
-    return Scaffold( // TODO improve visually (sry remo)
+    return Scaffold(
+      // TODO improve visually (sry remo)
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

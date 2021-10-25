@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/style/textStyles.dart';
 
-class NotLoggedIn extends StatelessWidget{
+class NotLoggedIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -28,5 +28,4 @@ class NotLoggedIn extends StatelessWidget{
       ),
     );
   }
-
 }

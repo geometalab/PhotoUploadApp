@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../commonsUploadFragment.dart';
+import 'dart:io';
 
 class ReviewFragment extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
   Widget build(BuildContext context) {
     return Container(
         child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               // TODO Preview of infos & media
               // Here, all the info entered by the user should be previewed. When
@@ -23,21 +25,30 @@ class ReviewFragmentState extends State<ReviewFragment> {
               // can be used to summarize sections. User should also be warned when
               // category list is empty.
               children: [
+                Card(
+                  margin: EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.file(File(collector.image!.path)),
+                      ),
+                    ],
+                  ),
+                ),
                 ElevatedButton(
-                    onPressed: () {
-                      submit();
-                    },
-                    child: Text("Submit"),
+                  onPressed: () {
+                    submit();
+                  },
+                  child: Text("Submit"),
                 ),
                 Text(text),
               ],
-            )
-        )
-    );
+            )));
   }
 
-  void submit () {
-    if(checkInfos()){
+  void submit() {
+    if (checkInfo()) {
       collector.submitData();
     } else {
       setState(() {
@@ -46,31 +57,31 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
-  bool checkInfos () {
+  bool checkInfo() {
     bool isOk = true;
     bool isWarning = false;
-    if(collector.image == null) {
+    if (collector.image == null) {
       isOk = false;
     }
-    if(collector.fileName == null) {
+    if (collector.fileName == null) {
       isOk = false;
     }
-    if(collector.description == null) {
+    if (collector.description == null) {
       isOk = false;
     }
-    if(collector.license == null) {
+    if (collector.license == null) {
       isOk = false;
     }
-    if(collector.author == null) {
+    if (collector.author == null) {
       isOk = false;
     }
-    if(collector.title == null) {
+    if (collector.title == null) {
       isOk = false;
     }
-    if(collector.categories.length == 0) {
+    if (collector.categories.length == 0) {
       isWarning = false;
     }
-    if(collector.title == null) {
+    if (collector.title == null) {
       isOk = false;
     }
 
