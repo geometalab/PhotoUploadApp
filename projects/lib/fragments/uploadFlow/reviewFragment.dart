@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:projects/style/keyValueField.dart';
 import '../commonsUploadFragment.dart';
 import 'dart:io';
 
@@ -14,6 +16,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
 
   @override
   Widget build(BuildContext context) {
+    Icon? fileNameIcon;
+
     return Container(
         child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -28,11 +32,18 @@ class ReviewFragmentState extends State<ReviewFragment> {
                 Card(
                   margin: EdgeInsets.all(8),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Image.file(File(collector.image!.path)),
                       ),
+                      ValueLabelField(collector.fileName, "file name", icon: fileNameIcon),
+                      ValueLabelField(collector.title, "title"),
+                      ValueLabelField(collector.author, "author"),
+                      ValueLabelField(collector.license, "license"),
+                      ValueLabelField(collector.description, "image description"),
+                      ValueLabelField(DateFormat.yMd().format(collector.date), "date of creation"), // TODO local format as well
                     ],
                   ),
                 ),

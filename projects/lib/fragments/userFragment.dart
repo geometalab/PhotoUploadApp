@@ -100,17 +100,17 @@ class _UserFragmentState extends State<UserFragment> {
 
   List<Widget> expandedInfo(Userdata userdata) {
     List<Widget> list = new List.empty(growable: true);
-    list.add(KeyValueField(userdata.username, "username"));
-    list.add(KeyValueField(userdata.email, "email"));
-    list.add(KeyValueField(userdata.editCount.toString(), "number of edits"));
+    list.add(ValueLabelField(userdata.username, "username"));
+    list.add(ValueLabelField(userdata.email, "email"));
+    list.add(ValueLabelField(userdata.editCount.toString(), "number of edits"));
     if (userdata.realName != "") {
-      list.add(KeyValueField(userdata.realName, "real name"));
+      list.add(ValueLabelField(userdata.realName, "real name"));
     }
 
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
-    list.add(KeyValueField(DateFormat().format(userdata.lastCheck),
+    list.add(ValueLabelField(DateFormat().format(userdata.lastCheck),
         "last refresh")); // TODO Is there an easy way to localize date time format?
     list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
     return list;

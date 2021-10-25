@@ -1,27 +1,48 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:projects/style/textStyles.dart';
 
-class KeyValueField extends StatelessWidget {
-  String? initialValue;
+class ValueLabelField extends StatelessWidget {
+  String? value;
   String? label;
+  Icon? icon;
 
-  KeyValueField(this.initialValue, this.label);
+  ValueLabelField(
+    this.value,
+    this.label,{
+    this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      child: Column(
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: rowBuilder(),
+      )
+    );
+  }
+
+  List<Widget> rowBuilder () {
+    List<Widget> list = new List.empty(growable: true);
+    list.add(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label ?? "", style: smallLabel),
           Text(
-            initialValue ?? "",
+            value ?? "",
             style: objectDescription,
           )
         ],
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      padding: EdgeInsets.symmetric(vertical: 4),
+      )
     );
+    if(icon != null) {
+      list.add(icon!);
+    }
+    return list;
   }
 }
