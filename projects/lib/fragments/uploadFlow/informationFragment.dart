@@ -111,6 +111,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 items: <String>[
+                  // TODO help menu/guide or something for licenses
                   'CC0',
                   'Attribution 3.0',
                   'Attribution-ShareAlike 3.0',
@@ -149,7 +150,8 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     Text(
-                      DateFormat.yMd().format(collector.date), // TODO local format as well
+                      DateFormat.yMd()
+                          .format(collector.date), // TODO local format as well
                       textScaleFactor: 1.1,
                     ),
                   ],

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/style/keyValueField.dart';
+import 'package:projects/style/textStyles.dart';
 import '../commonsUploadFragment.dart';
 import 'dart:io';
 
@@ -12,12 +13,12 @@ class ReviewFragment extends StatefulWidget {
 
 class ReviewFragmentState extends State<ReviewFragment> {
   InformationCollector collector = new InformationCollector();
-  String text = "";
+  String infoText = "";
+  Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, descriptionIcon;
 
   @override
   Widget build(BuildContext context) {
-    Icon? fileNameIcon;
-
+    setIcons();
     return Container(
         child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -29,22 +30,67 @@ class ReviewFragmentState extends State<ReviewFragment> {
               // can be used to summarize sections. User should also be warned when
               // category list is empty.
               children: [
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: image(),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                 Card(
-                  margin: EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.file(File(collector.image!.path)),
+                    margin: EdgeInsets.zero,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ValueLabelField(collector.fileName, "file name",
+                              icon: fileNameIcon),
+                          ValueLabelField(
+                            collector.title,
+                            "title",
+                            icon: titleIcon,
+                          ),
+                          ValueLabelField(
+                            collector.author,
+                            "author",
+                            icon: authorIcon,
+                          ),
+                          ValueLabelField(
+                            collector.license,
+                            "license",
+                            icon: licenseIcon,
+                          ),
+                          ValueLabelField(
+                            collector.description,
+                            "image description",
+                            icon: descriptionIcon,
+                          ),
+                          ValueLabelField(
+                              DateFormat.yMd().format(collector.date),
+                              "date of creation"), // TODO local format as well
+                        ],
                       ),
-                      ValueLabelField(collector.fileName, "file name", icon: fileNameIcon),
-                      ValueLabelField(collector.title, "title"),
-                      ValueLabelField(collector.author, "author"),
-                      ValueLabelField(collector.license, "license"),
-                      ValueLabelField(collector.description, "image description"),
-                      ValueLabelField(DateFormat.yMd().format(collector.date), "date of creation"), // TODO local format as well
-                    ],
+                    )),
+                Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                Card(
+                  margin: EdgeInsets.zero,
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Keywords",
+                          style: articleTitle,
+                        ),
+                        Divider(),
+                        Column(
+                          children: categoriesList(),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 ElevatedButton(
@@ -53,9 +99,70 @@ class ReviewFragmentState extends State<ReviewFragment> {
                   },
                   child: Text("Submit"),
                 ),
-                Text(text),
+                Text(infoText),
               ],
             )));
+  }
+
+  setIcons() {
+    if (collector.fileName == "" || collector.fileName == null) {
+      fileNameIcon = Icon(
+        Icons.error_outline,
+        color: Theme.of(context).errorColor,
+      );
+    }
+    if (collector.title == "" || collector.title == null) {
+      titleIcon = Icon(
+        Icons.error_outline,
+        color: Theme.of(context).errorColor,
+      );
+    }
+    if (collector.author == "" || collector.author == null) {
+      authorIcon = Icon(
+        Icons.error_outline,
+        color: Theme.of(context).errorColor,
+      );
+    }
+    if (collector.description == "" || collector.description == null) {
+      descriptionIcon = Icon(
+        Icons.error_outline,
+        color: Theme.of(context).errorColor,
+      );
+    }
+    if (collector.license == "" || collector.license == null) {
+      licenseIcon = Icon(
+        Icons.error_outline,
+        color: Theme.of(context).errorColor,
+      );
+    }
+  }
+
+  Widget image() {
+    if (collector.image != null) {
+      return Image.file(File(collector.image!.path));
+    } else {
+      return Container(
+        alignment: Alignment.center,
+        height: 170,
+        color: Theme.of(context).disabledColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.image_not_supported),
+            Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+            Text("No file selected"),
+          ],
+        ),
+      );
+    }
+  }
+
+  List<Widget> categoriesList() {
+    List<Widget> list = new List.empty(growable: true);
+    for (String category in collector.categories) {
+      list.add(Text(category));
+    }
+    return list;
   }
 
   void submit() {
@@ -63,7 +170,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
       collector.submitData();
     } else {
       setState(() {
-        text = "no";
+        infoText = "no";
       });
     }
   }

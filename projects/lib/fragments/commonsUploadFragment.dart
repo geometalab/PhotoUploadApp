@@ -58,7 +58,8 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                     selectedTab = 1;
                   });
                 },
-                label: "Add keywords"),
+                label:
+                    "Add keywords"), // TODO user official wikimedia commons terms for these things
             ProgressTab(
                 onPressed: () {
                   setState(() {
