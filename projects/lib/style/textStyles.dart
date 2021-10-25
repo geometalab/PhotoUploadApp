@@ -12,6 +12,6 @@ final TextStyle fragmentTitle =
 final TextStyle smallLabel = new TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 11,
-    height: 2,
+    height: 1.5,
     color: Colors.grey,
     overflow: TextOverflow.fade);

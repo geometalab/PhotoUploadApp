@@ -58,7 +58,7 @@ class _UserFragmentState extends State<UserFragment> {
       padding: EdgeInsets.all(10),
       children: <Widget>[
         Theme(
-          data: ThemeData().copyWith(
+          data: Theme.of(context).copyWith(
               dividerColor: Colors
                   .transparent), // Make the borders of ExpansionTile invisible
           child: ExpansionTile(
@@ -74,7 +74,7 @@ class _UserFragmentState extends State<UserFragment> {
               ),
               backgroundColor: Theme.of(context).disabledColor,
             ),
-            children: expandedInfo(userdata),
+            children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
             childrenPadding: EdgeInsets.symmetric(horizontal: 8),
@@ -98,7 +98,7 @@ class _UserFragmentState extends State<UserFragment> {
     );
   }
 
-  List<Widget> expandedInfo(Userdata userdata) {
+  List<Widget> expandedInfo(Userdata userdata, double spaceBetween) {
     List<Widget> list = new List.empty(growable: true);
     list.add(ValueLabelField(userdata.username, "username"));
     list.add(ValueLabelField(userdata.email, "email"));
@@ -106,14 +106,26 @@ class _UserFragmentState extends State<UserFragment> {
     if (userdata.realName != "") {
       list.add(ValueLabelField(userdata.realName, "real name"));
     }
-
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
     list.add(ValueLabelField(DateFormat().format(userdata.lastCheck),
         "last refresh")); // TODO Is there an easy way to localize date time format?
     list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
-    return list;
+    return addPadding(list, spaceBetween);
+  }
+
+  List<Widget> addPadding (List<Widget> widgets, double padding) {
+    List<Widget> newList = List.empty(growable: true);
+    for(int i = 0; i < widgets.length; i++) {
+      newList.add(widgets[i]);
+      if(i < widgets.length - 1){
+        newList.add(
+            Padding(padding: EdgeInsets.symmetric(vertical: padding / 2))
+        );
+      }
+    }
+    return newList;
   }
 
   Widget expansionInfoWidget(String title, List userdataList) {
