@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/style/textStyles.dart';
@@ -108,6 +109,7 @@ class _UserFragmentState extends State<UserFragment> {
     list.add(expansionInfoWidget("rights", userdata.rights));
     list.add(expansionInfoWidget("grants", userdata.grants));
     list.add(expansionInfoWidget("groups", userdata.groups));
+    list.add(infoField(DateFormat().format(userdata.lastCheck), "last refresh"));
     list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
     return list;
   }

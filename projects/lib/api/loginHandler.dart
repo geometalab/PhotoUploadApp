@@ -22,30 +22,31 @@ class LoginHandler {
   }
   LoginHandler._internal();
 
-  debugFilePrint() {
-    // Prints the stored user info for debugging purposes
-    _readFromFile(CREDENTIALS_FILE)
-        .then((value) => print("File content: " + value));
-  }
-
   checkCredentials() async {
     try {
       Userdata? data = await getUserInformationFromFile();
       if (data != null) {
         data = await refreshAccessToken();
         data = await getUserInformationFromAPI(data);
+        data.lastCheck = DateTime.now();
         saveUserDataToFile(data);
       } else {
-        deleteUserDataInFile();
+        _deleteUserDataInFile();
       }
     } catch (e) {
       print("Could not check Credentials successfully. Error: " + e.toString());
-      deleteUserDataInFile();
+      _deleteUserDataInFile();
     }
   }
 
+  Future<bool> isLoggedIn () async {
+    Userdata? data = await getUserInformationFromFile();
+    if(data != null && data.username != "") return true;
+    else return false;
+  }
+
   logOut() {
-    deleteUserDataInFile();
+    _deleteUserDataInFile();
   }
 
   openWebLogin() {
@@ -123,10 +124,6 @@ class LoginHandler {
         throw ("Could not refresh access token. Status code ${responseData.statusCode}");
       }
     }
-  }
-
-  deleteUserDataInFile() {
-    _writeToFile(CREDENTIALS_FILE, "");
   }
 
   saveUserDataToFile(Userdata data) async {
@@ -214,6 +211,10 @@ class LoginHandler {
     return file.readAsString();
   }
 
+  _deleteUserDataInFile() {
+    _writeToFile(CREDENTIALS_FILE, "");
+  }
+
   Future<String> _getClientSecret() async {
     await dotenv.load(fileName: ".env");
     String? clientSecret = dotenv
@@ -235,6 +236,7 @@ class Userdata {
   List<dynamic> groups;
   List<dynamic> rights;
   List<dynamic> grants;
+  DateTime lastCheck;
 
   Userdata({
     this.username = "",
@@ -246,9 +248,11 @@ class Userdata {
     List<dynamic>? groups,
     List<dynamic>? rights,
     List<dynamic>? grants,
+    DateTime? lastCheck,
   })  : groups = groups ?? List.empty(),
         rights = rights ?? List.empty(),
-        grants = grants ?? List.empty();
+        grants = grants ?? List.empty(),
+        lastCheck = DateTime.now();
 
   Userdata fromJson(String jsonString) {
     Map<String, dynamic> json = jsonDecode(jsonString);
@@ -261,7 +265,8 @@ class Userdata {
         editCount: int.parse(json['editCount']),
         groups: json['groups'],
         rights: json['rights'],
-        grants: json['grants']);
+        grants: json['grants'],
+        lastCheck: DateTime.parse(json['lastCheck']));
   }
 
   String toJson() {
@@ -278,7 +283,8 @@ class Userdata {
       'refreshToken': refreshToken,
       'groups': groups,
       'rights': rights,
-      'grants': grants
+      'grants': grants,
+      'lastCheck': lastCheck.toString()
     };
   }
 }
