@@ -115,14 +115,13 @@ class _UserFragmentState extends State<UserFragment> {
     return addPadding(list, spaceBetween);
   }
 
-  List<Widget> addPadding (List<Widget> widgets, double padding) {
+  List<Widget> addPadding(List<Widget> widgets, double padding) {
     List<Widget> newList = List.empty(growable: true);
-    for(int i = 0; i < widgets.length; i++) {
+    for (int i = 0; i < widgets.length; i++) {
       newList.add(widgets[i]);
-      if(i < widgets.length - 1){
-        newList.add(
-            Padding(padding: EdgeInsets.symmetric(vertical: padding / 2))
-        );
+      if (i < widgets.length - 1) {
+        newList
+            .add(Padding(padding: EdgeInsets.symmetric(vertical: padding / 2)));
       }
     }
     return newList;
