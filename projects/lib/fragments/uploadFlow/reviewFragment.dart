@@ -47,10 +47,10 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ValueLabelField(
-                              collector.fileName,
-                              "file name",
-                              icon: fileNameIcon,
-                              replaceEmpty: true,
+                            collector.fileName,
+                            "file name",
+                            icon: fileNameIcon,
+                            replaceEmpty: true,
                           ),
                           ValueLabelField(
                             collector.title,

@@ -88,8 +88,8 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
     ]);
   }
 
-  Widget thumbnail (Map? thumbnail) {
-    if(thumbnail == null) {
+  Widget thumbnail(Map? thumbnail) {
+    if (thumbnail == null) {
       return Container(
         width: 100,
         height: 60,

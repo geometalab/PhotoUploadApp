@@ -51,11 +51,12 @@ class ValueLabelField extends StatelessWidget {
     return list;
   }
 
-  Text textHandler (String? text) {
-    if((text == null || text == "") && replaceEmpty) {
+  Text textHandler(String? text) {
+    if ((text == null || text == "") && replaceEmpty) {
       return Text(
         "no value",
-        style: objectDescription.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+        style: objectDescription.copyWith(
+            color: Colors.grey, fontStyle: FontStyle.italic),
         softWrap: true,
         overflow: TextOverflow.fade,
       );
