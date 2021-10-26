@@ -13,8 +13,13 @@ class ReviewFragment extends StatefulWidget {
 
 class ReviewFragmentState extends State<ReviewFragment> {
   InformationCollector collector = new InformationCollector();
-  String infoText = "";
-  Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, descriptionIcon;
+  List<Widget> infoText = List.empty(growable: true);
+  Icon? fileNameIcon,
+      titleIcon,
+      authorIcon,
+      licenseIcon,
+      descriptionIcon,
+      categoryIcon;
 
   Icon errorIcon(BuildContext context) {
     return Icon(
@@ -30,9 +35,17 @@ class ReviewFragmentState extends State<ReviewFragment> {
     );
   }
 
+  Text errorText(BuildContext context, String text) {
+    return Text(text, style: TextStyle(color: Theme.of(context).errorColor));
+  }
+
+  Text warningText(BuildContext context, String text) {
+    return Text(text, style: TextStyle(color: Colors.orangeAccent));
+  }
+
   @override
   Widget build(BuildContext context) {
-    setIcons();
+    infoCheckError();
     return Container(
         child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -57,7 +70,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         children: [
                           ValueLabelField(
                             collector.fileName,
-                            "file name",
+                            "file name", // TODO does the filename need file name extension? if yes, where should it be added?
                             icon: fileNameIcon,
                             replaceEmpty: true,
                           ),
@@ -65,6 +78,12 @@ class ReviewFragmentState extends State<ReviewFragment> {
                             collector.title,
                             "title",
                             icon: titleIcon,
+                            replaceEmpty: true,
+                          ),
+                          ValueLabelField(
+                            collector.description,
+                            "image description",
+                            icon: descriptionIcon,
                             replaceEmpty: true,
                           ),
                           ValueLabelField(
@@ -80,23 +99,19 @@ class ReviewFragmentState extends State<ReviewFragment> {
                             replaceEmpty: true,
                           ),
                           ValueLabelField(
-                            collector.description,
-                            "image description",
-                            icon: descriptionIcon,
-                            replaceEmpty: true,
-                          ),
-                          ValueLabelField(
                               DateFormat.yMd().format(collector.date),
                               "date of creation"), // TODO local format as well
                         ],
                       ),
                     )),
-                Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                ),
                 Card(
                   margin: EdgeInsets.zero,
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                     child: Column(
                       children: [
                         Text(
@@ -110,35 +125,75 @@ class ReviewFragmentState extends State<ReviewFragment> {
                     ),
                   ),
                 ),
-                Text(infoText),
-                ElevatedButton(
-                  onPressed: () {
-                    submit();
-                  },
-                  child: Text("Submit"),
+                Padding(padding: EdgeInsets.only(bottom: 8)),
+                Column(
+                  children: infoText,
                 ),
+                Padding(padding: EdgeInsets.only(bottom: 8)),
+                SizedBox(
+                  width: 180,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: infoCheckError()
+                        ? null
+                        : () =>
+                            submit(), // Button only enables if infoCheckError returns false
+                    child: Text("Submit"),
+                  ),
+                )
               ],
             )));
   }
 
-  setIcons() {
+  // Checks all fields and properties and returns false when possible to submit.
+  // Also sets warning and error icons, and sets the info texts.
+  bool infoCheckError() {
+    bool isError = false;
+
+    infoText.clear(); // Clear all warnings and errors
+
+    // The fields which need to be filled out
+    if (collector.image == null ||
+            collector.fileName == "" ||
+            collector.fileName == null ||
+            collector.title == "" ||
+            collector.title == null ||
+            collector.author == "" ||
+            collector.author == null ||
+            collector.license == "" ||
+            collector.license == null // Should not be possible
+        ) {
+      isError = true;
+    }
+
+    if (collector.image == null) {
+      infoText.add(errorText(context, "Select the image you want to upload"));
+    }
     if (collector.fileName == "" || collector.fileName == null) {
+      infoText.add(errorText(context, "File name needs to be set"));
       fileNameIcon = errorIcon(context);
+    } else if (collector.fileName!.length < 5) {
+      infoText.add(warningText(context, "File name is very short"));
     }
     if (collector.title == "" || collector.title == null) {
+      infoText.add(errorText(context, "Title needs to be set"));
       titleIcon = errorIcon(context);
     }
+    if (collector.description == "" || collector.description == null) {
+      infoText.add(warningText(context, "No description has been added"));
+      descriptionIcon = warningIcon(context);
+    }
     if (collector.author == "" || collector.author == null) {
+      infoText.add(errorText(context, "Author needs to be set"));
       authorIcon = errorIcon(context);
     }
-    if (collector.description == "" || collector.description == null) {
-      descriptionIcon = errorIcon(context);
+    if (collector.categories.isEmpty) {
+      infoText.add(warningText(context, "No categories have been added"));
     }
-    if (collector.license == "" || collector.license == null) {
-      licenseIcon = errorIcon(context);
-    }
+    return isError;
   }
 
+  // Supplies the image or a placeholder if no image is in the collector
   Widget image() {
     if (collector.image != null) {
       return Image.file(File(collector.image!.path));
@@ -146,7 +201,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
       return Container(
         alignment: Alignment.center,
         height: 170,
-        color: Theme.of(context).disabledColor,
+        color: Theme.of(context).disabledColor.withAlpha(50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -159,6 +214,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
+  // A list with all entered categories
   List<Widget> categoriesList() {
     List<Widget> list = new List.empty(growable: true);
 
@@ -223,44 +279,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
     return list;
   }
 
-  void submit() {
-    if (checkInfo()) {
+  submit() {
+    if (!infoCheckError()) {
       collector.submitData();
-    } else {
-      setState(() {
-        infoText = "no";
-      });
     }
-  }
-
-  bool checkInfo() {
-    bool isOk = true;
-    bool isWarning = false;
-    if (collector.image == null) {
-      isOk = false;
-    }
-    if (collector.fileName == null) {
-      isOk = false;
-    }
-    if (collector.description == null) {
-      isOk = false;
-    }
-    if (collector.license == null) {
-      isOk = false;
-    }
-    if (collector.author == null) {
-      isOk = false;
-    }
-    if (collector.title == null) {
-      isOk = false;
-    }
-    if (collector.categories.length == 0) {
-      isWarning = false;
-    }
-    if (collector.title == null) {
-      isOk = false;
-    }
-
-    return isOk;
   }
 }
