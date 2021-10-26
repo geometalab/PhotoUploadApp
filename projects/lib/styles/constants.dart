@@ -1,0 +1,1 @@
+const String MEDIUM_PROFILE_RSS_FEED_URL = 'https://commons.wikimedia.org/w/api.php?action=featuredfeed&feed=potd&feedformat=rss&language=en';
