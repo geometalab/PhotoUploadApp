@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
+import 'package:projects/style/themes.dart';
 import '../commonsUploadFragment.dart';
 import 'dart:io';
 
@@ -31,7 +32,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
   Icon warningIcon(BuildContext context) {
     return Icon(
       Icons.warning_amber_rounded,
-      color: Colors.orangeAccent,
+      color: CustomColors.WARNING_COLOR,
     );
   }
 
@@ -40,7 +41,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
   }
 
   Text warningText(BuildContext context, String text) {
-    return Text(text, style: TextStyle(color: Colors.orangeAccent));
+    return Text(text, style: TextStyle(color: CustomColors.WARNING_COLOR));
   }
 
   @override
@@ -60,7 +61,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         image(), // TODO Implement fullscreen view of image on click
                   ),
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Card(
                     margin: EdgeInsets.zero,
                     child: Padding(
@@ -105,7 +106,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                       ),
                     )),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 6),
                 ),
                 Card(
                   margin: EdgeInsets.zero,
@@ -125,11 +126,11 @@ class ReviewFragmentState extends State<ReviewFragment> {
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 8)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Column(
                   children: infoText,
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 8)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 SizedBox(
                   width: 180,
                   height: 48,
@@ -201,13 +202,17 @@ class ReviewFragmentState extends State<ReviewFragment> {
       return Container(
         alignment: Alignment.center,
         height: 170,
-        color: Theme.of(context).disabledColor.withAlpha(50),
+        color: CustomColors.NO_IMAGE_COLOR,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.image_not_supported),
+            Icon(Icons.image_not_supported,
+                color: CustomColors.NO_IMAGE_CONTENTS_COLOR, size: 40),
             Padding(padding: EdgeInsets.symmetric(vertical: 2)),
-            Text("No file selected"),
+            Text(
+              "No file selected",
+              style: TextStyle(color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
+            ),
           ],
         ),
       );
@@ -245,10 +250,11 @@ class ReviewFragmentState extends State<ReviewFragment> {
       if (thumbnailJson == null) {
         thumbnail = Container(
             height: 64,
-            color: Theme.of(context).disabledColor,
+            color: CustomColors.NO_IMAGE_COLOR,
             child: AspectRatio(
               aspectRatio: 3 / 2,
-              child: Icon(Icons.image_not_supported),
+              child: Icon(Icons.image_not_supported,
+                  color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
             ));
       } else {
         thumbnail = Image.network(thumbnailJson['url'], height: 64);
