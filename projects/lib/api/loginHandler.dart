@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
+// TODO When no api call can be made (no internet, wiki servers down), is the user logged out? If yes, fix
 
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;

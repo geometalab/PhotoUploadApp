@@ -18,7 +18,7 @@ class CategoryService {
       var suggestions = hashMap.entries.toList(growable: true);
       List tempList = suggestions[0].value;
       listedSuggestions =
-          tempList.map((e) => {'title': e['title'], 'id': e['id']}).toList();
+          tempList.map((e) => {'title': e['title'], 'id': e['id'], 'thumbnail': e['thumbnail']}).toList();
     } catch (e) {
       print("Error while getting autocomplete results from Wikimedia: $e");
     }

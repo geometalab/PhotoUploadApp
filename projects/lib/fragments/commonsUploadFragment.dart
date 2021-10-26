@@ -114,7 +114,7 @@ class InformationCollector {
   XFile? image;
   String? fileName;
   List<String> categories = List.empty(growable: true);
-  List<IconData> categoriesThumb = List.empty(growable: true);
+  List<Map<String, dynamic>?> categoriesThumb = List.empty(growable: true);
   String? preFillContent; // Is loaded into typeahead field
   String? title;
   String? description;

@@ -55,10 +55,9 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
             },
             onSuggestionSelected: (Map<String, dynamic> suggestion) {
               // TODO Add Wiki ID in List tile
-              // TODO Add Image thumbnail in List tile
               setState(() {
                 collector.categories.add(suggestion['title']!);
-                collector.categoriesThumb.add(Icons.fireplace);
+                collector.categoriesThumb.add(suggestion['thumbnail']);
               });
             },
           )),
@@ -71,7 +70,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
           itemBuilder: (BuildContext context, int i) {
             return Card(
               child: ListTile(
-                leading: Icon(collector.categoriesThumb[i]),
+                leading: thumbnail(collector.categoriesThumb[i]),
                 title: Text(collector.categories[i]),
                 trailing: Icon(Icons.remove),
                 onTap: () {
@@ -87,5 +86,17 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
         ),
       )
     ]);
+  }
+
+  Widget thumbnail (Map? thumbnail) {
+    if(thumbnail == null) {
+      return Container(
+        width: 100,
+        height: 60,
+        color: Colors.grey,
+      );
+    } else {
+      return Image.network(thumbnail['url']);
+    }
   }
 }
