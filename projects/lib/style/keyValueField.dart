@@ -7,12 +7,14 @@ class ValueLabelField extends StatelessWidget {
   final String? label;
   final Icon? icon;
   final double? padding;
+  late final bool replaceEmpty;
 
   ValueLabelField(
     this.value,
     this.label, {
     this.icon,
     this.padding,
+    this.replaceEmpty = false,
   });
 
   @override
@@ -38,12 +40,7 @@ class ValueLabelField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label ?? "", style: smallLabel),
-          Text(
-            value ?? "",
-            style: objectDescription,
-            softWrap: true,
-            overflow: TextOverflow.fade,
-          ),
+          textHandler(value),
         ],
       ),
     ));
@@ -52,5 +49,23 @@ class ValueLabelField extends StatelessWidget {
       list.add(icon!);
     }
     return list;
+  }
+
+  Text textHandler (String? text) {
+    if((text == null || text == "") && replaceEmpty) {
+      return Text(
+        "no value",
+        style: objectDescription.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+        softWrap: true,
+        overflow: TextOverflow.fade,
+      );
+    } else {
+      return Text(
+        text ?? "",
+        style: objectDescription,
+        softWrap: true,
+        overflow: TextOverflow.fade,
+      );
+    }
   }
 }

@@ -46,27 +46,35 @@ class ReviewFragmentState extends State<ReviewFragment> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ValueLabelField(collector.fileName, "file name",
-                              icon: fileNameIcon),
+                          ValueLabelField(
+                              collector.fileName,
+                              "file name",
+                              icon: fileNameIcon,
+                              replaceEmpty: true,
+                          ),
                           ValueLabelField(
                             collector.title,
                             "title",
                             icon: titleIcon,
+                            replaceEmpty: true,
                           ),
                           ValueLabelField(
                             collector.author,
                             "author",
                             icon: authorIcon,
+                            replaceEmpty: true,
                           ),
                           ValueLabelField(
                             collector.license,
                             "license",
                             icon: licenseIcon,
+                            replaceEmpty: true,
                           ),
                           ValueLabelField(
                             collector.description,
                             "image description",
                             icon: descriptionIcon,
+                            replaceEmpty: true,
                           ),
                           ValueLabelField(
                               DateFormat.yMd().format(collector.date),
