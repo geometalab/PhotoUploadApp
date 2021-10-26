@@ -29,7 +29,8 @@ class _MapFragment extends State<StatefulMapFragment> {
       body: FlutterMap(
           mapController: mapController,
           options: MapOptions(
-              onTap: (tapPosition, latLng) => _popupLayerController.hidePopup(),
+              onTap: (tapPosition, latLng) =>
+                  _popupLayerController.hideAllPopups(),
               controller: mapController,
               center:
                   LatLng(46.8, 8.22), // Starting pos when gps access is denied

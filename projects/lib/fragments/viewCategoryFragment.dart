@@ -83,6 +83,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        // TODO This is completely fucked
         onPressed: () {
           setState(() {
             collector.preFillContent = categoryTitle;

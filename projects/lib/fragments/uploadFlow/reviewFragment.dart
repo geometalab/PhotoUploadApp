@@ -16,6 +16,20 @@ class ReviewFragmentState extends State<ReviewFragment> {
   String infoText = "";
   Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, descriptionIcon;
 
+  Icon errorIcon(BuildContext context) {
+    return Icon(
+      Icons.error_outline,
+      color: Theme.of(context).errorColor,
+    );
+  }
+
+  Icon warningIcon(BuildContext context) {
+    return Icon(
+      Icons.warning_amber_rounded,
+      color: Colors.orangeAccent,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     setIcons();
@@ -23,19 +37,14 @@ class ReviewFragmentState extends State<ReviewFragment> {
         child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
-              // TODO Preview of infos & media
-              // Here, all the info entered by the user should be previewed. When
-              // the submit button is pressed and not all the fields are filled
-              // out, it is also marked here. Maybe the use of collapsible menus
-              // can be used to summarize sections. User should also be warned when
-              // category list is empty.
               children: [
                 Container(
                   width: double.infinity,
                   alignment: Alignment.center,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: image(),
+                    child:
+                        image(), // TODO Implement fullscreen view of image on click
                   ),
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -47,10 +56,10 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ValueLabelField(
-                              collector.fileName,
-                              "file name",
-                              icon: fileNameIcon,
-                              replaceEmpty: true,
+                            collector.fileName,
+                            "file name",
+                            icon: fileNameIcon,
+                            replaceEmpty: true,
                           ),
                           ValueLabelField(
                             collector.title,
@@ -85,7 +94,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
                 Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                 Card(
                   margin: EdgeInsets.zero,
-                  child: Padding(
+                  child: Container(
+                    width: double.infinity,
                     padding: EdgeInsets.all(8),
                     child: Column(
                       children: [
@@ -93,7 +103,6 @@ class ReviewFragmentState extends State<ReviewFragment> {
                           "Keywords",
                           style: articleTitle,
                         ),
-                        Divider(),
                         Column(
                           children: categoriesList(),
                         )
@@ -101,47 +110,32 @@ class ReviewFragmentState extends State<ReviewFragment> {
                     ),
                   ),
                 ),
+                Text(infoText),
                 ElevatedButton(
                   onPressed: () {
                     submit();
                   },
                   child: Text("Submit"),
                 ),
-                Text(infoText),
               ],
             )));
   }
 
   setIcons() {
     if (collector.fileName == "" || collector.fileName == null) {
-      fileNameIcon = Icon(
-        Icons.error_outline,
-        color: Theme.of(context).errorColor,
-      );
+      fileNameIcon = errorIcon(context);
     }
     if (collector.title == "" || collector.title == null) {
-      titleIcon = Icon(
-        Icons.error_outline,
-        color: Theme.of(context).errorColor,
-      );
+      titleIcon = errorIcon(context);
     }
     if (collector.author == "" || collector.author == null) {
-      authorIcon = Icon(
-        Icons.error_outline,
-        color: Theme.of(context).errorColor,
-      );
+      authorIcon = errorIcon(context);
     }
     if (collector.description == "" || collector.description == null) {
-      descriptionIcon = Icon(
-        Icons.error_outline,
-        color: Theme.of(context).errorColor,
-      );
+      descriptionIcon = errorIcon(context);
     }
     if (collector.license == "" || collector.license == null) {
-      licenseIcon = Icon(
-        Icons.error_outline,
-        color: Theme.of(context).errorColor,
-      );
+      licenseIcon = errorIcon(context);
     }
   }
 
@@ -167,8 +161,64 @@ class ReviewFragmentState extends State<ReviewFragment> {
 
   List<Widget> categoriesList() {
     List<Widget> list = new List.empty(growable: true);
-    for (String category in collector.categories) {
-      list.add(Text(category));
+
+    // If no keywords in list, display warning message
+    if (collector.categories.isEmpty) {
+      list.add(Divider());
+      list.add(Padding(
+        padding: EdgeInsets.symmetric(horizontal: 2),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "No categories added",
+              style: objectDescription,
+            ),
+            warningIcon(context),
+          ],
+        ),
+      ));
+      return list;
+    }
+
+    // Add all categories to the list
+    for (int i = 0; i < collector.categories.length; i++) {
+      Widget thumbnail;
+      Map<String, dynamic>? thumbnailJson = collector.categoriesThumb[i];
+      // If no thumbnail available for category
+      if (thumbnailJson == null) {
+        thumbnail = Container(
+            height: 64,
+            color: Theme.of(context).disabledColor,
+            child: AspectRatio(
+              aspectRatio: 3 / 2,
+              child: Icon(Icons.image_not_supported),
+            ));
+      } else {
+        thumbnail = Image.network(thumbnailJson['url'], height: 64);
+      }
+
+      list.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text(
+              collector.categories[i],
+              overflow: TextOverflow.fade,
+              style: objectDescription,
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: thumbnail,
+          ),
+        ],
+      ));
+    }
+
+    // Insert divider between list elements
+    for (int i = list.length - 1; i >= 0; i--) {
+      list.insert(i, Divider());
     }
     return list;
   }

@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projects/api/categoryService.dart';
-
 import '../commonsUploadFragment.dart';
+
+// TODO display some text in lower half when no category has been added
 
 class StatefulSelectCategoryFragment extends StatefulWidget {
   @override
@@ -88,8 +89,8 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
     ]);
   }
 
-  Widget thumbnail (Map? thumbnail) {
-    if(thumbnail == null) {
+  Widget thumbnail(Map? thumbnail) {
+    if (thumbnail == null) {
       return Container(
         width: 100,
         height: 60,

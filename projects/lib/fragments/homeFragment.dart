@@ -6,8 +6,6 @@ import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
-final titleFont = new TextStyle(height: 30);
-
 class HomeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
