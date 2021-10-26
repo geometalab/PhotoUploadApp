@@ -6,6 +6,7 @@ import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
+
 final titleFont = new TextStyle(height: 30);
 
 class HomeFragment extends StatelessWidget {
@@ -29,9 +30,7 @@ class HomeFragment extends StatelessWidget {
         title: "title 3",
         description: "desciription sadjf sadf",
         image: Image.network(
-            "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg")));
-    articleList.add(
-        new Article(title: "title 4", description: "desciription sadjf sadf"));
+            "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.+jpg")));
 
     // ------------------------------
 
@@ -81,6 +80,7 @@ class HomeFragment extends StatelessWidget {
         ));
   }
 }
+
 
 class ArticleList {
   static List<Article> articles = new List.empty(growable: true);

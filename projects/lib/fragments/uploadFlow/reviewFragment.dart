@@ -174,7 +174,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
   }
 
   void submit() {
-    if (checkInfo()) {
+    if (true) {
       collector.submitData();
     } else {
       setState(() {
