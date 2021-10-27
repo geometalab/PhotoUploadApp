@@ -180,18 +180,22 @@ class LoginHandler {
       );
       var responseJson = await response;
       var responseData = json.decode(responseJson.body);
-      Userdata tokenData = Userdata(
-        username: responseData['username'],
-        editCount: responseData['editcount'],
-        email: responseData['email'],
-        realName: responseData['realname'],
-        groups: responseData['groups'],
-        rights: responseData['rights'],
-        grants: responseData['grants'],
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-      );
-      return tokenData;
+      if(responseJson.statusCode == 200){
+        Userdata tokenData = Userdata(
+          username: responseData['username'],
+          editCount: responseData['editcount'],
+          email: responseData['email'],
+          realName: responseData['realname'],
+          groups: responseData['groups'],
+          rights: responseData['rights'],
+          grants: responseData['grants'],
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        );
+        return tokenData;
+      } else {
+        throw(Exception("No 200 Status on API response. Status Code ${responseJson.statusCode} has been returned instead."));
+      }
     } else {
       throw (Exception("Access Token is empty"));
     }

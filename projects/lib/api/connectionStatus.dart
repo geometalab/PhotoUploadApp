@@ -2,12 +2,14 @@ import 'dart:io';
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 
-class ConnectionStatusSingleton {
+// Checks if an internet connection can be established.
+// Pings commons.wikimedia.org to check internet.
+class ConnectionStatusListener {
   // Make Singleton
-  static final ConnectionStatusSingleton _singleton =
-      new ConnectionStatusSingleton._internal();
-  ConnectionStatusSingleton._internal();
-  static ConnectionStatusSingleton getInstance() => _singleton;
+  static final ConnectionStatusListener _singleton =
+      new ConnectionStatusListener._internal();
+  ConnectionStatusListener._internal();
+  static ConnectionStatusListener getInstance() => _singleton;
 
   bool hasConnection = false;
 
@@ -35,7 +37,7 @@ class ConnectionStatusSingleton {
     bool previousConnection = hasConnection;
 
     try {
-      final result = await InternetAddress.lookup('google.com');
+      final result = await InternetAddress.lookup('commons.wikimedia.org');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         hasConnection = true;
       } else {

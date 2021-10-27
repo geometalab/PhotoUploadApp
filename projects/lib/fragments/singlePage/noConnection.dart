@@ -1,25 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/style/textStyles.dart';
 
 class NoConnection {
   Widget screen(BuildContext context) {
     return Scaffold(
-      // TODO improve visually (sry remo)
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Check your Connection",
-              style: TextStyle(fontSize: 30),
-            ),
-            Icon(
-              Icons.wifi_off,
-              size: 60,
-              color: Theme.of(context).disabledColor,
-            )
-          ],
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.signal_wifi_connected_no_internet_4,
+                size: 60,
+                color: Theme.of(context).disabledColor,
+              ),
+              Text(
+                "Connection with Wikimedia could not be established.",
+                style: objectDescription.copyWith(),
+              ),
+            ],
+          ),
         ),
       ),
     );
