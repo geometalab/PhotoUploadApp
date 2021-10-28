@@ -65,6 +65,7 @@ class _MapFragment extends State<StatefulMapFragment> {
                         markers)); // TODO when in very high zoom, clicking a cluster button doesn't zoom anymore, which it still should
                   },
                   heroTag: "clusterBtn",
+                  backgroundColor: Colors.lightBlueAccent,
                 );
               },
               markers: getMarkerList(),
@@ -76,6 +77,7 @@ class _MapFragment extends State<StatefulMapFragment> {
             ),
           ]),
       floatingActionButton: new FloatingActionButton.extended(
+        backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
           ncs
               .markerBuilder(ncs.getNearbyCategories(

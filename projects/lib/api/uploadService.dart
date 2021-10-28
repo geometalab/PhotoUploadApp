@@ -41,7 +41,7 @@ class UploadService {
     print(request.headers.toString());
 
     var streamResponse = await request.send();
-    return http.Response.fromStream(streamResponse);
+      return http.Response.fromStream(streamResponse);
   }
 
   _checkCsrfToken(String token) async {
