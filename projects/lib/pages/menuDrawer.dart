@@ -47,8 +47,7 @@ class HomePageState extends State<HomePage> {
         ConnectionStatusListener.getInstance();
     _connectionChangeStream =
         connectionStatus.connectionChange.listen(connectionChanged);
-    // connectionStatus.checkConnection().then((value) { isOffline = !value; });
-    // isOffline = !connectionStatus.hasConnection;
+    connectionStatus.checkConnection().then((value) => connectionChanged(connectionStatus.hasConnection)); // For check on startup
 
     LoginHandler().checkCredentials(); // Get user info if there is a login on this device
 
@@ -117,7 +116,7 @@ class HomePageState extends State<HomePage> {
 
     if (isOffline) {
       // If no network connection is detected, display this message
-      return NoConnection().screen(context);
+      return NoConnection();
     } else {
       return new Scaffold(
         appBar: new AppBar(

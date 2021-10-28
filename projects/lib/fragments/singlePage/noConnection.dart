@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/style/textStyles.dart';
 
-class NoConnection {
-  Widget screen(BuildContext context) {
+class NoConnection extends StatelessWidget {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Padding(
