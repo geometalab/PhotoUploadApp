@@ -33,7 +33,7 @@ class _UserFragmentState extends State<UserFragment> {
             future: loginHandler.getUserInformationFromFile(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator.adaptive());
               } else {
                 Userdata? data = snapshot.data as Userdata?;
                 if (data == null) {

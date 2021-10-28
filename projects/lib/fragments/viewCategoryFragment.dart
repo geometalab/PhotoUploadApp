@@ -75,7 +75,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                     children: cards,
                   ));
                 } else {
-                  return CircularProgressIndicator();
+                  return CircularProgressIndicator.adaptive();
                 }
               },
             )
