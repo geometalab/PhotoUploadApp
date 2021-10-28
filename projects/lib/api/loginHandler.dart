@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
-// TODO When no api call can be made (no internet, wiki servers down), is the user logged out? If yes, fix
 
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
@@ -30,12 +29,9 @@ class LoginHandler {
         data = await getUserInformationFromAPI(data);
         data.lastCheck = DateTime.now();
         saveUserDataToFile(data);
-      } else {
-        _deleteUserDataInFile();
       }
     } catch (e) {
-      print("Could not check Credentials successfully. Error: " + e.toString());
-      _deleteUserDataInFile();
+      throw("Could not check Credentials successfully. Error: " + e.toString());
     }
   }
 
@@ -180,18 +176,22 @@ class LoginHandler {
       );
       var responseJson = await response;
       var responseData = json.decode(responseJson.body);
-      Userdata tokenData = Userdata(
-        username: responseData['username'],
-        editCount: responseData['editcount'],
-        email: responseData['email'],
-        realName: responseData['realname'],
-        groups: responseData['groups'],
-        rights: responseData['rights'],
-        grants: responseData['grants'],
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-      );
-      return tokenData;
+      if(responseJson.statusCode == 200){
+        Userdata tokenData = Userdata(
+          username: responseData['username'],
+          editCount: responseData['editcount'],
+          email: responseData['email'],
+          realName: responseData['realname'],
+          groups: responseData['groups'],
+          rights: responseData['rights'],
+          grants: responseData['grants'],
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        );
+        return tokenData;
+      } else {
+        throw(Exception("No 200 Status on API response. Status Code ${responseJson.statusCode} has been returned instead."));
+      }
     } else {
       throw (Exception("Access Token is empty"));
     }
