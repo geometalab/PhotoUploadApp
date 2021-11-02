@@ -123,6 +123,7 @@ class LoginHandler {
             refreshToken: responseJson['refresh_token']);
         return data;
       } else {
+        // TODO investigate which codes get returned when app permission revoked/wrong access token etc.. (to then delete local user data)
         throw ("Could not refresh access token. Status code ${responseData.statusCode}");
       }
     }

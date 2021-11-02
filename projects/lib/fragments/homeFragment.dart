@@ -1,10 +1,12 @@
 import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/api/pictureOfTheDayService.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
+import 'package:projects/style/themes.dart';
 
 class HomeFragment extends StatelessWidget {
   @override
@@ -20,9 +22,26 @@ class HomeFragment extends StatelessWidget {
             "This short guide gives an overview over what you can upload to Wikimedia Commons.",
         onTap: new UploadGuideFragment()));
     articleList.add(new Article(
-        title: "Title 2",
-        description:
-            "sdf sdaf sdafkjklsdaf sadlökfjssda fsad fsafsda fsa fsdfa dfsa fsadf sad faöldf sdasafsfad"));
+        title: "Picture of the day",
+        description: 'yuh',
+        image: FutureBuilder(
+          future: PictureOfTheDayService().getItem(0),
+          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if(snapshot.hasData){
+              if(snapshot.data!.description != null) {
+                String link = PictureOfTheDayService().getImageUrl(snapshot.data!);
+                return Image.network(link);
+              } else {
+                return Container(
+                  color: CustomColors.NO_IMAGE_COLOR,
+                );
+              }
+            } else {
+              return CircularProgressIndicator.adaptive();
+            }
+          },
+        )
+    ));
     articleList.add(new Article(
         title: "title 3",
         description: "desciription sadjf sadf",
@@ -172,7 +191,7 @@ class ArticleList {
 class Article {
   String title;
   String description;
-  Image? image;
+  Widget? image;
   Widget? onTap;
 
   Article(
