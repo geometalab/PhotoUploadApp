@@ -47,12 +47,14 @@ class HomePageState extends State<HomePage> {
         ConnectionStatusListener.getInstance();
     _connectionChangeStream =
         connectionStatus.connectionChange.listen(connectionChanged);
-    connectionStatus.checkConnection().then((value) => connectionChanged(connectionStatus.hasConnection)); // For check on startup
+    connectionStatus.checkConnection().then((value) => connectionChanged(
+        connectionStatus.hasConnection)); // For check on startup
 
-    LoginHandler().checkCredentials(); // Get user info if there is a login on this device
+    LoginHandler()
+        .checkCredentials(); // Get user info if there is a login on this device
 
     WidgetsFlutterBinding.ensureInitialized();
-    WidgetsBinding.instance!.addObserver( // setState(){ } on appResumed
+    WidgetsBinding.instance!.addObserver(// setState(){ } on appResumed
         LifecycleEventHandler(resumeCallBack: () async {
       setState(() {});
     }));

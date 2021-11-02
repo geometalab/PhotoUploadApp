@@ -26,16 +26,18 @@ class LoginHandler {
       Userdata? data = await getUserInformationFromFile();
       if (data != null) {
         data = await refreshAccessToken();
-        if(data != null) {
+        if (data != null) {
           data = await getUserInformationFromAPI(data);
           data.lastCheck = DateTime.now();
           saveUserDataToFile(data);
-        } else { // When 401 is returned to refreshAccessToken
+        } else {
+          // When 401 is returned to refreshAccessToken
           _deleteUserDataInFile();
         }
       }
     } catch (e) {
-      throw("Could not check Credentials successfully. Error: " + e.toString());
+      throw ("Could not check Credentials successfully. Error: " +
+          e.toString());
     }
   }
 
@@ -126,7 +128,8 @@ class LoginHandler {
             accessToken: responseJson['access_token'],
             refreshToken: responseJson['refresh_token']);
         return data;
-      } else if (responseData.statusCode == 401) { // When refresh token is revoked
+      } else if (responseData.statusCode == 401) {
+        // When refresh token is revoked
         return null;
       } else {
         throw ("Could not refresh access token. Status code ${responseData.statusCode}");
@@ -182,7 +185,7 @@ class LoginHandler {
       );
       var responseJson = await response;
       var responseData = json.decode(responseJson.body);
-      if(responseJson.statusCode == 200){
+      if (responseJson.statusCode == 200) {
         Userdata tokenData = Userdata(
           username: responseData['username'],
           editCount: responseData['editcount'],
@@ -196,7 +199,8 @@ class LoginHandler {
         );
         return tokenData;
       } else {
-        throw(Exception("No 200 Status on API response. Status Code ${responseJson.statusCode} has been returned instead."));
+        throw (Exception(
+            "No 200 Status on API response. Status Code ${responseJson.statusCode} has been returned instead."));
       }
     } else {
       throw (Exception("Access Token is empty"));

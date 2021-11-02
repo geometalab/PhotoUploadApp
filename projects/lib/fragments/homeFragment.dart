@@ -25,23 +25,18 @@ class HomeFragment extends StatelessWidget {
         title: "Picture of the day",
         description: 'yuh',
         image: FutureBuilder(
-          future: PictureOfTheDayService().getItem(0),
-          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
-            if(snapshot.hasData){
-              if(snapshot.data!.description != null) {
-                String link = PictureOfTheDayService().getImageUrl(snapshot.data!);
-                return Image.network(link);
-              } else {
-                return Container(
-                  color: CustomColors.NO_IMAGE_COLOR,
-                );
-              }
+          future: PictureOfTheDayService().getPictureOfTheDay(),
+          builder:
+              (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if (snapshot.hasData) {
+              String link =
+                  PictureOfTheDayService().getImageUrl(snapshot.data!);
+              return Image.network(link);
             } else {
               return CircularProgressIndicator.adaptive();
             }
           },
-        )
-    ));
+        )));
     articleList.add(new Article(
         title: "title 3",
         description: "desciription sadjf sadf",
