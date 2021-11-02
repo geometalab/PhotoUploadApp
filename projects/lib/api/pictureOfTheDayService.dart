@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:http/io_client.dart';
 
@@ -20,7 +19,6 @@ class PictureOfTheDayService {
       throw("Picture of the day data cannot be retrieved from RSS Feed.");
     }
     var recentDay = channel.items![channel.items!.length - 1 - daysSince];
-    print(recentDay.toString());
     return PictureOfTheDay(title: recentDay.title, link: recentDay.link, description: recentDay.description);
   }
 

@@ -26,9 +26,13 @@ class LoginHandler {
       Userdata? data = await getUserInformationFromFile();
       if (data != null) {
         data = await refreshAccessToken();
-        data = await getUserInformationFromAPI(data);
-        data.lastCheck = DateTime.now();
-        saveUserDataToFile(data);
+        if(data != null) {
+          data = await getUserInformationFromAPI(data);
+          data.lastCheck = DateTime.now();
+          saveUserDataToFile(data);
+        } else { // When 401 is returned to refreshAccessToken
+          _deleteUserDataInFile();
+        }
       }
     } catch (e) {
       throw("Could not check Credentials successfully. Error: " + e.toString());
@@ -98,7 +102,7 @@ class LoginHandler {
     }
   }
 
-  Future<Userdata> refreshAccessToken() async {
+  Future<Userdata?> refreshAccessToken() async {
     Userdata? userdata = await getUserInformationFromFile();
     String clientSecret = await _getClientSecret();
     if (userdata == null || userdata.refreshToken == "") {
@@ -122,8 +126,9 @@ class LoginHandler {
             accessToken: responseJson['access_token'],
             refreshToken: responseJson['refresh_token']);
         return data;
+      } else if (responseData.statusCode == 401) { // When refresh token is revoked
+        return null;
       } else {
-        // TODO investigate which codes get returned when app permission revoked/wrong access token etc.. (to then delete local user data)
         throw ("Could not refresh access token. Status code ${responseData.statusCode}");
       }
     }
