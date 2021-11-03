@@ -101,6 +101,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO "settings" menu tile at bottom
     List<Widget> drawerOptions = [];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -126,16 +127,18 @@ class HomePageState extends State<HomePage> {
         ),
         drawer: new Drawer(
           child: new Column(
-            children: <Widget>[
-              // TODO DrawerMenu header (maybe display wikimedia account when logged in)
-              DrawerHeader(child: Text("TODO: Header")),
-              new Column(children: drawerOptions)
-            ],
+            children: <Widget>[drawerHeader(), Column(children: drawerOptions)],
           ),
         ),
         body: _getDrawerItemWidget(_selectedDrawerIndex),
       );
     }
+  }
+
+  Widget drawerHeader() {
+    return DrawerHeader(
+      child: Text("TODO"),
+    );
   }
 
   @override

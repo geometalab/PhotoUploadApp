@@ -67,7 +67,7 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
         child: ListView.builder(
           itemCount: collector.categories.length,
           shrinkWrap: true,
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(4),
           scrollDirection: Axis.vertical,
           itemBuilder: (BuildContext context, int i) {
             return Card(

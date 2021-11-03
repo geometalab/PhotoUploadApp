@@ -78,6 +78,7 @@ class _UserFragmentState extends State<UserFragment> {
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
             childrenPadding: EdgeInsets.symmetric(horizontal: 8),
+            initiallyExpanded: true,
           ),
         ),
         TextButton(

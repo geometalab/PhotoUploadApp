@@ -61,7 +61,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         image(), // TODO Implement fullscreen view of image on click
                   ),
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                 Card(
                     margin: EdgeInsets.zero,
                     child: Padding(
@@ -106,13 +106,13 @@ class ReviewFragmentState extends State<ReviewFragment> {
                       ),
                     )),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                 ),
                 Card(
                   margin: EdgeInsets.zero,
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     child: Column(
                       children: [
                         Text(
@@ -157,8 +157,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.image == null ||
             collector.fileName == "" ||
             collector.fileName == null ||
-            collector.title == "" ||
-            collector.title == null ||
+            //  collector.title == "" ||
+            //  collector.title == null ||
             collector.author == "" ||
             collector.author == null ||
             collector.license == "" ||
