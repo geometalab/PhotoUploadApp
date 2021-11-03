@@ -2,11 +2,11 @@ import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/api/pictureOfTheDayService.dart';
+import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
-import 'package:projects/style/themes.dart';
 
 class HomeFragment extends StatelessWidget {
   @override
@@ -20,23 +20,25 @@ class HomeFragment extends StatelessWidget {
         title: "Upload Guide",
         description:
             "This short guide gives an overview over what you can upload to Wikimedia Commons.",
-        onTap: new UploadGuideFragment()));
+        onTap: UploadGuideFragment()));
     articleList.add(new Article(
         title: "Picture of the day",
-        description: 'yuh',
         image: FutureBuilder(
           future: PictureOfTheDayService().getPictureOfTheDay(),
           builder:
               (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
             if (snapshot.hasData) {
               String link =
-                  PictureOfTheDayService().getImageUrl(snapshot.data!);
+                  PictureOfTheDayService().getImageUrl(snapshot.data!, 300);
               return Image.network(link);
             } else {
-              return CircularProgressIndicator.adaptive();
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
             }
           },
-        )));
+        ),
+        onTap: PictureOfTheDayFragment()));
     articleList.add(new Article(
         title: "title 3",
         description: "desciription sadjf sadf",
@@ -143,13 +145,14 @@ class ArticleList {
                       Padding(
                           padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
                           child: article.image as Widget),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                      child: Text(
-                        article.description,
-                        style: customStyles.objectDescription,
-                      ),
-                    )
+                    if (article.description != null)
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                        child: Text(
+                          article.description ?? "",
+                          style: customStyles.objectDescription,
+                        ),
+                      )
                   ],
                 ),
               ))));
@@ -185,10 +188,9 @@ class ArticleList {
 
 class Article {
   String title;
-  String description;
+  String? description;
   Widget? image;
   Widget? onTap;
 
-  Article(
-      {required this.title, required this.description, this.image, this.onTap});
+  Article({required this.title, this.description, this.image, this.onTap});
 }

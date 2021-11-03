@@ -15,3 +15,6 @@ final TextStyle smallLabel = new TextStyle(
     height: 1.5,
     color: Colors.grey,
     overflow: TextOverflow.fade);
+final TextStyle hyperlink = new TextStyle(
+  color: Colors.blue,
+);

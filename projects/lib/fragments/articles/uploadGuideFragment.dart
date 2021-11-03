@@ -71,5 +71,3 @@ class UploadGuideFragment extends StatelessWidget {
     );
   }
 }
-
-
