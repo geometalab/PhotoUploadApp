@@ -4,6 +4,7 @@ import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
+import 'package:projects/style/userAvatar.dart';
 
 class UserFragment extends StatefulWidget {
   @override
@@ -67,13 +68,7 @@ class _UserFragmentState extends State<UserFragment> {
               style: headerText,
             ),
             subtitle: Text("View Profile 〉", style: objectDescription),
-            leading: CircleAvatar(
-              child: Icon(
-                Icons.person_outline_rounded,
-                color: Color.fromRGBO(229, 229, 229, 1),
-              ),
-              backgroundColor: Theme.of(context).disabledColor,
-            ),
+            leading: UserAvatar(),
             children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,

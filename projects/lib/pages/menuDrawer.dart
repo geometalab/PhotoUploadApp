@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:projects/api/connectionStatus.dart';
 import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/api/pictureOfTheDayService.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
 import 'package:projects/fragments/singlePage/noConnection.dart';
 import 'package:projects/fragments/userFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
+import 'package:projects/style/textStyles.dart';
+import 'package:projects/style/userAvatar.dart';
 
 class DrawerItem {
   String title;
@@ -136,8 +139,43 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget drawerHeader() {
-    return DrawerHeader(
-      child: Text("TODO"),
+    return FutureBuilder(
+      // TODO this gets the info before it is written to file in case of login, resulting in the drawer staying in the wrong state for one refresh
+      future: LoginHandler().getUserInformationFromFile(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (!snapshot.hasData || snapshot.data == null) {
+          return DrawerHeader(
+            child: Container(
+              color: Theme.of(context).colorScheme.primary,
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 16,
+                    bottom: 16,
+                    child: Text(
+                      "Not logged into wikimedia",
+                      style: headerText.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            padding: EdgeInsets.zero,
+          );
+        } else {
+          Userdata data = snapshot.data;
+          return UserAccountsDrawerHeader(
+              currentAccountPicture: UserAvatar(),
+              currentAccountPictureSize: Size.square(48),
+              // arrowColor: Theme.of(context).colorScheme.onPrimary,
+              // onDetailsPressed: () { }, // TODO maybe put something in this dropdown
+              accountName: Text(data.username),
+              accountEmail: Text(data.email));
+        }
+      },
     );
   }
 
