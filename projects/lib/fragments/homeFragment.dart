@@ -23,7 +23,18 @@ class HomeFragment extends StatelessWidget {
         onTap: UploadGuideFragment()));
     articleList.add(new Article(
         title: "Picture of the day",
-        image: Image.network(PictureOfTheDayService().getPictureOfTheDay().imageUrl),
+        image: FutureBuilder(
+          future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if(snapshot.hasData) {
+              return Image.network(snapshot.data!.imageUrl);
+            } else {
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+          },
+        ),
         onTap: PictureOfTheDayFragment()));
     articleList.add(new Article(
         title: "title 3",

@@ -13,42 +13,52 @@ class PictureOfTheDayFragment extends StatelessWidget {
         title: Text("Picture of the day"),
       ),
       body: Center(
-        child: ListView(
-          padding: EdgeInsets.all(16),
-          children: [
-            Text(
-              "Wikimedia Picture of the day",
-              style: headerText,
-            ),
-            Divider(),
-        Column(
-          children: [
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HeroPhotoViewRouteWrapper(
-                        imageProvider: NetworkImage(
-                            potd.getPictureOfTheDay().imageUrl,
-                      ),
-                    )
-                  ));
-                },
-                child: Container(
-                  child: Hero(
-                    tag: "someTag",
-                    child:
-                    Image.network(potd.getPictureOfTheDay().imageUrl),
+        child: FutureBuilder(
+          future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if(snapshot.hasData) {
+              return ListView(
+                padding: EdgeInsets.all(16),
+                children: [
+                  Text(
+                    "Wikimedia Picture of the day",
+                    style: headerText,
                   ),
-                )),
-            RichText(
-              text:
-              TextSpan(children: potd.getPictureOfTheDay().richDescription),
-            ),
-          ],
-        ),
-          ],
+                  Divider(),
+                  Column(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HeroPhotoViewRouteWrapper(
+                                      imageProvider: NetworkImage(
+                                        snapshot.data!.imageUrl,
+                                      ),
+                                    )
+                                ));
+                          },
+                          child: Container(
+                            child: Hero(
+                              tag: "someTag",
+                              child:
+                              Image.network(snapshot.data!.imageUrl),
+                            ),
+                          )),
+                      RichText(
+                        text:
+                        TextSpan(children: snapshot.data!.richDescription),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            } else {
+              return LinearProgressIndicator();
+            }
+          },
+
         ),
       ),
     );
