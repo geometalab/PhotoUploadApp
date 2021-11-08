@@ -22,7 +22,6 @@ class PictureOfTheDayService {
     getItemFromFeed(0);
   }
 
-
   Future<PictureOfTheDay> getItemFromFeed(int daysSince) async {
     final client = IOClient(HttpClient()
       ..badCertificateCallback =
@@ -54,15 +53,15 @@ class PictureOfTheDayService {
     }
     return _pictureOfTheDay!;
   }
-  
+
   PictureOfTheDay getPictureOfTheDay() {
     getItemFromFeed(0).then((value) => _pictureOfTheDay = value);
-    if(_pictureOfTheDay != null) {
+    if (_pictureOfTheDay != null) {
       return _pictureOfTheDay!;
     } else {
-      return PictureOfTheDay(imageUrl: "", richDescription: List.empty(), pubDate: DateTime.now());
+      return PictureOfTheDay(
+          imageUrl: "", richDescription: List.empty(), pubDate: DateTime.now());
     }
-    
   }
 
   String _getImageUrl(String description, int width) {
@@ -89,9 +88,9 @@ class PictureOfTheDayService {
     return _convertHtmlTags(desc);
   }
 
-  String _getDescription (List<TextSpan> spans) {
+  String _getDescription(List<TextSpan> spans) {
     String desc = "";
-    for(TextSpan span in spans) {
+    for (TextSpan span in spans) {
       desc += span.text!;
     }
     return desc;

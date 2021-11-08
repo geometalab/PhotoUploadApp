@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:projects/api/pictureOfTheDayService.dart';
@@ -23,21 +24,10 @@ class HomeFragment extends StatelessWidget {
             "This short guide gives an overview over what you can upload to Wikimedia Commons.",
         onTap: UploadGuideFragment()));
     articleList.add(new Article(
-        title: "Picture of the day",
-        image: FutureBuilder(
-
-          future: PictureOfTheDayService().getPictureOfTheDayAsync(),
-          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
-            if(snapshot.hasData) {
-              return Image.network(snapshot.data!.imageUrl);
-            } else {
-              return Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-          },
-        ),
-        onTap: PictureOfTheDayFragment()));
+      title: "Title two",
+      description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when...",
+    ));
     articleList.add(new Article(
         title: "title 3",
         description: "desciription sadjf sadf",
@@ -50,16 +40,16 @@ class HomeFragment extends StatelessWidget {
 
     return new Scaffold(
         body: Center(
-            child: Column(
+            child: ListView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.all(8),
           children: [
-            Expanded(
-                child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                children: articleList.generateLists(
-                    context, articleList.generateCards(context)),
-              ),
-            )),
+            headerWidget(context),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: articleList.generateLists(
+                  context, articleList.generateCards(context)),
+            ),
           ],
         )),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -120,7 +110,8 @@ class HomeFragment extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
                       child: FutureBuilder(
-                        future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+                        future:
+                            PictureOfTheDayService().getPictureOfTheDayAsync(),
                         builder: (BuildContext context,
                             AsyncSnapshot<PictureOfTheDay> snapshot) {
                           if (snapshot.hasData) {
@@ -219,8 +210,7 @@ class ArticleList {
 
     for (List list in listception) {
       returnList.add(Expanded(
-          child: ListView(
-        padding: EdgeInsets.all(2),
+          child: Column(
         children: list as List<Widget>,
       )));
     }

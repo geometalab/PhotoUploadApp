@@ -15,8 +15,9 @@ class PictureOfTheDayFragment extends StatelessWidget {
       body: Center(
         child: FutureBuilder(
           future: PictureOfTheDayService().getPictureOfTheDayAsync(),
-          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
-            if(snapshot.hasData) {
+          builder:
+              (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if (snapshot.hasData) {
               return ListView(
                 padding: EdgeInsets.all(16),
                 children: [
@@ -32,23 +33,22 @@ class PictureOfTheDayFragment extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HeroPhotoViewRouteWrapper(
-                                      imageProvider: NetworkImage(
-                                        snapshot.data!.imageUrl,
-                                      ),
-                                    )
-                                ));
+                                    builder: (context) =>
+                                        HeroPhotoViewRouteWrapper(
+                                          imageProvider: NetworkImage(
+                                            snapshot.data!.imageUrl,
+                                          ),
+                                        )));
                           },
                           child: Container(
                             child: Hero(
                               tag: "someTag",
-                              child:
-                              Image.network(snapshot.data!.imageUrl),
+                              child: Image.network(snapshot.data!.imageUrl),
                             ),
                           )),
                       RichText(
                         text:
-                        TextSpan(children: snapshot.data!.richDescription),
+                            TextSpan(children: snapshot.data!.richDescription),
                       ),
                     ],
                   ),
@@ -58,7 +58,6 @@ class PictureOfTheDayFragment extends StatelessWidget {
               return LinearProgressIndicator();
             }
           },
-
         ),
       ),
     );
