@@ -54,8 +54,9 @@ class HomeFragment extends StatelessWidget {
               future: PictureOfTheDayService().getPictureOfTheDayAsync(),
               builder: (BuildContext context,
                   AsyncSnapshot<PictureOfTheDay> snapshot) {
+                Widget child;
                 if (snapshot.hasData) {
-                  return Stack(
+                  child = Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
@@ -75,13 +76,17 @@ class HomeFragment extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return Center(
+                  child = Center(
                     child: Padding(
                       padding: EdgeInsets.all(16),
                       child: CircularProgressIndicator.adaptive(),
                     ),
                   );
                 }
+                return AnimatedSwitcher( // TODO Smoother transition
+                  duration: Duration(milliseconds: 1000),
+                  child: child,
+                );
               },
             ),
           ));

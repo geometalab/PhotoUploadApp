@@ -46,9 +46,23 @@ class PictureOfTheDayFragment extends StatelessWidget {
                               child: Image.network(snapshot.data!.imageUrl),
                             ),
                           )),
+                      Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
                       RichText(
                         text:
                             TextSpan(children: snapshot.data!.richDescription),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          potd.openPotdWeb();
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.public),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 2)),
+                            Text("View in browser")
+                          ],
+                        ),
                       ),
                     ],
                   ),

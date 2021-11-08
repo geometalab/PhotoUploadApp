@@ -19,7 +19,12 @@ class PictureOfTheDayService {
     return _pictureOfTheDayService;
   }
   PictureOfTheDayService._internal() {
-    getItemFromFeed(0);
+    getItemFromFeed(0); // On initialisation, get POTD from RSS feed
+  }
+
+  openPotdWeb() {
+    _openURL(
+        "https://commons.wikimedia.org/wiki/Commons:Picture_of_the_day"); // TODO open the actual page of POTD, not this site
   }
 
   Future<PictureOfTheDay> getItemFromFeed(int daysSince) async {
@@ -108,30 +113,41 @@ class PictureOfTheDayService {
       // While ends when worked through the whole string
       if (input[position] == "<") {
         // If next is a tag
-        // Extract url
-        startIndex = input.indexOf("href=", position) + 6;
-        position = startIndex;
-        endIndex = input.indexOf("\"", position);
-        String href = input.substring(startIndex, endIndex);
+        var ay = input.substring(position, position + 2);
+        if (input.substring(position, position + 3) == "<i>") {
+          endIndex = input.indexOf("</i>", position);
+          spans.add(TextSpan(
+            text: input.substring(position + 3, endIndex),
+            style: new TextStyle(color: Colors.black45),
+          ));
+          position = endIndex + 4;
+        } else {
+          // If tag is not a <i> tag (so probably a <a> tag)
+          // Extract url
+          startIndex = input.indexOf("href=", position) + 6;
+          position = startIndex;
+          endIndex = input.indexOf("\"", position);
+          String href = input.substring(startIndex, endIndex);
 
-        // When a redirect is to commons, it is a relative url in the RSS Feed, so we need to add the wikimedia url by ourselves.
-        if (href.startsWith("/wiki/")) {
-          href = "https://commons.wikimedia.org" + href;
+          // When a redirect is to commons, it is a relative url in the RSS Feed, so we need to add the wikimedia url by ourselves.
+          if (href.startsWith("/wiki/")) {
+            href = "https://commons.wikimedia.org" + href;
+          }
+
+          // Extract link text
+          startIndex = input.indexOf(">", position) + 1;
+          endIndex = input.indexOf("</a>", position);
+          spans.add(TextSpan(
+            text: input.substring(startIndex, endIndex),
+            style: hyperlink,
+            recognizer: new TapGestureRecognizer()
+              ..onTap = () {
+                _openURL(href);
+              },
+          ));
+          position = endIndex +
+              4; // Set position to current position & skip the </a> tag
         }
-
-        // Extract link text
-        startIndex = input.indexOf(">", position) + 1;
-        endIndex = input.indexOf("</a>", position);
-        spans.add(TextSpan(
-          text: input.substring(startIndex, endIndex),
-          style: hyperlink,
-          recognizer: new TapGestureRecognizer()
-            ..onTap = () {
-              _openURL(href);
-            },
-        ));
-        position = endIndex +
-            4; // Set position to current position & skip the </a> tag
       } else {
         // If next is normal tag
         endIndex =
