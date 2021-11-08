@@ -110,6 +110,7 @@ class ArticleList {
           color: Theme.of(context).cardColor,
           child: GestureDetector(
               onTap: () {
+
                 if (article.onTap != null) {
                   Navigator.push(
                     context,

@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
+import 'articles/uploadGuideFragment.dart';
 
 // TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)
@@ -25,7 +26,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
   @override
   Widget build(BuildContext context) {
     var categoryTitle =
-        _marker.key.toString().substring(3, _marker.key.toString().length - 3);
+    _marker.key.toString().substring(3, _marker.key.toString().length - 3);
     List<Card> cards = List.empty(growable: true);
 
     return new Scaffold(
@@ -39,7 +40,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
           children: <Widget>[
             FutureBuilder(
               future: ImageService().getCategoryImages(categoryTitle, 400,
-                  10), // TODO? at the moment only 10 first pics get shown, maybe someting like "load more" at the end?
+                  10), // TODO? at the moment only 10 first pics get shown, maybe something like "load more" at the end?
               builder: (BuildContext context,
                   AsyncSnapshot<List<ImageURL>> snapshot) {
                 // TODO Loading Indicator for Images as they might take quite a long time to load
@@ -60,29 +61,58 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                             Padding(
                               padding: EdgeInsets.only(top: 10),
                               child: Text(images[i].name,
-                                  style:
-                                      TextStyle(fontStyle: FontStyle.italic)),
+                                  style: TextStyle(fontStyle: FontStyle.italic)
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HeroPhotoViewRouteWrapper(
+                                      imageProvider: AssetImage(
+                                        "",
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            ButtonBar(
+                              alignment: MainAxisAlignment.start,
+                              children: [
+                                ElevatedButton(
+                                    onPressed: (){
+
+                                    },
+                                    child: const Text('Show More'))
+                              ],
                             ),
                           ],
                         ),
-                      ),
-                    ));
+                      )
+                    ),
+                    );
                   }
                   return Expanded(
                       child: ListView(
-                    // TODO The last Image on page gets cut off a bit because of the button
-                    padding: EdgeInsets.all(8),
-                    children: cards,
-                  ));
+                        // TODO The last Image on page gets cut off a bit because of the button
+                        padding: EdgeInsets.all(8),
+                        children: cards,
+                      )
+                  );
                 } else {
-                  return CircularProgressIndicator();
+                  return CircularProgressIndicator.adaptive();
                 }
               },
             )
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.lightBlueAccent,
+        // TODO This is completely fucked
         onPressed: () {
           setState(() {
             collector.preFillContent = categoryTitle;
