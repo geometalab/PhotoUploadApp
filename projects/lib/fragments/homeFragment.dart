@@ -25,13 +25,11 @@ class HomeFragment extends StatelessWidget {
     articleList.add(new Article(
         title: "Picture of the day",
         image: FutureBuilder(
-          future: PictureOfTheDayService().getPictureOfTheDay(),
-          builder:
-              (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
-            if (snapshot.hasData) {
-              String link =
-                  PictureOfTheDayService().getImageUrl(snapshot.data!, 900);
-              return Image.network(link);
+
+          future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if(snapshot.hasData) {
+              return Image.network(snapshot.data!.imageUrl);
             } else {
               return Center(
                 child: CircularProgressIndicator.adaptive(),

@@ -13,57 +13,54 @@ class PictureOfTheDayFragment extends StatelessWidget {
         title: Text("Picture of the day"),
       ),
       body: Center(
-        child: ListView(
-          padding: EdgeInsets.all(16),
-          children: [
-            Text(
-              "Wikimedia Picture of the day",
-              style: headerText,
-            ),
-            Divider(),
-            imageBuilder(),
-          ],
+        child: FutureBuilder(
+          future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+          builder: (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
+            if(snapshot.hasData) {
+              return ListView(
+                padding: EdgeInsets.all(16),
+                children: [
+                  Text(
+                    "Wikimedia Picture of the day",
+                    style: headerText,
+                  ),
+                  Divider(),
+                  Column(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HeroPhotoViewRouteWrapper(
+                                      imageProvider: NetworkImage(
+                                        snapshot.data!.imageUrl,
+                                      ),
+                                    )
+                                ));
+                          },
+                          child: Container(
+                            child: Hero(
+                              tag: "someTag",
+                              child:
+                              Image.network(snapshot.data!.imageUrl),
+                            ),
+                          )),
+                      RichText(
+                        text:
+                        TextSpan(children: snapshot.data!.richDescription),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            } else {
+              return LinearProgressIndicator();
+            }
+          },
+
         ),
       ),
-    );
-  }
-
-  FutureBuilder imageBuilder() {
-    return FutureBuilder(
-      future: potd.getPictureOfTheDay(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          return Column(
-            children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HeroPhotoViewRouteWrapper(
-                          imageProvider: NetworkImage(
-                              potd.getImageUrl(snapshot.data, 1920)),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    child: Hero(
-                      tag: "someTag",
-                      child:
-                          Image.network(potd.getImageUrl(snapshot.data, 1920)),
-                    ),
-                  )),
-              RichText(
-                text:
-                    TextSpan(children: potd.getImageDescription(snapshot.data)),
-              ),
-            ],
-          );
-        } else {
-          return Container();
-        }
-      },
     );
   }
 }

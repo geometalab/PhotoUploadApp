@@ -53,6 +53,8 @@ class HomePageState extends State<HomePage> {
     connectionStatus.checkConnection().then((value) => connectionChanged(
         connectionStatus.hasConnection)); // For check on startup
 
+    PictureOfTheDayService().getPictureOfTheDay(); // Preload POTD
+
     LoginHandler()
         .checkCredentials(); // Get user info if there is a login on this device
 
