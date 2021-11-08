@@ -3,6 +3,7 @@ import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:projects/api/pictureOfTheDayService.dart';
 import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
@@ -38,13 +39,60 @@ class HomeFragment extends StatelessWidget {
 
     // ------------------------------
 
+    Widget headerWidget() {
+      return Card(
+          color: Theme.of(context).cardColor,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PictureOfTheDayFragment()),
+              );
+            },
+            child: FutureBuilder(
+              future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<PictureOfTheDay> snapshot) {
+                if (snapshot.hasData) {
+                  return Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4.0),
+                        child: Image.network(snapshot.data!.imageUrl),
+                      ),
+                      Positioned(
+                          bottom: 8,
+                          left: 12,
+                            child: Container(
+                              child: Text(
+                                "Picture of the Day",
+                                style: customStyles.articleTitle.copyWith(color: Colors.white),
+                              ),
+                            ),
+                          )
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
+                  );
+                }
+              },
+            ),
+          ));
+    }
+
     return new Scaffold(
         body: Center(
             child: ListView(
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.all(8),
           children: [
-            headerWidget(context),
+            headerWidget(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: articleList.generateLists(
@@ -82,50 +130,6 @@ class HomeFragment extends StatelessWidget {
                 icon: Icon(Icons.search))
           ],
         ));
-  }
-
-  Widget headerWidget(BuildContext context) {
-    return Card(
-        color: Theme.of(context).cardColor,
-        child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PictureOfTheDayFragment()),
-              );
-            },
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Text(
-                        "Picture of the Day",
-                        style: customStyles.articleTitle,
-                      )),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                      child: FutureBuilder(
-                        future:
-                            PictureOfTheDayService().getPictureOfTheDayAsync(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<PictureOfTheDay> snapshot) {
-                          if (snapshot.hasData) {
-                            return Image.network(snapshot.data!.imageUrl);
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator.adaptive(),
-                            );
-                          }
-                        },
-                      )),
-                ],
-              ),
-            )));
   }
 }
 
