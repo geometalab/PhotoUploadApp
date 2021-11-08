@@ -21,49 +21,36 @@ class PictureOfTheDayFragment extends StatelessWidget {
               style: headerText,
             ),
             Divider(),
-            imageBuilder(),
+        Column(
+          children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HeroPhotoViewRouteWrapper(
+                        imageProvider: NetworkImage(
+                            potd.getPictureOfTheDay().imageUrl,
+                      ),
+                    )
+                  ));
+                },
+                child: Container(
+                  child: Hero(
+                    tag: "someTag",
+                    child:
+                    Image.network(potd.getPictureOfTheDay().imageUrl),
+                  ),
+                )),
+            RichText(
+              text:
+              TextSpan(children: potd.getPictureOfTheDay().richDescription),
+            ),
+          ],
+        ),
           ],
         ),
       ),
-    );
-  }
-
-  FutureBuilder imageBuilder() {
-    return FutureBuilder(
-      future: potd.getPictureOfTheDay(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          return Column(
-            children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HeroPhotoViewRouteWrapper(
-                          imageProvider: NetworkImage(
-                              potd.getImageUrl(snapshot.data, 900)),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    child: Hero(
-                      tag: "someTag",
-                      child:
-                          Image.network(potd.getImageUrl(snapshot.data, 900)),
-                    ),
-                  )),
-              RichText(
-                text:
-                    TextSpan(children: potd.getImageDescription(snapshot.data)),
-              ),
-            ],
-          );
-        } else {
-          return Container();
-        }
-      },
     );
   }
 }
