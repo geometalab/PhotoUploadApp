@@ -62,15 +62,16 @@ class HomeFragment extends StatelessWidget {
                         child: Image.network(snapshot.data!.imageUrl),
                       ),
                       Positioned(
-                          bottom: 8,
-                          left: 12,
-                            child: Container(
-                              child: Text(
-                                "Picture of the Day",
-                                style: customStyles.articleTitle.copyWith(color: Colors.white),
-                              ),
-                            ),
-                          )
+                        bottom: 8,
+                        left: 12,
+                        child: Container(
+                          child: Text(
+                            "Picture of the Day",
+                            style: customStyles.articleTitle
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                      )
                     ],
                   );
                 } else {
