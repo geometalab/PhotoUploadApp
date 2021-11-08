@@ -120,13 +120,11 @@ class HomeFragment extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
                       child: FutureBuilder(
-                        future: PictureOfTheDayService().getPictureOfTheDay(),
+                        future: PictureOfTheDayService().getPictureOfTheDayAsync(),
                         builder: (BuildContext context,
                             AsyncSnapshot<PictureOfTheDay> snapshot) {
                           if (snapshot.hasData) {
-                            String link = PictureOfTheDayService()
-                                .getImageUrl(snapshot.data!, 900);
-                            return Image.network(link);
+                            return Image.network(snapshot.data!.imageUrl);
                           } else {
                             return Center(
                               child: CircularProgressIndicator.adaptive(),
