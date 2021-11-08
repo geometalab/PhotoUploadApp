@@ -170,6 +170,13 @@ class HomePageState extends State<HomePage> {
         } else {
           Userdata data = snapshot.data;
           return UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  image: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/FCAB_EMD_GT22CU-3_San_Pedro_-_Ascotan.jpg/640px-FCAB_EMD_GT22CU-3_San_Pedro_-_Ascotan.jpg"),
+                ),
+              ),
               currentAccountPicture: UserAvatar(),
               currentAccountPictureSize: Size.square(48),
               // arrowColor: Theme.of(context).colorScheme.onPrimary,

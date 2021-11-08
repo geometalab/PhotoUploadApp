@@ -67,7 +67,7 @@ class _UserFragmentState extends State<UserFragment> {
               userdata.username,
               style: headerText,
             ),
-            subtitle: Text("View Profile 〉", style: objectDescription),
+            subtitle: Text("View Details 〉", style: objectDescription),
             leading: UserAvatar(),
             children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
