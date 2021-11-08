@@ -55,21 +55,34 @@ class HomeFragment extends StatelessWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<PictureOfTheDay> snapshot) {
                 Widget child;
+                double borderRadius = 4.0;
                 if (snapshot.hasData) {
                   child = Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(4.0),
+                        borderRadius: BorderRadius.circular(borderRadius),
                         child: Image.network(snapshot.data!.imageUrl),
                       ),
                       Positioned(
-                        bottom: 8,
-                        left: 12,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
                         child: Container(
-                          child: Text(
-                            "Picture of the Day",
-                            style: customStyles.articleTitle
-                                .copyWith(color: Colors.white),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            gradient: LinearGradient(colors: [
+                              Colors.black12.withOpacity(0.8),
+                              Colors.transparent
+                            ], begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(12, 48, 12, 12),
+                            child: Text(
+                              "Picture of the Day",
+                              style: customStyles.articleTitle
+                                  .copyWith(color: Colors.white),
+                            ),
                           ),
                         ),
                       )
@@ -83,7 +96,8 @@ class HomeFragment extends StatelessWidget {
                     ),
                   );
                 }
-                return AnimatedSwitcher( // TODO Smoother transition
+                return AnimatedSwitcher(
+                  // TODO Smoother transition
                   duration: Duration(milliseconds: 1000),
                   child: child,
                 );
