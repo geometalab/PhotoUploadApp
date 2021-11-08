@@ -42,7 +42,7 @@ class PictureOfTheDayFragment extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => HeroPhotoViewRouteWrapper(
                           imageProvider: NetworkImage(
-                              potd.getImageUrl(snapshot.data, 900)),
+                              potd.getImageUrl(snapshot.data, 1920)),
                         ),
                       ),
                     );
@@ -51,7 +51,7 @@ class PictureOfTheDayFragment extends StatelessWidget {
                     child: Hero(
                       tag: "someTag",
                       child:
-                          Image.network(potd.getImageUrl(snapshot.data, 900)),
+                          Image.network(potd.getImageUrl(snapshot.data, 1920)),
                     ),
                   )),
               RichText(

@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:projects/api/pictureOfTheDayService.dart';
 import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
@@ -29,7 +30,7 @@ class HomeFragment extends StatelessWidget {
               (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
             if (snapshot.hasData) {
               String link =
-                  PictureOfTheDayService().getImageUrl(snapshot.data!, 300);
+                  PictureOfTheDayService().getImageUrl(snapshot.data!, 900);
               return Image.network(link);
             } else {
               return Center(
@@ -93,6 +94,51 @@ class HomeFragment extends StatelessWidget {
                 icon: Icon(Icons.search))
           ],
         ));
+  }
+
+  Widget headerWidget(BuildContext context) {
+    return Card(
+        color: Theme.of(context).cardColor,
+        child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PictureOfTheDayFragment()),
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        "Picture of the Day",
+                        style: customStyles.articleTitle,
+                      )),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      child: FutureBuilder(
+                        future: PictureOfTheDayService().getPictureOfTheDay(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<PictureOfTheDay> snapshot) {
+                          if (snapshot.hasData) {
+                            String link = PictureOfTheDayService()
+                                .getImageUrl(snapshot.data!, 900);
+                            return Image.network(link);
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          }
+                        },
+                      )),
+                ],
+              ),
+            )));
   }
 }
 
