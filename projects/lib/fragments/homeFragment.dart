@@ -35,9 +35,9 @@ class HomeFragment extends StatelessWidget {
         image: Image.network(
             "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.+jpg")));
     articleList.add(new Article(
-        title: "title 3",
-        description: "desciription sadjf sadf",
-        image: Image.network("")));
+        title: "title 4",
+        description: "yuhh",
+        image: Image.network("https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.+jpg")));
     // ------------------------------
 
     Widget headerWidget() {
