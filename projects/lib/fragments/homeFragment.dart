@@ -70,11 +70,13 @@ class HomeFragment extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(borderRadius),
-                            gradient: LinearGradient(colors: [
-                              Colors.black12.withOpacity(0.8),
-                              Colors.transparent
-                            ], begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter),
+                            gradient: LinearGradient(
+                                colors: [
+                                  Colors.black12.withOpacity(0.8),
+                                  Colors.transparent
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter),
                           ),
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(12, 48, 12, 12),

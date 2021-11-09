@@ -21,62 +21,73 @@ class SettingsFragment extends StatelessWidget {
       throw ("App theme could not be determined");
     }
     return new Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Text("App Theme"),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // App Theme Selector
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("App Theme"),
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  onChanged: (String? newValue) {
+                    if (newValue == "Light") {
+                      EasyDynamicTheme.of(context).changeTheme(dark: false);
+                    } else if (newValue == "Dark") {
+                      EasyDynamicTheme.of(context).changeTheme(dark: true);
+                    } else if (newValue == 'Use System Theme') {
+                      EasyDynamicTheme.of(context).changeTheme(dynamic: true);
+                    } else {
+                      throw ("Theme string could not be read");
+                    }
+                    dropdownValue = newValue!;
+                  },
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  underline: Container(
+                    height: 2,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  items: <String>['Light', 'Dark', 'Use System Theme']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                )
+              ],
+            ),
+            Divider(),
+            // Background image selector
+            GestureDetector(
+              onTap: () {},
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text("Select background image")],
               ),
-              Padding(
-                  padding: EdgeInsets.all(8),
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    onChanged: (String? newValue) {
-                      if (newValue == "Light") {
-                        EasyDynamicTheme.of(context).changeTheme(dark: false);
-                      } else if (newValue == "Dark") {
-                        EasyDynamicTheme.of(context).changeTheme(dark: true);
-                      } else if (newValue == 'Use System Theme') {
-                        EasyDynamicTheme.of(context).changeTheme(dynamic: true);
-                      } else {
-                        throw ("Theme string could not be read");
-                      }
-                      dropdownValue = newValue!;
-                    },
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    items: <String>['Light', 'Dark', 'Use System Theme']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ))
-            ],
-          ),
-          TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutFragment()),
-              );
-            },
-            label: Text("About"),
-            icon: Icon(Icons.info_outline),
-          )
-        ],
+            ),
+            Divider(),
+            // About button
+            TextButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutFragment()),
+                );
+              },
+              label: Text("About"),
+              icon: Icon(Icons.info_outline),
+            )
+          ],
+        ),
       ),
     );
   }

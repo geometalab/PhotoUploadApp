@@ -48,8 +48,9 @@ class PictureOfTheDayFragment extends StatelessWidget {
                           )),
                       Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
                       RichText(
-                        text:
-                            TextSpan(children: snapshot.data!.richDescription, style: TextStyle(height: 1.5)),
+                        text: TextSpan(
+                            children: snapshot.data!.richDescription,
+                            style: TextStyle(height: 1.5)),
                       ),
                       TextButton(
                         onPressed: () {
