@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
+import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'articles/uploadGuideFragment.dart';
 
 // TODO? tabbed view? for more information (see todos below)
@@ -26,7 +27,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
   @override
   Widget build(BuildContext context) {
     var categoryTitle =
-    _marker.key.toString().substring(3, _marker.key.toString().length - 3);
+        _marker.key.toString().substring(3, _marker.key.toString().length - 3);
     List<Card> cards = List.empty(growable: true);
 
     return new Scaffold(
@@ -47,8 +48,9 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                 if (snapshot.hasData) {
                   List<ImageURL> images = snapshot.data!;
                   for (int i = 0; i < images.length; i++) {
-                    cards.add(new Card(
-                      child: Padding(
+                    cards.add(
+                      new Card(
+                          child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,15 +63,16 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                             Padding(
                               padding: EdgeInsets.only(top: 10),
                               child: Text(images[i].name,
-                                  style: TextStyle(fontStyle: FontStyle.italic)
-                              ),
+                                  style:
+                                      TextStyle(fontStyle: FontStyle.italic)),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const HeroPhotoViewRouteWrapper(
+                                    builder: (context) =>
+                                        const HeroPhotoViewRouteWrapper(
                                       imageProvider: AssetImage(
                                         "",
                                       ),
@@ -82,25 +85,21 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                               alignment: MainAxisAlignment.start,
                               children: [
                                 ElevatedButton(
-                                    onPressed: (){
-
-                                    },
+                                    onPressed: () {},
                                     child: const Text('Show More'))
                               ],
                             ),
                           ],
                         ),
-                      )
-                    ),
+                      )),
                     );
                   }
                   return Expanded(
                       child: ListView(
-                        // TODO The last Image on page gets cut off a bit because of the button
-                        padding: EdgeInsets.all(8),
-                        children: cards,
-                      )
-                  );
+                    // TODO The last Image on page gets cut off a bit because of the button
+                    padding: EdgeInsets.all(8),
+                    children: cards,
+                  ));
                 } else {
                   return CircularProgressIndicator.adaptive();
                 }
@@ -109,7 +108,6 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
           ],
         ),
       ),
-
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.lightBlueAccent,
         // TODO This is completely fucked

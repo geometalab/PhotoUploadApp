@@ -14,7 +14,6 @@ class StatefulMapFragment extends StatefulWidget {
 }
 
 class _MapFragment extends State<StatefulMapFragment> {
-
   List<Marker> _markerList = List.empty(growable: true);
 
   final MapController mapController = new MapController();
