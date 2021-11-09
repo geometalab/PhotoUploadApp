@@ -11,6 +11,8 @@ import 'package:projects/fragments/uploadFlow/selectCategory.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'dart:io';
 
+import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
+
 class CommonsUploadFragment extends StatefulWidget {
   @override
   _CommonsUploadFragmentState createState() => _CommonsUploadFragmentState();
@@ -115,14 +117,17 @@ class InformationCollector {
   String? fileName;
   List<String> categories = List.empty(growable: true);
   List<Map<String, dynamic>?> categoriesThumb = List.empty(growable: true);
+  List<String> depicts = List.empty(growable: true);
+  List<Map<String, dynamic>?> depictsThumb = List.empty(growable: true);
   String? preFillContent; // Is loaded into typeahead field
-  String? title;
   String? description;
+  String? source;
   String? author;
   String? license = 'CC0';
   DateTime date = DateTime.now();
+  bool uploaded = false;
 
-  submitData() {
+  submitData() async {
     try {
       UploadService().uploadImage(
           image!, fileName!, fileName!, description!, author!, license!, date);

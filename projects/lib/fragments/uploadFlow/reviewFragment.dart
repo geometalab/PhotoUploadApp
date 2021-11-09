@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
+import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/themes.dart';
@@ -44,6 +46,10 @@ class ReviewFragmentState extends State<ReviewFragment> {
     return Text(text, style: TextStyle(color: CustomColors.WARNING_COLOR));
   }
 
+  Text statusText(BuildContext context, String text) {
+    return Text(text, style: TextStyle(color: Colors.green));
+  }
+
   @override
   Widget build(BuildContext context) {
     infoCheckError();
@@ -76,8 +82,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
                             replaceEmpty: true,
                           ),
                           ValueLabelField(
-                            collector.title,
-                            "title",
+                            collector.source,
+                            "source",
                             icon: titleIcon,
                             replaceEmpty: true,
                           ),
@@ -141,7 +147,17 @@ class ReviewFragmentState extends State<ReviewFragment> {
                             submit(), // Button only enables if infoCheckError returns false
                     child: Text("Submit"),
                   ),
-                )
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      showSendingProgressBar();
+                      Future.delayed(const Duration(milliseconds: 3000), () {
+                        setState(() {
+                          hideSendingProgressBar();
+                        });
+                      });
+                    },
+                    child: Text("yuh")),
               ],
             )));
   }
@@ -176,7 +192,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
     } else if (collector.fileName!.length < 5) {
       infoText.add(warningText(context, "File name is very short"));
     }
-    if (collector.title == "" || collector.title == null) {
+    if (collector.source == "" || collector.source == null) {
       infoText.add(errorText(context, "Title needs to be set"));
       titleIcon = errorIcon(context);
     }
@@ -288,5 +304,15 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (!infoCheckError()) {
       collector.submitData();
     }
+  }
+
+  UploadProgressBar _sendingMsgProgressBar = UploadProgressBar();
+
+  void showSendingProgressBar() {
+    _sendingMsgProgressBar.show(context);
+  }
+
+  void hideSendingProgressBar() {
+    _sendingMsgProgressBar.hide();
   }
 }

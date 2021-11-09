@@ -11,25 +11,19 @@ import '../config.dart';
 class UploadService {
   static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
 
-  void uploadImage(XFile image, String fileName, String title,
-      String description, String author, String license, DateTime date) async {
+  uploadImage(XFile image, String fileName, String source, String description,
+      String author, String license, DateTime date) async {
     var map = await _getCsrfToken();
     String token = map["tokens"]["csrftoken"];
-    _checkCsrfToken(token);
-    var response = await _sendRequest(
-        image, fileName, title, description, author, license, date, token);
-    print("Response stream data: " + response.toString());
+    var response = await _sendImage(image, fileName, token);
+
+    map = await _getCsrfToken();
+    token = map["tokens"]["csrftoken"];
+    _editDetails(author, description, license, source, date, fileName, token);
   }
 
-  Future<http.Response> _sendRequest(
-      XFile image,
-      String fileName,
-      String title,
-      String description,
-      String author,
-      String license,
-      DateTime date,
-      String csrfToken) async {
+  Future<http.Response> _sendImage(
+      XFile image, String fileName, String csrfToken) async {
     var request = http.MultipartRequest(
         'POST',
         Uri.parse("$WIKIMEDIA_API?format=json" +
@@ -44,8 +38,54 @@ class UploadService {
     return http.Response.fromStream(streamResponse);
   }
 
+  Future<http.Response> _editDetails(
+      String author,
+      String description,
+      String license,
+      String source,
+      DateTime date,
+      String filename,
+      String token) async {
+    String editSummary =
+        'Added file details & description. Edited by Wikimedia Commons Uploader.';
+
+    // File Description
+    String descriptionString = "=={{int:filedesc}}== <br />"
+        "{{Information <br />"
+        "|description={{en|1=$description}} <br />"
+        "|date=${date.toIso8601String()} <br />"
+        "|source=$source <br />"
+        "|author=$author <br />"
+        "|permission= <br />"
+        "|other versions= <br />"
+        "}} <br />";
+
+    // License header
+    descriptionString += "=={{int:license-header}}== <br />"
+        "{{$license}} <br />";
+
+    Future<http.Response> response = http.post(
+        Uri.parse('$WIKIMEDIA_API?action=edit&format=json'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded ',
+          'Authorization': 'Bearer ${await _getAccessToken()}',
+        },
+        body: <String, String>{
+          'title': 'File ' + filename,
+          'text': descriptionString,
+          'summary': editSummary,
+          'token': token,
+        });
+    var responseData = await response;
+    if (responseData.statusCode == 200) {
+      return response;
+    } else {
+      throw ("Could edit description. Response Code ${responseData.bodyBytes}");
+    }
+  }
+
+  // For debug purposes
   _checkCsrfToken(String token) async {
-    // For debug purposes
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
         headers: <String, String>{
