@@ -4,6 +4,7 @@ import 'package:projects/api/deepLinkListener.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
+import 'package:projects/style/userAvatar.dart';
 
 class UserFragment extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _UserFragmentState extends State<UserFragment> {
             future: loginHandler.getUserInformationFromFile(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator.adaptive());
               } else {
                 Userdata? data = snapshot.data as Userdata?;
                 if (data == null) {
@@ -67,17 +68,12 @@ class _UserFragmentState extends State<UserFragment> {
               style: headerText,
             ),
             subtitle: Text("View Profile 〉", style: objectDescription),
-            leading: CircleAvatar(
-              child: Icon(
-                Icons.person_outline_rounded,
-                color: Color.fromRGBO(229, 229, 229, 1),
-              ),
-              backgroundColor: Theme.of(context).disabledColor,
-            ),
+            leading: UserAvatar(),
             children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
             childrenPadding: EdgeInsets.symmetric(horizontal: 8),
+            initiallyExpanded: true,
           ),
         ),
         TextButton(

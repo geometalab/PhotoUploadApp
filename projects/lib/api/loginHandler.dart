@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
-// TODO When no api call can be made (no internet, wiki servers down), is the user logged out? If yes, fix
 
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
@@ -27,15 +26,18 @@ class LoginHandler {
       Userdata? data = await getUserInformationFromFile();
       if (data != null) {
         data = await refreshAccessToken();
-        data = await getUserInformationFromAPI(data);
-        data.lastCheck = DateTime.now();
-        saveUserDataToFile(data);
-      } else {
-        _deleteUserDataInFile();
+        if (data != null) {
+          data = await getUserInformationFromAPI(data);
+          data.lastCheck = DateTime.now();
+          saveUserDataToFile(data);
+        } else {
+          // When 401 is returned to refreshAccessToken
+          _deleteUserDataInFile();
+        }
       }
     } catch (e) {
-      print("Could not check Credentials successfully. Error: " + e.toString());
-      _deleteUserDataInFile();
+      throw ("Could not check Credentials successfully. Error: " +
+          e.toString());
     }
   }
 
@@ -102,7 +104,7 @@ class LoginHandler {
     }
   }
 
-  Future<Userdata> refreshAccessToken() async {
+  Future<Userdata?> refreshAccessToken() async {
     Userdata? userdata = await getUserInformationFromFile();
     String clientSecret = await _getClientSecret();
     if (userdata == null || userdata.refreshToken == "") {
@@ -126,6 +128,9 @@ class LoginHandler {
             accessToken: responseJson['access_token'],
             refreshToken: responseJson['refresh_token']);
         return data;
+      } else if (responseData.statusCode == 401) {
+        // When refresh token is revoked
+        return null;
       } else {
         throw ("Could not refresh access token. Status code ${responseData.statusCode}");
       }
@@ -180,18 +185,23 @@ class LoginHandler {
       );
       var responseJson = await response;
       var responseData = json.decode(responseJson.body);
-      Userdata tokenData = Userdata(
-        username: responseData['username'],
-        editCount: responseData['editcount'],
-        email: responseData['email'],
-        realName: responseData['realname'],
-        groups: responseData['groups'],
-        rights: responseData['rights'],
-        grants: responseData['grants'],
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-      );
-      return tokenData;
+      if (responseJson.statusCode == 200) {
+        Userdata tokenData = Userdata(
+          username: responseData['username'],
+          editCount: responseData['editcount'],
+          email: responseData['email'],
+          realName: responseData['realname'],
+          groups: responseData['groups'],
+          rights: responseData['rights'],
+          grants: responseData['grants'],
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        );
+        return tokenData;
+      } else {
+        throw (Exception(
+            "No 200 Status on API response. Status Code ${responseJson.statusCode} has been returned instead."));
+      }
     } else {
       throw (Exception("Access Token is empty"));
     }

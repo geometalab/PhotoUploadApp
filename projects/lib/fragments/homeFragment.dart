@@ -1,12 +1,15 @@
 import 'dart:core';
 import 'package:button_navigation_bar/button_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:projects/api/pictureOfTheDayService.dart';
+import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
-
-final titleFont = new TextStyle(height: 30);
 
 class HomeFragment extends StatelessWidget {
   @override
@@ -20,11 +23,12 @@ class HomeFragment extends StatelessWidget {
         title: "Upload Guide",
         description:
             "This short guide gives an overview over what you can upload to Wikimedia Commons.",
-        onTap: new UploadGuideFragment()));
+        onTap: UploadGuideFragment()));
     articleList.add(new Article(
-        title: "Title 2",
-        description:
-            "sdf sdaf sdafkjklsdaf sadlökfjssda fsad fsafsda fsa fsdfa dfsa fsadf sad faöldf sdasafsfad"));
+      title: "Title two",
+      description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when...",
+    ));
     articleList.add(new Article(
         title: "title 3",
         description: "desciription sadjf sadf",
@@ -37,18 +41,85 @@ class HomeFragment extends StatelessWidget {
             "")));
     // ------------------------------
 
+    Widget headerWidget() {
+      return Card(
+          color: Theme.of(context).cardColor,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PictureOfTheDayFragment()),
+              );
+            },
+            child: FutureBuilder(
+              future: PictureOfTheDayService().getPictureOfTheDayAsync(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<PictureOfTheDay> snapshot) {
+                Widget child;
+                double borderRadius = 4.0;
+                if (snapshot.hasData) {
+                  child = Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        child: Image.network(snapshot.data!.imageUrl),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            gradient: LinearGradient(colors: [
+                              Colors.black12.withOpacity(0.8),
+                              Colors.transparent
+                            ], begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(12, 48, 12, 12),
+                            child: Text(
+                              "Picture of the Day",
+                              style: customStyles.articleTitle
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                } else {
+                  child = Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
+                  );
+                }
+                return AnimatedSwitcher(
+                  // TODO Smoother transition
+                  duration: Duration(milliseconds: 1000),
+                  child: child,
+                );
+              },
+            ),
+          ));
+    }
+
     return new Scaffold(
         body: Center(
-            child: Column(
+            child: ListView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.all(8),
           children: [
-            Expanded(
-                child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                children: articleList.generateLists(
-                    context, articleList.generateCards(context)),
-              ),
-            )),
+            headerWidget(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: articleList.generateLists(
+                  context, articleList.generateCards(context)),
+            ),
           ],
         )),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -134,13 +205,14 @@ class ArticleList {
                       Padding(
                           padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
                           child: article.image as Widget),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                      child: Text(
-                        article.description,
-                        style: customStyles.objectDescription,
-                      ),
-                    )
+                    if (article.description != null)
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                        child: Text(
+                          article.description ?? "",
+                          style: customStyles.objectDescription,
+                        ),
+                      )
                   ],
                 ),
               ))));
@@ -165,8 +237,7 @@ class ArticleList {
 
     for (List list in listception) {
       returnList.add(Expanded(
-          child: ListView(
-        padding: EdgeInsets.all(2),
+          child: Column(
         children: list as List<Widget>,
       )));
     }
@@ -176,10 +247,9 @@ class ArticleList {
 
 class Article {
   String title;
-  String description;
-  Image? image;
+  String? description;
+  Widget? image;
   Widget? onTap;
 
-  Article(
-      {required this.title, required this.description, this.image, this.onTap});
+  Article({required this.title, this.description, this.image, this.onTap});
 }

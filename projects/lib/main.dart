@@ -16,7 +16,7 @@ import 'api/connectionStatus.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton
+  ConnectionStatusListener connectionStatus = ConnectionStatusListener
       .getInstance(); // Initialize the connection listener
   connectionStatus.initialize();
 

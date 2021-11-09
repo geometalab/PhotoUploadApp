@@ -51,7 +51,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
                         thumbnail = Padding(
                           padding: EdgeInsets.zero,
                           child: Center(
-                              child: CircularProgressIndicator(
+                              child: CircularProgressIndicator.adaptive(
                             strokeWidth: 1.5,
                           )),
                         );

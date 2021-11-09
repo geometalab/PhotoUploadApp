@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:projects/api/connectionStatus.dart';
 import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/api/pictureOfTheDayService.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
 import 'package:projects/fragments/singlePage/noConnection.dart';
 import 'package:projects/fragments/userFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
+import 'package:projects/style/textStyles.dart';
+import 'package:projects/style/userAvatar.dart';
 
 class DrawerItem {
   String title;
@@ -43,16 +46,20 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    ConnectionStatusSingleton connectionStatus =
-        ConnectionStatusSingleton.getInstance();
+    ConnectionStatusListener connectionStatus =
+        ConnectionStatusListener.getInstance();
     _connectionChangeStream =
         connectionStatus.connectionChange.listen(connectionChanged);
+    connectionStatus.checkConnection().then((value) => connectionChanged(
+        connectionStatus.hasConnection)); // For check on startup
+
+    PictureOfTheDayService().getPictureOfTheDay(); // Preload POTD
 
     LoginHandler()
-        .checkCredentials(); // Get user information if user has logged in on this device
+        .checkCredentials(); // Get user info if there is a login on this device
 
     WidgetsFlutterBinding.ensureInitialized();
-    WidgetsBinding.instance!.addObserver(// setState(){} on appResumed
+    WidgetsBinding.instance!.addObserver(// setState(){ } on appResumed
         LifecycleEventHandler(resumeCallBack: () async {
       setState(() {});
     }));
@@ -67,7 +74,6 @@ class HomePageState extends State<HomePage> {
   void connectionChanged(dynamic hasConnection) {
     setState(() {
       isOffline = !hasConnection;
-      print(isOffline);
     });
   }
 
@@ -100,6 +106,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO "settings" menu tile at bottom
     List<Widget> drawerOptions = [];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -117,7 +124,7 @@ class HomePageState extends State<HomePage> {
 
     if (isOffline) {
       // If no network connection is detected, display this message
-      return NoConnection().screen(context);
+      return NoConnection();
     } else {
       return new Scaffold(
         appBar: new AppBar(
@@ -125,16 +132,53 @@ class HomePageState extends State<HomePage> {
         ),
         drawer: new Drawer(
           child: new Column(
-            children: <Widget>[
-              // TODO DrawerMenu header (maybe display wikimedia account when logged in)
-              DrawerHeader(child: Text("TODO: Header")),
-              new Column(children: drawerOptions)
-            ],
+            children: <Widget>[drawerHeader(), Column(children: drawerOptions)],
           ),
         ),
         body: _getDrawerItemWidget(_selectedDrawerIndex),
       );
     }
+  }
+
+  Widget drawerHeader() {
+    return FutureBuilder(
+      // TODO this gets the info before it is written to file in case of login, resulting in the drawer staying in the wrong state for one refresh
+      future: LoginHandler().getUserInformationFromFile(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (!snapshot.hasData || snapshot.data == null) {
+          return DrawerHeader(
+            child: Container(
+              color: Theme.of(context).colorScheme.primary,
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 16,
+                    bottom: 16,
+                    child: Text(
+                      "Not logged into wikimedia",
+                      style: headerText.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            padding: EdgeInsets.zero,
+          );
+        } else {
+          Userdata data = snapshot.data;
+          return UserAccountsDrawerHeader(
+              currentAccountPicture: UserAvatar(),
+              currentAccountPictureSize: Size.square(48),
+              // arrowColor: Theme.of(context).colorScheme.onPrimary,
+              // onDetailsPressed: () { }, // TODO maybe put something in this dropdown
+              accountName: Text(data.username),
+              accountEmail: Text(data.email));
+        }
+      },
+    );
   }
 
   @override

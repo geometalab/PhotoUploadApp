@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projects/api/categoryService.dart';
-
+import 'package:projects/style/themes.dart';
 import '../commonsUploadFragment.dart';
+
+// TODO display some text in lower half when no category has been added
 
 class StatefulSelectCategoryFragment extends StatefulWidget {
   @override
@@ -65,13 +67,20 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
         child: ListView.builder(
           itemCount: collector.categories.length,
           shrinkWrap: true,
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(4),
           scrollDirection: Axis.vertical,
           itemBuilder: (BuildContext context, int i) {
             return Card(
               child: ListTile(
-                leading: thumbnail(collector.categoriesThumb[i]),
-                title: Text(collector.categories[i]),
+                leading: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: thumbnail(collector.categoriesThumb[i]),
+                  ),
+                ),
+                title: Text(collector
+                    .categories[i]), // TODO Text all on same vertical line
                 trailing: Icon(Icons.remove),
                 onTap: () {
                   setState(() {
@@ -91,9 +100,12 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
   Widget thumbnail(Map? thumbnail) {
     if (thumbnail == null) {
       return Container(
-        width: 100,
-        height: 60,
-        color: Colors.grey,
+        color: CustomColors.NO_IMAGE_COLOR,
+        child: AspectRatio(
+          aspectRatio: 4 / 3,
+          child: Icon(Icons.image_not_supported,
+              color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
+        ),
       );
     } else {
       return Image.network(thumbnail['url']);
