@@ -71,7 +71,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         children: [
                           ValueLabelField(
                             collector.fileName,
-                            "file name", // TODO does the filename need file name extension? if yes, where should it be added?
+                            "file name", // TODO does the filename need file name extension? if yes, where should it be added
                             icon: fileNameIcon,
                             replaceEmpty: true,
                           ),
@@ -222,7 +222,6 @@ class ReviewFragmentState extends State<ReviewFragment> {
   // A list with all entered categories
   List<Widget> categoriesList() {
     List<Widget> list = new List.empty(growable: true);
-
     // If no keywords in list, display warning message
     if (collector.categories.isEmpty) {
       list.add(Divider());

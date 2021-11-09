@@ -33,10 +33,12 @@ class HomeFragment extends StatelessWidget {
         title: "title 3",
         description: "desciription sadjf sadf",
         image: Image.network(
-            "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg")));
-    articleList.add(
-        new Article(title: "title 4", description: "desciription sadjf sadf"));
-
+            "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.+jpg")));
+    articleList.add(new Article(
+        title: "title 3",
+        description: "desciription sadjf sadf",
+        image: Image.network(
+            "")));
     // ------------------------------
 
     Widget headerWidget() {
@@ -179,6 +181,7 @@ class ArticleList {
           color: Theme.of(context).cardColor,
           child: GestureDetector(
               onTap: () {
+
                 if (article.onTap != null) {
                   Navigator.push(
                     context,
