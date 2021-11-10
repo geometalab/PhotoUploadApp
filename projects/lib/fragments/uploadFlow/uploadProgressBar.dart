@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projects/api/uploadService.dart';
+import 'package:projects/style/textStyles.dart' as customStyles;
 
 class UploadProgressBar {
   OverlayEntry? _progressOverlayEntry;
@@ -22,7 +24,48 @@ class UploadProgressBar {
                 color: Colors.grey.withOpacity(0.5),
               ),
               Center(
-                child: CircularProgressIndicator(),
+                child: StreamBuilder<double>(
+                  stream: UploadProgressStream().stream,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<double> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 40,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          Text("Upload successful",
+                              style: Theme.of(context).textTheme.bodyText1),
+                          TextButton(
+                              onPressed: () => hide(),
+                              child: Text("back to Homepage")),
+                        ],
+                      );
+                    } else {
+                      if (snapshot.data == 1.0) {
+                        return Icon(
+                          Icons.check,
+                          color: Colors.green,
+                          size: 40,
+                        );
+                      } else {
+                        return CircularProgressIndicator(
+                          value: snapshot.data,
+                        );
+                      }
+                    }
+                  },
+                ),
               )
             ],
           ));

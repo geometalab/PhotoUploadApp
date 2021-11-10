@@ -33,8 +33,8 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
       titles = collector.categories;
       thumbs = collector.categoriesThumb;
     } else {
-      titles = collector.depicts;
-      thumbs = collector.depictsThumb;
+      titles = collector.depictions;
+      thumbs = collector.depictionsThumb;
     }
 
     // TODO add help menu
@@ -63,7 +63,8 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
                     fontSize: 20,
                     color: Theme.of(context).textTheme.bodyText1!.color),
                 decoration: InputDecoration(
-                    labelText: "Enter fitting keywords", // TODO maybe change this per useCase
+                    labelText:
+                        "Enter fitting keywords", // TODO maybe change this per useCase
                     border: OutlineInputBorder())),
             suggestionsCallback: (pattern) async {
               return await cs.getSuggestions(pattern);
@@ -81,8 +82,8 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
                   collector.categories.add(suggestion['title']!);
                   collector.categoriesThumb.add(suggestion['thumbnail']);
                 } else {
-                  collector.depicts.add(suggestion['title']!);
-                  collector.depictsThumb.add(suggestion['thumbnail']);
+                  collector.depictions.add(suggestion['title']!);
+                  collector.depictionsThumb.add(suggestion['thumbnail']);
                 }
               });
             },
@@ -112,8 +113,8 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
                       collector.categories.removeAt(i);
                       collector.categoriesThumb.removeAt(i);
                     } else {
-                      collector.depicts.removeAt(i);
-                      collector.depictsThumb.removeAt(i);
+                      collector.depictions.removeAt(i);
+                      collector.depictionsThumb.removeAt(i);
                     }
                   });
                 },

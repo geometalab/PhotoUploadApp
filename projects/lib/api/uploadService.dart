@@ -19,15 +19,51 @@ class UploadService {
       String author,
       String license,
       DateTime date,
-      List<String> categories) async {
+      List<String> categories,
+      List<String> depictions) async {
+    UploadProgressStream progressStream = UploadProgressStream();
+
+    await (Future.delayed(Duration(milliseconds: 450)));
+    progressStream.progress();
+    await (Future.delayed(Duration(milliseconds: 200)));
+    progressStream.progress();
+    await (Future.delayed(Duration(milliseconds: 300)));
+    progressStream.progress();
+    await (Future.delayed(Duration(milliseconds: 130)));
+    progressStream.progress();
+    await (Future.delayed(Duration(milliseconds: 400)));
+    progressStream.done();
+
+    // Wait for animation to complete in uploadProgressBar.dart
+    await (Future.delayed(Duration(milliseconds: 1000)));
+    progressStream.close();
+
+    /*
     var map = await _getCsrfToken();
     String token = map["tokens"]["csrftoken"];
-    // await _sendImage(image, fileName, token);
+    await _sendImage(image, fileName, token);
+
+    sleep(Duration(milliseconds: 300));
+
+    map = await _getCsrfToken();
+    token = map["tokens"]["csrftoken"];
+    await _editDetails(author, description, license, source, date, categories,
+        fileName, token);
+
+    sleep(Duration(milliseconds: 300));
+
+    map = await _getCsrfToken();
+    token = map["tokens"]["csrftoken"];
+    await _editDetails(author, description, license, source, date, categories,
+        fileName, token);
+
+    sleep(Duration(milliseconds: 300));
 
     // map = await _getCsrfToken();
     // token = map["tokens"]["csrftoken"];
-    await _editDetails(author, description, license, source, date, categories,
-        fileName, token);
+    // _editDepictions(depictions, token);
+
+     */
   }
 
   Future<http.Response> _sendImage(
@@ -96,6 +132,12 @@ class UploadService {
     } else {
       throw ("Could edit description. Response Code ${responseData.bodyBytes}");
     }
+  }
+
+  Future<http.Response> _editDepictions(
+      List<String> depicts, String token) async {
+    // TODO Implement _editDepictions
+    throw UnimplementedError("_editDepictions is not implemented.");
   }
 
   // For debug purposes
@@ -189,4 +231,41 @@ class UploadService {
       throw ("Could not get access token. Userdata is null");
     }
   }
+}
+
+class UploadProgressStream {
+  // TODO is it wrong to do this with a singleton??
+  static final UploadProgressStream _instance =
+      UploadProgressStream._internal();
+  factory UploadProgressStream() {
+    return _instance;
+  }
+  UploadProgressStream._internal() {
+    _controller.add(0.1);
+  }
+
+  double _progress = 0.0;
+  StreamController<double> _controller = StreamController<double>.broadcast();
+
+  progress() {
+    _progress += 0.2;
+    _controller.add(_progress);
+  }
+
+  done() {
+    _progress = 1.0;
+    _controller.add(_progress);
+  }
+
+  close() {
+    _progress = 0.0;
+    _controller.add(_progress);
+    _controller.close(); // TODO should you close a broadcast stream?
+  }
+
+  void dispose() {
+    _controller.close();
+  }
+
+  Stream<double> get stream => _controller.stream;
 }

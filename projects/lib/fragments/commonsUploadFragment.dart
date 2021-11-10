@@ -125,24 +125,38 @@ class InformationCollector {
   String? fileType;
   List<String> categories = List.empty(growable: true);
   List<Map<String, dynamic>?> categoriesThumb = List.empty(growable: true);
-  List<String> depicts = List.empty(growable: true);
-  List<Map<String, dynamic>?> depictsThumb = List.empty(growable: true);
-  String? preFillContent; // Is loaded into typeahead field
+  List<String> depictions = List.empty(growable: true);
+  List<Map<String, dynamic>?> depictionsThumb = List.empty(growable: true);
+  String? preFillContent; // Is loaded into typeahead categories field
   String? description;
   String? source;
   String? author;
   String? license = 'CC0';
   DateTime date = DateTime.now();
-  bool uploaded = false;
 
   // Should only be called when all fields are filled correctly
   submitData() async {
     try {
-      UploadService().uploadImage(image!, fileName! + fileType!, source!,
-          description!, author!, license!, date, categories);
+      await UploadService().uploadImage(image!, fileName! + fileType!, source!,
+          description!, author!, license!, date, categories, depictions);
     } catch (e) {
       print(e);
     }
+  }
+
+  clear() {
+    image = null;
+    fileName = null;
+    fileType = null;
+    categories.clear();
+    categoriesThumb.clear();
+    depictions.clear();
+    depictionsThumb.clear();
+    preFillContent = null;
+    source = null;
+    author = null;
+    license = 'CC0';
+    date = DateTime.now();
   }
 
   Image getXFileImage() {

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/api/uploadService.dart';
 import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/keyValueField.dart';
@@ -128,23 +129,11 @@ class ReviewFragmentState extends State<ReviewFragment> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: infoCheckError()
-                        ? null
-                        : () =>
-                            submit(), // Button only enables if infoCheckError returns false
+                        ? null // Button only enables if infoCheckError returns false
+                        : () async => submit(),
                     child: Text("Submit"),
                   ),
                 ),
-                ElevatedButton(
-                    // TODO Remove
-                    onPressed: () {
-                      showSendingProgressBar();
-                      Future.delayed(const Duration(milliseconds: 3000), () {
-                        setState(() {
-                          hideSendingProgressBar();
-                        });
-                      });
-                    },
-                    child: Text("yuh")),
               ],
             )));
   }
@@ -194,7 +183,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.categories.isEmpty) {
       infoText.add(warningText(context, "No categories have been added"));
     }
-    if (collector.depicts.isEmpty) {
+    if (collector.depictions.isEmpty) {
       infoText.add(warningText(context, "No depictions have been added"));
     }
     return isError;
@@ -260,8 +249,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
       titles = collector.categories;
       thumbs = collector.categoriesThumb;
     } else if (useCase == 1) {
-      titles = collector.depicts;
-      thumbs = collector.depictsThumb;
+      titles = collector.depictions;
+      thumbs = collector.depictionsThumb;
     } else
       throw ("Incorrect useCase param for categoriesList");
 
@@ -328,9 +317,12 @@ class ReviewFragmentState extends State<ReviewFragment> {
     return list;
   }
 
-  submit() {
+  submit() async {
     if (!infoCheckError()) {
-      collector.submitData();
+      showSendingProgressBar();
+      await collector.submitData();
+
+      // collector.clear();
     }
   }
 
