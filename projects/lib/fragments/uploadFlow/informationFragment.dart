@@ -62,6 +62,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
           ),
         ),
         Padding(
+          // TODO allow desc in different languages, also multiple languages per image.
           padding: EdgeInsets.all(8),
           child: TextFormField(
               initialValue: collector.description,
