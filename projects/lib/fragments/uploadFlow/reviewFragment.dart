@@ -76,8 +76,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ValueLabelField(
-                            collector.fileName,
-                            "file name", // TODO does the filename need file name extension? if yes, where should it be added
+                            (collector.fileName ?? "") +
+                                (collector.fileType ?? ""),
+                            "file name",
                             icon: fileNameIcon,
                             replaceEmpty: true,
                           ),

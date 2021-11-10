@@ -102,19 +102,19 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   }
 }
 
+// Singleton that saves all data from the different upload steps
 class InformationCollector {
-  // Singleton that saves all data from the different upload steps
   static final InformationCollector _informationCollector =
       InformationCollector._internal();
 
   factory InformationCollector() {
     return _informationCollector;
   }
-
   InformationCollector._internal();
 
   XFile? image;
   String? fileName;
+  String? fileType;
   List<String> categories = List.empty(growable: true);
   List<Map<String, dynamic>?> categoriesThumb = List.empty(growable: true);
   List<String> depicts = List.empty(growable: true);
@@ -127,10 +127,11 @@ class InformationCollector {
   DateTime date = DateTime.now();
   bool uploaded = false;
 
+  // Should only be called when all fields are filled correctly
   submitData() async {
     try {
-      UploadService().uploadImage(image!, fileName!, source!, description!,
-          author!, license!, date, categories);
+      UploadService().uploadImage(image!, fileName! + fileType!, source!,
+          description!, author!, license!, date, categories);
     } catch (e) {
       print(e);
     }

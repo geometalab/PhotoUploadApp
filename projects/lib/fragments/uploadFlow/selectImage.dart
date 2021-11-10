@@ -107,6 +107,7 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
                       onPressed: () {
                         setState(() {
                           collector.image = null;
+                          collector.fileType = null;
                         });
                       },
                       icon: Icon(Icons.delete)),
@@ -188,6 +189,7 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
     map['fileName'] = File(collector.image!.name).toString().substring(6);
     String fileName = map['fileName'].toString().split(".")[1];
     map['fileType'] = "." + fileName.substring(0, fileName.length - 1);
+    collector.fileType = map['fileType'];
     return map;
   }
 
