@@ -7,7 +7,7 @@ import 'package:projects/api/uploadService.dart';
 import 'package:projects/fragments/singlePage/notLoggedIn.dart';
 import 'package:projects/fragments/uploadFlow/informationFragment.dart';
 import 'package:projects/fragments/uploadFlow/reviewFragment.dart';
-import 'package:projects/fragments/uploadFlow/selectCategory.dart';
+import 'package:projects/fragments/uploadFlow/selecItems.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'dart:io';
 
@@ -60,19 +60,25 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                     selectedTab = 1;
                   });
                 },
-                label:
-                    "Add keywords"), // TODO user official wikimedia commons terms for these things
+                label: "Depicts"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 2;
                   });
                 },
-                label: "Add information"),
+                label: "Categories"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 3;
+                  });
+                },
+                label: "Add information"),
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 4;
                   });
                 },
                 label: "Review"),
@@ -91,10 +97,12 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       case 0:
         return SelectImageFragment();
       case 1:
-        return StatefulSelectCategoryFragment();
+        return StatefulSelectItemFragment(1);
       case 2:
-        return StatefulInformationFragment();
+        return StatefulSelectItemFragment(0);
       case 3:
+        return StatefulInformationFragment();
+      case 4:
         return ReviewFragment();
       default:
         throw Exception("Invalid tab index");

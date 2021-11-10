@@ -84,6 +84,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               onChanged: (value) {
                 collector.source = value;
               },
+              // TODO is it always "Own Work"? Or should there at least be a checkbox "not my work" (and only when checked show textfield)?
               decoration: const InputDecoration(
                   icon: Icon(Icons.source),
                   labelText: 'Source',

@@ -115,24 +115,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 4),
                 ),
-                Card(
-                  margin: EdgeInsets.zero,
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Keywords",
-                          style: articleTitle,
-                        ),
-                        Column(
-                          children: categoriesList(),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                listWidgetBuilder(0),
+                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                listWidgetBuilder(1),
                 Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Column(
                   children: infoText,
@@ -150,6 +135,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                   ),
                 ),
                 ElevatedButton(
+                    // TODO Remove
                     onPressed: () {
                       showSendingProgressBar();
                       Future.delayed(const Duration(milliseconds: 3000), () {
@@ -174,8 +160,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.image == null ||
             collector.fileName == "" ||
             collector.fileName == null ||
-            //  collector.title == "" ||
-            //  collector.title == null ||
+            collector.source == "" ||
+            collector.source == null ||
             collector.author == "" ||
             collector.author == null ||
             collector.license == "" ||
@@ -208,6 +194,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.categories.isEmpty) {
       infoText.add(warningText(context, "No categories have been added"));
     }
+    if (collector.depicts.isEmpty) {
+      infoText.add(warningText(context, "No depictions have been added"));
+    }
     return isError;
   }
 
@@ -236,11 +225,49 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
-  // A list with all entered categories
-  List<Widget> categoriesList() {
+  Widget listWidgetBuilder(int useCase) {
+    String title;
+    if (useCase == 0) {
+      title = "Categories";
+    } else {
+      title = "Depicts";
+    }
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: articleTitle,
+            ),
+            Column(
+              children: listContentBuilder(useCase),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // A list with all entered categories/depicts items
+  List<Widget> listContentBuilder(int useCase) {
+    List<String> titles;
+    List<Map<String, dynamic>?> thumbs;
+    if (useCase == 0) {
+      titles = collector.categories;
+      thumbs = collector.categoriesThumb;
+    } else if (useCase == 1) {
+      titles = collector.depicts;
+      thumbs = collector.depictsThumb;
+    } else
+      throw ("Incorrect useCase param for categoriesList");
+
     List<Widget> list = new List.empty(growable: true);
     // If no keywords in list, display warning message
-    if (collector.categories.isEmpty) {
+    if (titles.isEmpty) {
       list.add(Divider());
       list.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 2),
@@ -248,7 +275,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "No categories added",
+              "No items added",
               style: objectDescription,
             ),
             warningIcon(context),
@@ -259,9 +286,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
 
     // Add all categories to the list
-    for (int i = 0; i < collector.categories.length; i++) {
+    for (int i = 0; i < titles.length; i++) {
       Widget thumbnail;
-      Map<String, dynamic>? thumbnailJson = collector.categoriesThumb[i];
+      Map<String, dynamic>? thumbnailJson = thumbs[i];
       // If no thumbnail available for category
       if (thumbnailJson == null) {
         thumbnail = Container(
@@ -281,7 +308,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
         children: [
           Flexible(
             child: Text(
-              collector.categories[i],
+              titles[i],
               overflow: TextOverflow.fade,
               style: objectDescription,
             ),
