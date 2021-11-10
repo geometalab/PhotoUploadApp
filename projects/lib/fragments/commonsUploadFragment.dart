@@ -129,8 +129,8 @@ class InformationCollector {
 
   submitData() async {
     try {
-      UploadService().uploadImage(
-          image!, fileName!, fileName!, description!, author!, license!, date);
+      UploadService().uploadImage(image!, fileName!, source!, description!,
+          author!, license!, date, categories);
     } catch (e) {
       print(e);
     }

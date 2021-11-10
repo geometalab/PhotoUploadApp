@@ -65,6 +65,18 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         Padding(
           padding: EdgeInsets.all(8),
           child: TextFormField(
+              initialValue: collector.source,
+              onChanged: (value) {
+                collector.source = value;
+              },
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.source),
+                  labelText: 'Source',
+                  hintText: 'If made by you, enter "Own Work"')),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: TextFormField(
               initialValue: collector.author,
               onChanged: (value) {
                 collector.author = value;

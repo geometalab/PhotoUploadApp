@@ -11,15 +11,23 @@ import '../config.dart';
 class UploadService {
   static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
 
-  uploadImage(XFile image, String fileName, String source, String description,
-      String author, String license, DateTime date) async {
+  uploadImage(
+      XFile image,
+      String fileName,
+      String source,
+      String description,
+      String author,
+      String license,
+      DateTime date,
+      List<String> categories) async {
     var map = await _getCsrfToken();
     String token = map["tokens"]["csrftoken"];
-    var response = await _sendImage(image, fileName, token);
+    // await _sendImage(image, fileName, token);
 
-    map = await _getCsrfToken();
-    token = map["tokens"]["csrftoken"];
-    _editDetails(author, description, license, source, date, fileName, token);
+    // map = await _getCsrfToken();
+    // token = map["tokens"]["csrftoken"];
+    await _editDetails(author, description, license, source, date, categories,
+        fileName, token);
   }
 
   Future<http.Response> _sendImage(
@@ -44,25 +52,31 @@ class UploadService {
       String license,
       String source,
       DateTime date,
+      List<String> categories,
       String filename,
       String token) async {
     String editSummary =
         'Added file details & description. Edited by Wikimedia Commons Uploader.';
 
+    // TODO add "depicts"
     // File Description
-    String descriptionString = "=={{int:filedesc}}== <br />"
-        "{{Information <br />"
-        "|description={{en|1=$description}} <br />"
-        "|date=${date.toIso8601String()} <br />"
-        "|source=$source <br />"
-        "|author=$author <br />"
-        "|permission= <br />"
-        "|other versions= <br />"
-        "}} <br />";
+    String descriptionString = "=={{int:filedesc}}== "
+        "{{Information "
+        "|description={{en|1=$description}} "
+        "|date=${date.year}-${date.month}-${date.day} "
+        "|source=$source "
+        "|author=$author "
+        "|permission= "
+        "|other versions= "
+        "}} <br/>";
 
     // License header
-    descriptionString += "=={{int:license-header}}== <br />"
-        "{{$license}} <br />";
+    descriptionString += "=={{int:license-header}}=="
+        "{{${_convertLicense(license)}}} <br/>";
+
+    for (String category in categories) {
+      descriptionString += "[[Category:$category]] <br />";
+    }
 
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_API?action=edit&format=json'),
@@ -71,7 +85,7 @@ class UploadService {
           'Authorization': 'Bearer ${await _getAccessToken()}',
         },
         body: <String, String>{
-          'title': 'File ' + filename,
+          'title': 'File:' + filename,
           'text': descriptionString,
           'summary': editSummary,
           'token': token,
@@ -136,6 +150,35 @@ class UploadService {
     http.MultipartFile multipartFile =
         new http.MultipartFile('file', stream, length, filename: fileName);
     return multipartFile;
+  }
+
+  String _convertLicense(String license) {
+    switch (license) {
+      case 'CC0':
+        {
+          return "CC0";
+        }
+      case 'Attribution 3.0':
+        {
+          return "cc-by-3.0";
+        }
+      case 'Attribution-ShareAlike 3.0':
+        {
+          return "cc-by-sa-3.0";
+        }
+      case 'Attribution 4.0':
+        {
+          return "cc-by-4.0";
+        }
+      case 'Attribution-ShareAlike 4.0':
+        {
+          return "cc-by-sa-3.0";
+        }
+      default:
+        {
+          return license;
+        }
+    }
   }
 
   Future<String> _getAccessToken() async {
