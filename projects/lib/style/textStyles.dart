@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 final TextStyle articleTitle =
     new TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
+final TextStyle articleText = new TextStyle(
+  height: 1.2,
+  wordSpacing: 0,
+);
 final TextStyle objectDescription =
     new TextStyle(fontWeight: FontWeight.normal, fontSize: 15);
 final TextStyle headerText =
