@@ -5,7 +5,6 @@ import 'package:projects/api/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
-import 'articles/uploadGuideFragment.dart';
 
 // TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)

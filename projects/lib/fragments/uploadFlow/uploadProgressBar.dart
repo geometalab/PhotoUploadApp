@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projects/api/uploadService.dart';
-import 'package:projects/style/textStyles.dart' as customStyles;
 
 class UploadProgressBar {
   OverlayEntry? _progressOverlayEntry;

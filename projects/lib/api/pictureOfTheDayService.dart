@@ -113,7 +113,6 @@ class PictureOfTheDayService {
       // While ends when worked through the whole string
       if (input[position] == "<") {
         // If next is a tag
-        var ay = input.substring(position, position + 2);
         if (input.substring(position, position + 3) == "<i>") {
           endIndex = input.indexOf("</i>", position);
           spans.add(TextSpan(

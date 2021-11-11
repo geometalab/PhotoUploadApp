@@ -11,8 +11,6 @@ import 'package:projects/fragments/uploadFlow/selecItems.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'dart:io';
 
-import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
-
 class CommonsUploadFragment extends StatefulWidget {
   @override
   _CommonsUploadFragmentState createState() => _CommonsUploadFragmentState();

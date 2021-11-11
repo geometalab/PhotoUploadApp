@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/api/uploadService.dart';
 import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
-import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/themes.dart';
