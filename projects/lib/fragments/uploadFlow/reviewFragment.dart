@@ -321,8 +321,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (!infoCheckError()) {
       showSendingProgressBar();
       await collector.submitData();
-
-      // collector.clear();
+      setState(() {
+        collector.clear();
+      });
     }
   }
 

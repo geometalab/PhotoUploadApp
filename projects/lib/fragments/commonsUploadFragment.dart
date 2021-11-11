@@ -148,6 +148,7 @@ class InformationCollector {
     image = null;
     fileName = null;
     fileType = null;
+    description = null;
     categories.clear();
     categoriesThumb.clear();
     depictions.clear();

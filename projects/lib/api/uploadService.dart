@@ -23,6 +23,7 @@ class UploadService {
       List<String> depictions) async {
     UploadProgressStream progressStream = UploadProgressStream();
 
+    progressStream.reset();
     await (Future.delayed(Duration(milliseconds: 450)));
     progressStream.progress();
     await (Future.delayed(Duration(milliseconds: 200)));
@@ -32,11 +33,7 @@ class UploadService {
     await (Future.delayed(Duration(milliseconds: 130)));
     progressStream.progress();
     await (Future.delayed(Duration(milliseconds: 400)));
-    progressStream.done();
-
-    // Wait for animation to complete in uploadProgressBar.dart
-    await (Future.delayed(Duration(milliseconds: 1000)));
-    progressStream.close();
+    progressStream.doneUploading();
 
     /*
     var map = await _getCsrfToken();
@@ -233,34 +230,37 @@ class UploadService {
   }
 }
 
-class UploadProgressStream {
-  // TODO is it wrong to do this with a singleton??
-  static final UploadProgressStream _instance =
-      UploadProgressStream._internal();
-  factory UploadProgressStream() {
-    return _instance;
-  }
-  UploadProgressStream._internal() {
-    _controller.add(0.1);
-  }
+// Updates Listeners over the progress of a image & corresponding description upload
+// Streams a double:
+// 0.0 - 0.99 ->  Upload Progress
+// 1.0        ->  Uploading finished
+// 2.0        ->  is set a second after doneDownloading() is called
 
+class UploadProgressStream {
   double _progress = 0.0;
-  StreamController<double> _controller = StreamController<double>.broadcast();
+  static StreamController<double> _controller =
+      StreamController<double>.broadcast();
+
+  reset() {
+    _progress = 0.0;
+    _controller.add(_progress);
+  }
 
   progress() {
     _progress += 0.2;
     _controller.add(_progress);
   }
 
-  done() {
+  doneUploading() async {
     _progress = 1.0;
     _controller.add(_progress);
+    await Future.delayed(Duration(milliseconds: 1000));
+    doneProcessing();
   }
 
-  close() {
-    _progress = 0.0;
+  doneProcessing() {
+    _progress = 2.0;
     _controller.add(_progress);
-    _controller.close(); // TODO should you close a broadcast stream?
   }
 
   void dispose() {
