@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 import 'package:projects/style/unorderedListWidget.dart';

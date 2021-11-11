@@ -28,7 +28,6 @@ class _InformationFragment extends State<StatefulInformationFragment> {
   }
 
   // Find field info here: https://commons.wikimedia.org/wiki/Template:Information
-  // TODO implement additional fields if needed
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,31 +35,60 @@ class _InformationFragment extends State<StatefulInformationFragment> {
           child: Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  initialValue: collector.fileName,
+                  onChanged: (value) {
+                    collector.fileName = value;
+                  },
+                  // TODO check file name for illegal chars, maybe enforce min and max length
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.file_copy_outlined),
+                    labelText: 'File Name',
+                    hintText: 'Choose a descriptive name',
+                  ),
+                ),
+              ),
+              if (collector.fileType != null)
+                Padding(
+                  padding: EdgeInsets.only(right: 8, left: 8, top: 16),
+                  child: Text(collector.fileType!,
+                      style: Theme.of(context).textTheme.subtitle1),
+                ),
+            ],
+          ),
+        ),
+        Padding(
+          // TODO allow desc in different languages, also multiple languages per image.
+          padding: EdgeInsets.all(8),
           child: TextFormField(
-              initialValue: collector.fileName,
+              initialValue: collector.description,
               onChanged: (value) {
-                collector.fileName = value;
+                collector.description = value;
               },
+              maxLines: 7,
+              keyboardType: TextInputType.multiline,
               decoration: const InputDecoration(
-                icon: Icon(Icons.file_copy_outlined),
-                labelText: 'File Name',
-                hintText: 'Choose a descriptive name',
+                icon: Icon(Icons.text_fields_outlined),
+                labelText: 'Description',
+                hintText: 'Write a meaningful description',
               )),
         ),
         Padding(
           padding: EdgeInsets.all(8),
           child: TextFormField(
-              // TODO big text field doesn't soft wrap
-              initialValue: collector.description,
+              initialValue: collector.source,
               onChanged: (value) {
-                collector.description = value;
+                collector.source = value;
               },
+              // TODO is it always "Own Work"? Or should there at least be a checkbox "not my work" (and only when checked show textfield)?
               decoration: const InputDecoration(
-                icon: Icon(Icons.text_fields_outlined),
-                labelText: 'Description',
-                hintText: 'Write a meaningful description',
-                contentPadding: const EdgeInsets.only(bottom: 100),
-              )),
+                  icon: Icon(Icons.source),
+                  labelText: 'Source',
+                  hintText: 'If made by you, enter "Own Work"')),
         ),
         Padding(
           padding: EdgeInsets.all(8),
