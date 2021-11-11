@@ -7,20 +7,39 @@ import '../commonsUploadFragment.dart';
 
 // TODO display some text in lower half when no category has been added
 
-class StatefulSelectCategoryFragment extends StatefulWidget {
+class StatefulSelectItemFragment extends StatefulWidget {
+  // If 0, uses categories / if 1, uses depicts
+  // yes ik its ugly, feel free to rewrite
+  final int useCase;
+  const StatefulSelectItemFragment(this.useCase);
+
   @override
-  _SelectCategoryFragment createState() => _SelectCategoryFragment();
+  _SelectItemFragment createState() => _SelectItemFragment();
 }
 
-class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
+class _SelectItemFragment extends State<StatefulSelectItemFragment> {
   CategoryService cs = new CategoryService();
   InformationCollector collector = new InformationCollector();
 
   @override
   Widget build(BuildContext context) {
+    final useCase = widget.useCase;
+    if (useCase != 0 && useCase != 1) {
+      throw ("Incorrect useCase param on StatefulSelectCategoryFragment");
+    }
+    List<String> titles;
+    List<Map<String, dynamic>?> thumbs;
+    if (useCase == 0) {
+      titles = collector.categories;
+      thumbs = collector.categoriesThumb;
+    } else {
+      titles = collector.depictions;
+      thumbs = collector.depictionsThumb;
+    }
+
     // TODO add help menu
     String prefillContent;
-    if (collector.preFillContent != null) {
+    if (collector.preFillContent != null && useCase == 0) {
       prefillContent = collector.preFillContent!;
     } else {
       prefillContent = "";
@@ -44,7 +63,8 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                     fontSize: 20,
                     color: Theme.of(context).textTheme.bodyText1!.color),
                 decoration: InputDecoration(
-                    labelText: "Enter fitting keywords",
+                    labelText:
+                        "Enter fitting keywords", // TODO maybe change this per useCase
                     border: OutlineInputBorder())),
             suggestionsCallback: (pattern) async {
               return await cs.getSuggestions(pattern);
@@ -58,14 +78,19 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
             onSuggestionSelected: (Map<String, dynamic> suggestion) {
               // TODO Add Wiki ID in List tile
               setState(() {
-                collector.categories.add(suggestion['title']!);
-                collector.categoriesThumb.add(suggestion['thumbnail']);
+                if (useCase == 0) {
+                  collector.categories.add(suggestion['title']!);
+                  collector.categoriesThumb.add(suggestion['thumbnail']);
+                } else {
+                  collector.depictions.add(suggestion['title']!);
+                  collector.depictionsThumb.add(suggestion['thumbnail']);
+                }
               });
             },
           )),
       Expanded(
         child: ListView.builder(
-          itemCount: collector.categories.length,
+          itemCount: titles.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(4),
           scrollDirection: Axis.vertical,
@@ -76,17 +101,21 @@ class _SelectCategoryFragment extends State<StatefulSelectCategoryFragment> {
                   padding: EdgeInsets.all(6),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: thumbnail(collector.categoriesThumb[i]),
+                    child: thumbnail(thumbs[i]),
                   ),
                 ),
-                title: Text(collector
-                    .categories[i]), // TODO Text all on same vertical line
+                title: Text(titles[i]), // TODO Text all on same vertical line
                 trailing: Icon(Icons.remove),
                 onTap: () {
                   setState(() {
                     _typeAheadController.clear();
-                    collector.categories.removeAt(i);
-                    collector.categoriesThumb.removeAt(i);
+                    if (useCase == 0) {
+                      collector.categories.removeAt(i);
+                      collector.categoriesThumb.removeAt(i);
+                    } else {
+                      collector.depictions.removeAt(i);
+                      collector.depictionsThumb.removeAt(i);
+                    }
                   });
                 },
               ),

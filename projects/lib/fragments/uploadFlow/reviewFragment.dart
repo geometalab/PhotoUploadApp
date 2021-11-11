@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/themes.dart';
@@ -44,6 +45,10 @@ class ReviewFragmentState extends State<ReviewFragment> {
     return Text(text, style: TextStyle(color: CustomColors.WARNING_COLOR));
   }
 
+  Text statusText(BuildContext context, String text) {
+    return Text(text, style: TextStyle(color: Colors.green));
+  }
+
   @override
   Widget build(BuildContext context) {
     infoCheckError();
@@ -70,14 +75,15 @@ class ReviewFragmentState extends State<ReviewFragment> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ValueLabelField(
-                            collector.fileName,
-                            "file name", // TODO does the filename need file name extension? if yes, where should it be added?
+                            (collector.fileName ?? "") +
+                                (collector.fileType ?? ""),
+                            "file name",
                             icon: fileNameIcon,
                             replaceEmpty: true,
                           ),
                           ValueLabelField(
-                            collector.title,
-                            "title",
+                            collector.source,
+                            "source",
                             icon: titleIcon,
                             replaceEmpty: true,
                           ),
@@ -108,24 +114,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 4),
                 ),
-                Card(
-                  margin: EdgeInsets.zero,
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Keywords",
-                          style: articleTitle,
-                        ),
-                        Column(
-                          children: categoriesList(),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                listWidgetBuilder(0),
+                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                listWidgetBuilder(1),
                 Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Column(
                   children: infoText,
@@ -136,12 +127,11 @@ class ReviewFragmentState extends State<ReviewFragment> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: infoCheckError()
-                        ? null
-                        : () =>
-                            submit(), // Button only enables if infoCheckError returns false
+                        ? null // Button only enables if infoCheckError returns false
+                        : () async => submit(),
                     child: Text("Submit"),
                   ),
-                )
+                ),
               ],
             )));
   }
@@ -157,8 +147,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.image == null ||
             collector.fileName == "" ||
             collector.fileName == null ||
-            //  collector.title == "" ||
-            //  collector.title == null ||
+            collector.source == "" ||
+            collector.source == null ||
             collector.author == "" ||
             collector.author == null ||
             collector.license == "" ||
@@ -176,7 +166,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
     } else if (collector.fileName!.length < 5) {
       infoText.add(warningText(context, "File name is very short"));
     }
-    if (collector.title == "" || collector.title == null) {
+    if (collector.source == "" || collector.source == null) {
       infoText.add(errorText(context, "Title needs to be set"));
       titleIcon = errorIcon(context);
     }
@@ -190,6 +180,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
     if (collector.categories.isEmpty) {
       infoText.add(warningText(context, "No categories have been added"));
+    }
+    if (collector.depictions.isEmpty) {
+      infoText.add(warningText(context, "No depictions have been added"));
     }
     return isError;
   }
@@ -219,12 +212,49 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
-  // A list with all entered categories
-  List<Widget> categoriesList() {
-    List<Widget> list = new List.empty(growable: true);
+  Widget listWidgetBuilder(int useCase) {
+    String title;
+    if (useCase == 0) {
+      title = "Categories";
+    } else {
+      title = "Depicts";
+    }
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: articleTitle,
+            ),
+            Column(
+              children: listContentBuilder(useCase),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
+  // A list with all entered categories/depicts items
+  List<Widget> listContentBuilder(int useCase) {
+    List<String> titles;
+    List<Map<String, dynamic>?> thumbs;
+    if (useCase == 0) {
+      titles = collector.categories;
+      thumbs = collector.categoriesThumb;
+    } else if (useCase == 1) {
+      titles = collector.depictions;
+      thumbs = collector.depictionsThumb;
+    } else
+      throw ("Incorrect useCase param for categoriesList");
+
+    List<Widget> list = new List.empty(growable: true);
     // If no keywords in list, display warning message
-    if (collector.categories.isEmpty) {
+    if (titles.isEmpty) {
       list.add(Divider());
       list.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 2),
@@ -232,7 +262,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "No categories added",
+              "No items added",
               style: objectDescription,
             ),
             warningIcon(context),
@@ -243,9 +273,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
 
     // Add all categories to the list
-    for (int i = 0; i < collector.categories.length; i++) {
+    for (int i = 0; i < titles.length; i++) {
       Widget thumbnail;
-      Map<String, dynamic>? thumbnailJson = collector.categoriesThumb[i];
+      Map<String, dynamic>? thumbnailJson = thumbs[i];
       // If no thumbnail available for category
       if (thumbnailJson == null) {
         thumbnail = Container(
@@ -265,7 +295,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
         children: [
           Flexible(
             child: Text(
-              collector.categories[i],
+              titles[i],
               overflow: TextOverflow.fade,
               style: objectDescription,
             ),
@@ -285,9 +315,23 @@ class ReviewFragmentState extends State<ReviewFragment> {
     return list;
   }
 
-  submit() {
+  submit() async {
     if (!infoCheckError()) {
-      collector.submitData();
+      showSendingProgressBar();
+      await collector.submitData();
+      setState(() {
+        collector.clear();
+      });
     }
+  }
+
+  UploadProgressBar _sendingMsgProgressBar = UploadProgressBar();
+
+  void showSendingProgressBar() {
+    _sendingMsgProgressBar.show(context);
+  }
+
+  void hideSendingProgressBar() {
+    _sendingMsgProgressBar.hide();
   }
 }

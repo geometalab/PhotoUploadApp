@@ -7,7 +7,7 @@ import 'package:projects/api/uploadService.dart';
 import 'package:projects/fragments/singlePage/notLoggedIn.dart';
 import 'package:projects/fragments/uploadFlow/informationFragment.dart';
 import 'package:projects/fragments/uploadFlow/reviewFragment.dart';
-import 'package:projects/fragments/uploadFlow/selectCategory.dart';
+import 'package:projects/fragments/uploadFlow/selecItems.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'dart:io';
 
@@ -58,19 +58,25 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                     selectedTab = 1;
                   });
                 },
-                label:
-                    "Add keywords"), // TODO user official wikimedia commons terms for these things
+                label: "Depicts"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 2;
                   });
                 },
-                label: "Add information"),
+                label: "Categories"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 3;
+                  });
+                },
+                label: "Add information"),
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 4;
                   });
                 },
                 label: "Review"),
@@ -89,10 +95,12 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       case 0:
         return SelectImageFragment();
       case 1:
-        return StatefulSelectCategoryFragment();
+        return StatefulSelectItemFragment(1);
       case 2:
-        return StatefulInformationFragment();
+        return StatefulSelectItemFragment(0);
       case 3:
+        return StatefulInformationFragment();
+      case 4:
         return ReviewFragment();
       default:
         throw Exception("Invalid tab index");
@@ -100,35 +108,54 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   }
 }
 
+// Singleton that saves all data from the different upload steps
 class InformationCollector {
-  // Singleton that saves all data from the different upload steps
   static final InformationCollector _informationCollector =
       InformationCollector._internal();
 
   factory InformationCollector() {
     return _informationCollector;
   }
-
   InformationCollector._internal();
 
   XFile? image;
   String? fileName;
+  String? fileType;
   List<String> categories = List.empty(growable: true);
   List<Map<String, dynamic>?> categoriesThumb = List.empty(growable: true);
-  String? preFillContent; // Is loaded into typeahead field
-  String? title;
+  List<String> depictions = List.empty(growable: true);
+  List<Map<String, dynamic>?> depictionsThumb = List.empty(growable: true);
+  String? preFillContent; // Is loaded into typeahead categories field
   String? description;
+  String? source;
   String? author;
   String? license = 'CC0';
   DateTime date = DateTime.now();
 
-  submitData() {
+  // Should only be called when all fields are filled correctly
+  submitData() async {
     try {
-      UploadService().uploadImage(
-          image!, fileName!, fileName!, description!, author!, license!, date);
+      await UploadService().uploadImage(image!, fileName! + fileType!, source!,
+          description!, author!, license!, date, categories, depictions);
     } catch (e) {
       print(e);
     }
+  }
+
+  clear() {
+    image = null;
+    fileName = null;
+    fileType = null;
+    description = null;
+    categories.clear();
+    categoriesThumb.clear();
+    depictions.clear();
+    depictionsThumb.clear();
+    preFillContent = null;
+    source = null;
+    author = null;
+    license = 'CC0';
+    date = DateTime.now();
   }
 
   Image getXFileImage() {

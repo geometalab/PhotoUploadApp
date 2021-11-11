@@ -14,8 +14,6 @@ class StatefulMapFragment extends StatefulWidget {
 }
 
 class _MapFragment extends State<StatefulMapFragment> {
-  // TODO improve color scheme in this fragment (e.g. markers and cluster markers colors should fit)
-
   List<Marker> _markerList = List.empty(growable: true);
 
   final MapController mapController = new MapController();
@@ -65,6 +63,7 @@ class _MapFragment extends State<StatefulMapFragment> {
                         markers)); // TODO when in very high zoom, clicking a cluster button doesn't zoom anymore, which it still should
                   },
                   heroTag: "clusterBtn",
+                  backgroundColor: Colors.lightBlueAccent,
                 );
               },
               markers: getMarkerList(),
@@ -76,6 +75,7 @@ class _MapFragment extends State<StatefulMapFragment> {
             ),
           ]),
       floatingActionButton: new FloatingActionButton.extended(
+        backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
           ncs
               .markerBuilder(ncs.getNearbyCategories(

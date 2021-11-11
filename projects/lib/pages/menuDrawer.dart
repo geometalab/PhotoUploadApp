@@ -77,6 +77,11 @@ class HomePageState extends State<HomePage> {
     });
   }
 
+  openHomePage() {
+    _onSelectItem(0);
+    setState(() {});
+  }
+
   void refresh() {
     setState(() {});
   }

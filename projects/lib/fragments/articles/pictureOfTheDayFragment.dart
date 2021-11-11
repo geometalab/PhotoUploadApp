@@ -5,7 +5,7 @@ import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/textStyles.dart';
 
 class PictureOfTheDayFragment extends StatelessWidget {
-  PictureOfTheDayService potd = PictureOfTheDayService();
+  final PictureOfTheDayService potd = PictureOfTheDayService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
