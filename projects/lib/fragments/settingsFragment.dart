@@ -67,11 +67,19 @@ class SettingsFragment extends StatelessWidget {
             Divider(),
             // Background image selector
             GestureDetector(
-              onTap: () {},
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("Select background image")],
+              onTap: () {
+
+              },
+              child: SizedBox(
+                height: 50,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Select background image"),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
               ),
             ),
             Divider(),
