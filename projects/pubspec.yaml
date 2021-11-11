@@ -53,6 +53,7 @@ dependencies:
   intl: ^0.17.0
   webfeed: any
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
