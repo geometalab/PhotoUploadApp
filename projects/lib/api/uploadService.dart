@@ -23,44 +23,28 @@ class UploadService {
       List<String> depictions) async {
     UploadProgressStream progressStream = UploadProgressStream();
 
-    progressStream.reset();
-    await (Future.delayed(Duration(milliseconds: 450)));
-    progressStream.progress();
-    await (Future.delayed(Duration(milliseconds: 200)));
-    progressStream.progress();
-    await (Future.delayed(Duration(milliseconds: 300)));
-    progressStream.progress();
-    await (Future.delayed(Duration(milliseconds: 130)));
-    progressStream.progress();
-    await (Future.delayed(Duration(milliseconds: 400)));
-    progressStream.doneUploading();
+    int progressNumber = 3; // represents times progress() is called
 
-    /*
+    progressStream.reset();
+    await (Future.delayed(Duration(milliseconds: 500)));
+    progressStream.progress(progressNumber);
+
     var map = await _getCsrfToken();
     String token = map["tokens"]["csrftoken"];
     await _sendImage(image, fileName, token);
 
-    sleep(Duration(milliseconds: 300));
+    progressStream.progress(progressNumber);
 
     map = await _getCsrfToken();
     token = map["tokens"]["csrftoken"];
     await _editDetails(author, description, license, source, date, categories,
         fileName, token);
 
-    sleep(Duration(milliseconds: 300));
+    progressStream.progress(progressNumber);
 
-    map = await _getCsrfToken();
-    token = map["tokens"]["csrftoken"];
-    await _editDetails(author, description, license, source, date, categories,
-        fileName, token);
-
-    sleep(Duration(milliseconds: 300));
-
-    // map = await _getCsrfToken();
-    // token = map["tokens"]["csrftoken"];
-    // _editDepictions(depictions, token);
-
-     */
+    // Simulated _editDepictions()
+    await (Future.delayed(Duration(milliseconds: 700)));
+    progressStream.doneUploading();
   }
 
   Future<http.Response> _sendImage(
@@ -89,26 +73,29 @@ class UploadService {
       String filename,
       String token) async {
     String editSummary =
-        'Added file details & description. Edited by Wikimedia Commons Uploader.';
+        'Added file details & description. Edited by Wikimedia Commons Uploader.'; // TODO insert final name once determined
 
     // TODO add "depicts"
     // File Description
-    String descriptionString = "=={{int:filedesc}}== "
-        "{{Information "
-        "|description={{en|1=$description}} "
-        "|date=${date.year}-${date.month}-${date.day} "
-        "|source=$source "
-        "|author=$author "
-        "|permission= "
-        "|other versions= "
-        "}} <br/>";
+    // DO NOT INDENT!
+    String descriptionString = """
+=={{int:filedesc}}== 
+{{Information 
+|description={{en|1=$description}} 
+|date=${date.year}-${date.month}-${date.day} 
+|source=$source 
+|author=$author 
+|permission= 
+|other versions= 
+}}
 
-    // License header
-    descriptionString += "=={{int:license-header}}=="
-        "{{${_convertLicense(license)}}} <br/>";
+=={{int:license-header}}==
+{{${_convertLicense(license)}}}
+
+""";
 
     for (String category in categories) {
-      descriptionString += "[[Category:$category]] <br />";
+      descriptionString += "[[Category:$category]] ";
     }
 
     Future<http.Response> response = http.post(
@@ -235,7 +222,6 @@ class UploadService {
 // 0.0 - 0.99 ->  Upload Progress
 // 1.0        ->  Uploading finished
 // 2.0        ->  is set a second after doneDownloading() is called
-
 class UploadProgressStream {
   double _progress = 0.0;
   static StreamController<double> _controller =
@@ -246,8 +232,12 @@ class UploadProgressStream {
     _controller.add(_progress);
   }
 
-  progress() {
-    _progress += 0.2;
+  progress(int count) {
+    // int count represents how many times progressStream.progress() is called,
+    // which helps calculate how much a single progress() should advance
+    // the progress value
+    double _progressValue = 1.0 / (count + 1);
+    _progress += _progressValue;
     _controller.add(_progress);
   }
 
