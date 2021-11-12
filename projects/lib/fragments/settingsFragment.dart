@@ -1,16 +1,16 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/api/settingsManager.dart';
 import 'package:projects/fragments/aboutFragment.dart';
 import 'package:projects/fragments/singlePage/imageSelector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsFragment extends StatelessWidget {
-  static SharedPreferences? prefs;
-
+  late SettingsManager manager;
   @override
   Widget build(BuildContext context) {
-    int selectedBackgroundImage;
+    manager = SettingsManager();
     ThemeMode? themeMode = EasyDynamicTheme.of(context).themeMode;
     String dropdownValue;
     if (themeMode == ThemeMode.light) {
@@ -24,8 +24,9 @@ class SettingsFragment extends StatelessWidget {
     }
 
     callBack(int newIndex) {
-      selectedBackgroundImage = newIndex;
-      print(newIndex.toString());
+      String path = assetImages()[newIndex];
+      manager.setBackgroundImage(path);
+      print("Set new image path: " + path);
     }
 
     return new Center(

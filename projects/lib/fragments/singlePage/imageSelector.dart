@@ -11,7 +11,8 @@ class ImageSelectorFragment extends StatefulWidget {
   _ImageSelectorFragmentState createState() => _ImageSelectorFragmentState();
 }
 
-class _ImageSelectorFragmentState extends State<ImageSelectorFragment> with TickerProviderStateMixin {
+class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
+    with TickerProviderStateMixin {
   // TODO when a image is selected, unselect when new image selected (so only one can be selected at a time)
   // TODO broken in general :)
   int? _selectedImage;
@@ -42,16 +43,16 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment> with Tick
     for (int i = 0; i < imageList.length; i = i + 3) {
       rowList.add(Row(
         children: [
-            imageContainer(i, imageList),
-            imageContainer(i + 1, imageList),
-            imageContainer(i + 2, imageList),
+          imageContainer(i, imageList),
+          imageContainer(i + 1, imageList),
+          imageContainer(i + 2, imageList),
         ],
       ));
     }
     return rowList;
   }
 
-  Widget imageContainer (int index, List<String> imageList) {
+  Widget imageContainer(int index, List<String> imageList) {
     if (index < imageList.length) {
       bool _selected = false;
       late AnimationController _controller;
@@ -66,43 +67,42 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment> with Tick
       ).animate(_controller);
 
       _tapped() {
-        if(_selected) {
+        if (_selected) {
           _controller.reverse();
           _selectedImage = null;
-          setState(() { });
+          setState(() {});
         } else {
           _selectedImage = index;
-          setState(() {
-
-          });
+          setState(() {});
           _controller.forward();
         }
         _selected = !_selected;
       }
 
-
       return Flexible(
         flex: 1,
         child: GestureDetector(
-          onTap: () {
-            _tapped();
-          },
+            onTap: () {
+              _tapped();
+            },
             child: AspectRatio(
-              aspectRatio: 1/1,
+              aspectRatio: 1 / 1,
               child: Padding(
                 padding: EdgeInsets.all(2),
                 child: AnimatedBuilder(
                   builder: (BuildContext context, Widget? child) {
-                    return Transform.scale(scale:
-                    animation.value,
-                    child: Image.asset(imageList[index], fit: BoxFit.cover,),);
+                    return Transform.scale(
+                      scale: animation.value,
+                      child: Image.asset(
+                        imageList[index],
+                        fit: BoxFit.cover,
+                      ),
+                    );
                   },
                   animation: animation,
-                )
-                ,
+                ),
               ),
-            )
-        ),
+            )),
       );
     } else {
       return Flexible(
@@ -112,8 +112,8 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment> with Tick
     }
   }
 
-  Widget? floatingActionButton () {
-    if(_selectedImage != null) {
+  Widget? floatingActionButton() {
+    if (_selectedImage != null) {
       return FloatingActionButton(
         onPressed: () {
           widget.callback(_selectedImage!);

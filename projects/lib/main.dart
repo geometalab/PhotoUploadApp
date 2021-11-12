@@ -1,5 +1,6 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/api/settingsManager.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 import 'api/connectionStatus.dart';
@@ -19,6 +20,8 @@ void main() async {
   ConnectionStatusListener connectionStatus = ConnectionStatusListener
       .getInstance(); // Initialize the connection listener
   connectionStatus.initialize();
+
+  SettingsManager(); // Initialize shared preferences
 
   runApp(
     EasyDynamicThemeWidget(
