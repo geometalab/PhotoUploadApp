@@ -10,6 +10,7 @@ class SettingsFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int selectedBackgroundImage;
     ThemeMode? themeMode = EasyDynamicTheme.of(context).themeMode;
     String dropdownValue;
     if (themeMode == ThemeMode.light) {
@@ -21,6 +22,12 @@ class SettingsFragment extends StatelessWidget {
     } else {
       throw ("App theme could not be determined");
     }
+
+    callBack(int newIndex) {
+      selectedBackgroundImage = newIndex;
+      print(newIndex.toString());
+    }
+
     return new Center(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -69,12 +76,11 @@ class SettingsFragment extends StatelessWidget {
             // Background image selector
             GestureDetector(
               onTap: () {
-                print("HEy");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ImageSelectorFragment(assetImages())),
+                          ImageSelectorFragment(assetImages(), callBack)),
                 );
               },
               child: SizedBox(
