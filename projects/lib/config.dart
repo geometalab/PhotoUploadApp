@@ -1,10 +1,4 @@
 class Config {
-  static final Config _config = Config._internal();
-  factory Config() {
-    return _config;
-  }
-  Config._internal();
-
   static const WIKIMEDIA_REST = "https://commons.wikimedia.org/w/rest.php";
   static const WIKIMEDIA_API = "https://commons.wikimedia.org/w/api.php";
   // static const WIKIMEDIA_REST = "https://test.wikipedia.org/w/rest.php";
