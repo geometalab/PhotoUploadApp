@@ -63,7 +63,7 @@ class _MapFragment extends State<StatefulMapFragment> {
                         markers)); // TODO when in very high zoom, clicking a cluster button doesn't zoom anymore, which it still should
                   },
                   heroTag: "clusterBtn",
-                  backgroundColor: Colors.lightBlueAccent,
+                  backgroundColor: Theme.of(context).primaryColor,
                 );
               },
               markers: getMarkerList(),
@@ -75,7 +75,7 @@ class _MapFragment extends State<StatefulMapFragment> {
             ),
           ]),
       floatingActionButton: new FloatingActionButton.extended(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           ncs
               .markerBuilder(ncs.getNearbyCategories(
@@ -96,7 +96,6 @@ class _MapFragment extends State<StatefulMapFragment> {
 
   @override
   initState() {
-    // TODO This fires when drawer is opened. Doesn't break app, but throws Exception.
     super.initState();
     getStartPosition().then((latLng) {
       // Center on position if available
