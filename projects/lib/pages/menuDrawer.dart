@@ -5,6 +5,7 @@ import 'package:projects/api/connectionStatus.dart';
 import 'package:projects/api/lifeCycleEventHandler.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/api/pictureOfTheDayService.dart';
+import 'package:projects/api/settingsManager.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';
@@ -174,7 +175,23 @@ class HomePageState extends State<HomePage> {
           );
         } else {
           Userdata data = snapshot.data;
+          Decoration? decoration;
+          String? imagePath = SettingsManager().getBackgroundImage();
+          if (imagePath != null) {
+            decoration = BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                image: AssetImage(imagePath),
+              ),
+            );
+          } else {
+            decoration = BoxDecoration(
+                // TODO implement no background image
+                );
+          }
           return UserAccountsDrawerHeader(
+              decoration: decoration,
               currentAccountPicture: UserAvatar(),
               currentAccountPictureSize: Size.square(48),
               // arrowColor: Theme.of(context).colorScheme.onPrimary,

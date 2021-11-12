@@ -117,7 +117,6 @@ class PictureOfTheDayService {
           endIndex = input.indexOf("</i>", position);
           spans.add(TextSpan(
             text: input.substring(position + 3, endIndex),
-            style: new TextStyle(color: Colors.black45),
           ));
           position = endIndex + 4;
         } else {
@@ -157,7 +156,6 @@ class PictureOfTheDayService {
         }
         spans.add(TextSpan(
           text: input.substring(position, endIndex),
-          style: new TextStyle(color: Colors.black45),
         ));
         position = endIndex;
       }
