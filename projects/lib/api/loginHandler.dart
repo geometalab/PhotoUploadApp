@@ -224,6 +224,9 @@ class LoginHandler {
   Future<String> _readFromFile(String dir) async {
     Directory appDocDirectory = await getApplicationDocumentsDirectory();
     final file = File(appDocDirectory.path + "/" + dir);
+    if (!(await file.exists())) {
+      await _writeToFile(dir, "");
+    }
     return file.readAsString();
   }
 
