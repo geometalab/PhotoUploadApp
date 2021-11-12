@@ -2,6 +2,7 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/fragments/aboutFragment.dart';
+import 'package:projects/fragments/singlePage/imageSelector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsFragment extends StatelessWidget {
@@ -68,7 +69,13 @@ class SettingsFragment extends StatelessWidget {
             // Background image selector
             GestureDetector(
               onTap: () {
-
+                print("HEy");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ImageSelectorFragment(assetImages())),
+                );
               },
               child: SizedBox(
                 height: 50,
@@ -98,5 +105,18 @@ class SettingsFragment extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<String> assetImages() {
+    String path = "assets/media/backgrounds/";
+    List<String> images = List.empty(growable: true);
+    images.add(path + "aurora.jpg");
+    images.add(path + "frogs.jpg");
+    images.add(path + "national_park.jpg");
+    images.add(path + "old_town.jpg");
+    images.add(path + "roundhouse.jpg");
+    images.add(path + "train.jpg");
+    images.add(path + "waterfalls.jpg");
+    return images;
   }
 }
