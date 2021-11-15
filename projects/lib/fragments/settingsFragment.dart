@@ -77,6 +77,7 @@ class SettingsFragment extends StatelessWidget {
             // Background image selector
             GestureDetector(
               onTap: () {
+                // TODO tap hit box to small
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -124,6 +125,7 @@ class SettingsFragment extends StatelessWidget {
     images.add(path + "roundhouse.jpg");
     images.add(path + "train.jpg");
     images.add(path + "waterfalls.jpg");
+    images.add("");
     return images;
   }
 }

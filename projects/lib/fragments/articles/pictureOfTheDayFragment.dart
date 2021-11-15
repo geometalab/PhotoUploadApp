@@ -50,7 +50,11 @@ class PictureOfTheDayFragment extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                             children: snapshot.data!.richDescription,
-                            style: articleText.copyWith(color: Theme.of(context).textTheme.bodyText1!.color)),
+                            style: articleText.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color)),
                       ),
                       TextButton(
                         onPressed: () {

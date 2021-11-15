@@ -21,7 +21,6 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO better colors for tab bar in dark mode
     // TODO noticeable frame drop when switching tabs
     return new Scaffold(
         backgroundColor: Theme.of(context).canvasColor,

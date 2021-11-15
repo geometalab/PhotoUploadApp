@@ -54,7 +54,6 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
 
   Widget imageContainer(int index, List<String> imageList) {
     if (index < imageList.length) {
-      bool _selected = false;
       late AnimationController _controller;
       _controller = AnimationController(
         duration: Duration(milliseconds: 120),
@@ -67,16 +66,40 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
       ).animate(_controller);
 
       _tapped() {
-        if (_selected) {
-          _controller.reverse();
+        if (_selectedImage == index) {
           _selectedImage = null;
+          _controller.reverse();
           setState(() {});
         } else {
           _selectedImage = index;
-          setState(() {});
           _controller.forward();
+          setState(() {});
         }
-        _selected = !_selected;
+      }
+
+      Widget builderChild() {
+        if (imageList[index] == "") {
+          return Container(
+            color: Colors.grey,
+            child: Center(
+              child: Icon(
+                Icons.clear,
+                size: 50,
+              ),
+            ),
+          );
+        } else {
+          return Image.asset(
+            imageList[index],
+            fit: BoxFit.cover,
+          );
+        }
+      }
+
+      if (_selectedImage == index) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
       }
 
       return Flexible(
@@ -93,10 +116,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
                   builder: (BuildContext context, Widget? child) {
                     return Transform.scale(
                       scale: animation.value,
-                      child: Image.asset(
-                        imageList[index],
-                        fit: BoxFit.cover,
-                      ),
+                      child: builderChild(),
                     );
                   },
                   animation: animation,
