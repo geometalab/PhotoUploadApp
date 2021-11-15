@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
     new DrawerItem("Home", Icons.home_filled),
     new DrawerItem("Divider", null),
     new DrawerItem("Upload to Wikimedia", Icons.upload_file),
-    new DrawerItem("Find nearby Categories", Icons.add_location_outlined),
+    new DrawerItem("Find nearby Categories", Icons.map),
     new DrawerItem("Divider", null),
     new DrawerItem("Account Settings", Icons.person),
     new DrawerItem("Divider", null),

@@ -4,7 +4,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
-import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 
 // TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)
@@ -27,7 +26,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
   Widget build(BuildContext context) {
     var categoryTitle =
         _marker.key.toString().substring(3, _marker.key.toString().length - 3);
-    List<Card> cards = List.empty(growable: true);
+    List<Widget> cards = List.empty(growable: true);
 
     return new Scaffold(
       appBar: AppBar(
@@ -40,16 +39,16 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
           children: <Widget>[
             FutureBuilder(
               future: ImageService().getCategoryImages(categoryTitle, 400,
-                  10), // TODO? at the moment only 10 first pics get shown, maybe something like "load more" at the end?
+                  10), // TODO? at the moment only 10 first pics get shown, maybe someting like "load more" at the end?
               builder: (BuildContext context,
                   AsyncSnapshot<List<ImageURL>> snapshot) {
                 // TODO Loading Indicator for Images as they might take quite a long time to load
                 if (snapshot.hasData) {
                   List<ImageURL> images = snapshot.data!;
+                  cards.clear();
                   for (int i = 0; i < images.length; i++) {
-                    cards.add(
-                      new Card(
-                          child: Padding(
+                    cards.add(new Card(
+                      child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,42 +64,21 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                                   style:
                                       TextStyle(fontStyle: FontStyle.italic)),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const HeroPhotoViewRouteWrapper(
-                                      imageProvider: AssetImage(
-                                        "",
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            ButtonBar(
-                              alignment: MainAxisAlignment.start,
-                              children: [
-                                ElevatedButton(
-                                    onPressed: () {},
-                                    child: const Text('Show More'))
-                              ],
-                            ),
                           ],
                         ),
-                      )),
-                    );
+                      ),
+                    ));
                   }
+                  cards.add(Padding(
+                    padding: EdgeInsets.symmetric(vertical: 32),
+                  ));
                   return Expanded(
                       child: ListView(
-                    // TODO The last Image on page gets cut off a bit because of the button
                     padding: EdgeInsets.all(8),
                     children: cards,
                   ));
                 } else {
-                  return CircularProgressIndicator.adaptive();
+                  return CircularProgressIndicator();
                 }
               },
             )
@@ -108,8 +86,6 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.lightBlueAccent,
-        // TODO This is completely fucked
         onPressed: () {
           setState(() {
             collector.preFillContent = categoryTitle;
