@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class ImageSelectorFragment extends StatefulWidget {
   final List<String> images;
+  int? selectedIndex;
   Function(int) callback;
 
-  ImageSelectorFragment(this.images, this.callback);
+  ImageSelectorFragment(this.images, this.callback, this.selectedIndex);
 
   @override
   _ImageSelectorFragmentState createState() => _ImageSelectorFragmentState();
@@ -13,12 +14,11 @@ class ImageSelectorFragment extends StatefulWidget {
 
 class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
     with TickerProviderStateMixin {
-  // TODO when a image is selected, unselect when new image selected (so only one can be selected at a time)
-  // TODO broken in general :)
   int? _selectedImage;
 
   @override
   void initState() {
+    _selectedImage = widget.selectedIndex;
     super.initState();
   }
 
@@ -68,12 +68,10 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
       _tapped() {
         if (_selectedImage == index) {
           _selectedImage = null;
-          _controller.reverse();
-          setState(() {});
+          _controller.reverse().whenComplete(() => setState(() {}));
         } else {
           _selectedImage = index;
-          _controller.forward();
-          setState(() {});
+          _controller.forward().whenComplete(() => setState(() {}));
         }
       }
 
@@ -97,9 +95,9 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
       }
 
       if (_selectedImage == index) {
-        _controller.forward();
+        _controller.value = 1.0;
       } else {
-        _controller.reverse();
+        _controller.reset();
       }
 
       return Flexible(

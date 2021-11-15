@@ -79,11 +79,16 @@ class SettingsFragment extends StatelessWidget {
               onTap: () {
                 // TODO tap hit box to small
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ImageSelectorFragment(assetImages(), callBack)),
-                );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ImageSelectorFragment(
+                          assetImages(),
+                          callBack,
+                          assetImages().indexWhere((element) {
+                            return element ==
+                                SettingsManager().getBackgroundImage();
+                          })),
+                    ));
               },
               child: SizedBox(
                 height: 50,
