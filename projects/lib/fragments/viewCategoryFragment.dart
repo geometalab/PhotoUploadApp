@@ -26,7 +26,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
   Widget build(BuildContext context) {
     var categoryTitle =
         _marker.key.toString().substring(3, _marker.key.toString().length - 3);
-    List<Card> cards = List.empty(growable: true);
+    List<Widget> cards = List.empty(growable: true);
 
     return new Scaffold(
       appBar: AppBar(
@@ -45,6 +45,7 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                 // TODO Loading Indicator for Images as they might take quite a long time to load
                 if (snapshot.hasData) {
                   List<ImageURL> images = snapshot.data!;
+                  cards.clear();
                   for (int i = 0; i < images.length; i++) {
                     cards.add(new Card(
                       child: Padding(
@@ -68,9 +69,11 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
                       ),
                     ));
                   }
+                  cards.add(Padding(
+                    padding: EdgeInsets.symmetric(vertical: 32),
+                  ));
                   return Expanded(
                       child: ListView(
-                    // TODO The last Image on page gets cut off a bit because of the button
                     padding: EdgeInsets.all(8),
                     children: cards,
                   ));
