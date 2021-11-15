@@ -91,7 +91,9 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
             collector.preFillContent = categoryTitle;
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SelectImageFragment()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CommonsUploadFragment()), // TODO work with providers to switch pages
             );
           });
         },

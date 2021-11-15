@@ -7,7 +7,7 @@ class CategoryService {
     String request =
         'https://api.wikimedia.org/core/v1/commons/search/title?q=' +
             pattern +
-            '&limit=4';
+            '&limit=6';
     try {
       if (pattern.isEmpty || pattern.length < 2) {
         return Future.value(
@@ -24,7 +24,13 @@ class CategoryService {
     } catch (e) {
       print("Error while getting autocomplete results from Wikimedia: $e");
     }
-    return new Future.value(listedSuggestions);
+    List<Map<String, dynamic>> suggestionsList = listedSuggestions;
+    // Remove all file items
+    suggestionsList.removeWhere((element) {
+      String title = element['title'];
+      return title.startsWith("File:");
+    });
+    return new Future.value(suggestionsList);
   }
 }
 
