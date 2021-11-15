@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class ImageSelectorFragment extends StatefulWidget {
   final List<String> images;
+  int? selectedIndex;
   Function(int) callback;
 
-  ImageSelectorFragment(this.images, this.callback);
+  ImageSelectorFragment(this.images, this.callback, this.selectedIndex);
 
   @override
   _ImageSelectorFragmentState createState() => _ImageSelectorFragmentState();
@@ -13,12 +14,11 @@ class ImageSelectorFragment extends StatefulWidget {
 
 class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
     with TickerProviderStateMixin {
-  // TODO when a image is selected, unselect when new image selected (so only one can be selected at a time)
-  // TODO broken in general :)
   int? _selectedImage;
 
   @override
   void initState() {
+    _selectedImage = widget.selectedIndex;
     super.initState();
   }
 
@@ -54,7 +54,6 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
 
   Widget imageContainer(int index, List<String> imageList) {
     if (index < imageList.length) {
-      bool _selected = false;
       late AnimationController _controller;
       _controller = AnimationController(
         duration: Duration(milliseconds: 120),
@@ -67,16 +66,38 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
       ).animate(_controller);
 
       _tapped() {
-        if (_selected) {
-          _controller.reverse();
+        if (_selectedImage == index) {
           _selectedImage = null;
-          setState(() {});
+          _controller.reverse().whenComplete(() => setState(() {}));
         } else {
           _selectedImage = index;
-          setState(() {});
-          _controller.forward();
+          _controller.forward().whenComplete(() => setState(() {}));
         }
-        _selected = !_selected;
+      }
+
+      Widget builderChild() {
+        if (imageList[index] == "") {
+          return Container(
+            color: Colors.grey,
+            child: Center(
+              child: Icon(
+                Icons.clear,
+                size: 50,
+              ),
+            ),
+          );
+        } else {
+          return Image.asset(
+            imageList[index],
+            fit: BoxFit.cover,
+          );
+        }
+      }
+
+      if (_selectedImage == index) {
+        _controller.value = 1.0;
+      } else {
+        _controller.reset();
       }
 
       return Flexible(
@@ -93,9 +114,24 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
                   builder: (BuildContext context, Widget? child) {
                     return Transform.scale(
                       scale: animation.value,
-                      child: Image.asset(
-                        imageList[index],
-                        fit: BoxFit.cover,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          builderChild(),
+                          if (animation.value < 0.95)
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              width: 32,
+                              height: 32,
+                              child: Container(
+                                child: Icon(Icons.done),
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    shape: BoxShape.circle),
+                              ),
+                            )
+                        ],
                       ),
                     );
                   },
@@ -106,6 +142,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
       );
     } else {
       return Flexible(
+        // Invisible tiles
         flex: 1,
         child: Container(),
       );
