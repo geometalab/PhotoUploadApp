@@ -56,7 +56,7 @@ class NearbyCategoriesService {
   }
 
   Future<List<Marker>> markerBuilder(
-      Future<List<CategoryLocation>> locationList) async {
+      Future<List<CategoryLocation>> locationList, BuildContext context) async {
     List<CategoryLocation> locations = await locationList;
     List<Marker> markers = [];
     for (int i = 0; i < locations.length; i++) {
@@ -64,9 +64,12 @@ class NearbyCategoriesService {
         Marker(
           width: 40,
           height: 40,
+          anchorPos: AnchorPos.align(AnchorAlign.top),
+          rotateAlignment: Alignment(0, 0.8),
           point: LatLng(locations[i].lat, locations[i].lng),
           builder: (ctx) => Container(
-              child: Icon(Icons.location_pin, color: Colors.blue, size: 40)),
+              child: Icon(Icons.location_pin,
+                  color: Theme.of(context).colorScheme.primary, size: 40)),
           key: new Key(locations[i].commons),
           rotate: true,
         ),

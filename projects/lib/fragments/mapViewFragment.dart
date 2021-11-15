@@ -46,7 +46,7 @@ class _MapFragment extends State<StatefulMapFragment> {
                 urlTemplate:
                     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", // TODO maybe get a maptiler key for better map themes (and dark theme)
                 subdomains: ['a', 'b', 'c']),
-            LocationMarkerLayerOptions(),
+            LocationMarkerLayerOptions(showAccuracyCircle: true),
             MarkerClusterLayerOptions(
               // TODO get markers to rotate as well
               popupOptions: PopupOptions(
@@ -78,10 +78,10 @@ class _MapFragment extends State<StatefulMapFragment> {
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           ncs
-              .markerBuilder(ncs.getNearbyCategories(
-                  mapController.center.latitude,
-                  mapController.center.longitude,
-                  calculateKmRadius()))
+              .markerBuilder(
+                  ncs.getNearbyCategories(mapController.center.latitude,
+                      mapController.center.longitude, calculateKmRadius()),
+                  context)
               .then((value) {
             _markerList = value;
             setState(() {});
