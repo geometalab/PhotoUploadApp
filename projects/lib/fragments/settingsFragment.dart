@@ -73,36 +73,40 @@ class SettingsFragment extends StatelessWidget {
                 )
               ],
             ),
-            Divider(),
-            // Background image selector
-            GestureDetector(
-              onTap: () {
-                // TODO tap hit box to small
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ImageSelectorFragment(
-                          assetImages(),
-                          callBack,
-                          assetImages().indexWhere((element) {
-                            return element ==
-                                SettingsManager().getBackgroundImage();
-                          })),
-                    ));
-              },
-              child: SizedBox(
-                height: 50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Select background image"),
-                    Icon(Icons.chevron_right)
-                  ],
-                ),
-              ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            Divider(
+              height: 0,
             ),
-            Divider(),
+            // Background image selector
+            RawMaterialButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImageSelectorFragment(
+                            assetImages(),
+                            callBack,
+                            assetImages().indexWhere((element) {
+                              return element ==
+                                  SettingsManager().getBackgroundImage();
+                            })),
+                      ));
+                },
+                child: SizedBox(
+                  height: 64,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Select background image"),
+                      Icon(Icons.chevron_right)
+                    ],
+                  ),
+                )),
+            Divider(
+              height: 0,
+            ),
             // About button
             TextButton.icon(
               onPressed: () {
