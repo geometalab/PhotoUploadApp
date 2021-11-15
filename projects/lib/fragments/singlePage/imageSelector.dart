@@ -114,7 +114,25 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
                   builder: (BuildContext context, Widget? child) {
                     return Transform.scale(
                       scale: animation.value,
-                      child: builderChild(),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          builderChild(),
+                          if (animation.value < 0.95)
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              width: 32,
+                              height: 32,
+                              child: Container(
+                                child: Icon(Icons.done),
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    shape: BoxShape.circle),
+                              ),
+                            )
+                        ],
+                      ),
                     );
                   },
                   animation: animation,
@@ -124,6 +142,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
       );
     } else {
       return Flexible(
+        // Invisible tiles
         flex: 1,
         child: Container(),
       );
