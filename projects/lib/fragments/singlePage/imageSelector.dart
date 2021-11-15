@@ -118,14 +118,18 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
                         fit: StackFit.expand,
                         children: [
                           builderChild(),
-                          if (animation.value < 0.95)
+                          if (animation.value == 0.9)
                             Positioned(
                               top: 8,
                               right: 8,
                               width: 32,
                               height: 32,
                               child: Container(
-                                child: Icon(Icons.done),
+                                child: Icon(
+                                  Icons.done,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
                                 decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
                                     shape: BoxShape.circle),
