@@ -107,6 +107,7 @@ class SettingsFragment extends StatelessWidget {
             Divider(
               height: 0,
             ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             // About button
             TextButton.icon(
               onPressed: () {

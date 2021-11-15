@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:projects/api/pictureOfTheDayService.dart';
 import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
+import 'package:projects/fragments/articles/reusingContentFragment.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
@@ -25,6 +26,11 @@ class HomeFragment extends StatelessWidget {
             "This short guide gives an overview over what you can upload to Wikimedia Commons.",
         onTap: UploadGuideFragment()));
     articleList.add(new Article(
+        title: "Reusing Wikimedia content",
+        description:
+            "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
+        onTap: ReusingContentFragment()));
+    articleList.add(new Article(
       title: "Title two",
       description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when...",
@@ -34,8 +40,6 @@ class HomeFragment extends StatelessWidget {
         description: "desciription sadjf sadf",
         image: Image.network(
             "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg")));
-    articleList.add(
-        new Article(title: "title 4", description: "desciription sadjf sadf"));
 
     // ------------------------------
 
