@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projects/api/settingsManager.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
+import 'package:provider/provider.dart';
 import 'api/connectionStatus.dart';
 
 // TODO Improve look & feel
@@ -13,8 +14,10 @@ import 'api/connectionStatus.dart';
 // TODO Licensing
 // TODO images don't load in browser
 // TODO make branch reroute page more beautiful (e.g. "Return to App" button & "Login successful" text)
+// TODO add editing of your own media
+// TODO add "featured images" article on homepage
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   ConnectionStatusListener connectionStatus = ConnectionStatusListener
@@ -33,13 +36,16 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Wikimedia Commons Uploader',
-      debugShowCheckedModeBanner: false,
-      theme: customThemes.lightTheme,
-      darkTheme: customThemes.darkTheme,
-      themeMode: EasyDynamicTheme.of(context).themeMode,
-      home: new HomePage(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ViewSwitcher())],
+      child: MaterialApp(
+        title: 'Wikimedia Commons Uploader',
+        debugShowCheckedModeBanner: false,
+        theme: customThemes.lightTheme,
+        darkTheme: customThemes.darkTheme,
+        themeMode: EasyDynamicTheme.of(context).themeMode,
+        home: new HomePage(),
+      ),
     );
   }
 }

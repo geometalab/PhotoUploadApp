@@ -14,6 +14,7 @@ import 'package:projects/fragments/userFragment.dart';
 import 'package:projects/fragments/mapViewFragment.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/userAvatar.dart';
+import 'package:provider/provider.dart';
 
 class DrawerItem {
   String title;
@@ -41,6 +42,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   late StreamSubscription _connectionChangeStream;
+  ViewSwitcher viewSwitcher = ViewSwitcher();
   bool isOffline = false;
   int _selectedDrawerIndex = 0;
 
@@ -78,15 +80,6 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  openHomePage() {
-    _onSelectItem(0);
-    setState(() {});
-  }
-
-  void refresh() {
-    setState(() {});
-  }
-
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
@@ -105,13 +98,15 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-  _onSelectItem(int index) {
+  onSelectItem(int index) {
     setState(() => _selectedDrawerIndex = index);
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    _selectedDrawerIndex =
+        Provider.of<ViewSwitcher>(context, listen: false).viewIndex;
     // TODO "settings" menu tile at bottom
     List<Widget> drawerOptions = [];
     for (var i = 0; i < widget.drawerItems.length; i++) {
@@ -123,7 +118,8 @@ class HomePageState extends State<HomePage> {
           leading: new Icon(d.icon),
           title: new Text(d.title),
           selected: i == _selectedDrawerIndex,
-          onTap: () => _onSelectItem(i),
+          onTap: () =>
+              Provider.of<ViewSwitcher>(context, listen: false).switchView(i),
         ));
       }
     }
@@ -141,7 +137,8 @@ class HomePageState extends State<HomePage> {
             children: <Widget>[drawerHeader(), Column(children: drawerOptions)],
           ),
         ),
-        body: _getDrawerItemWidget(_selectedDrawerIndex),
+        body: _getDrawerItemWidget(
+            Provider.of<ViewSwitcher>(context, listen: true).viewIndex),
       );
     }
   }
@@ -208,5 +205,18 @@ class HomePageState extends State<HomePage> {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<StreamSubscription>(
         '_connectionChangeStream', _connectionChangeStream));
+  }
+}
+
+class ViewSwitcher extends ChangeNotifier {
+  int _viewIndex = 0;
+
+  int get viewIndex {
+    return _viewIndex;
+  }
+
+  void switchView(int viewIndex) {
+    _viewIndex = viewIndex;
+    notifyListeners();
   }
 }
