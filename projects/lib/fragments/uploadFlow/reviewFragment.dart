@@ -160,27 +160,41 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.image == null) {
       infoText.add(errorText(context, "Select the image you want to upload"));
     }
+
     if (collector.fileName == "" || collector.fileName == null) {
       infoText.add(errorText(context, "File name needs to be set"));
       fileNameIcon = errorIcon(context);
-    } else if (collector.fileName!.length < 5) {
-      infoText.add(warningText(context, "File name is very short"));
+      isError = true;
+    } else if (collector.fileName!.length < 7) {
+      infoText.add(errorText(context, "File name is too short"));
+      fileNameIcon = errorIcon(context);
+      isError = true;
+    } else if (collector.fileName!.length < 15) {
+      // TODO find other cases of unspecific file names
+      infoText.add(
+          warningText(context, "Make sure you file name is unique enough"));
+      fileNameIcon = warningIcon(context);
     }
+
     if (collector.source == "" || collector.source == null) {
-      infoText.add(errorText(context, "Title needs to be set"));
+      infoText.add(errorText(context, "Source needs to be set"));
       titleIcon = errorIcon(context);
     }
+
     if (collector.description == "" || collector.description == null) {
       infoText.add(warningText(context, "No description has been added"));
       descriptionIcon = warningIcon(context);
     }
+
     if (collector.author == "" || collector.author == null) {
       infoText.add(errorText(context, "Author needs to be set"));
       authorIcon = errorIcon(context);
     }
+
     if (collector.categories.isEmpty) {
       infoText.add(warningText(context, "No categories have been added"));
     }
+
     if (collector.depictions.isEmpty) {
       infoText.add(warningText(context, "No depictions have been added"));
     }
@@ -212,6 +226,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
+  // The widget for the Categories and Depicts summaries
   Widget listWidgetBuilder(int useCase) {
     String title;
     if (useCase == 0) {
@@ -239,7 +254,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
     );
   }
 
-  // A list with all entered categories/depicts items
+  // Returns a list with all entered categories/depicts items
   List<Widget> listContentBuilder(int useCase) {
     List<String> titles;
     List<Map<String, dynamic>?> thumbs;
@@ -325,13 +340,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
-  UploadProgressBar _sendingMsgProgressBar = UploadProgressBar();
-
   void showSendingProgressBar() {
+    UploadProgressBar _sendingMsgProgressBar = UploadProgressBar();
     _sendingMsgProgressBar.show(context);
-  }
-
-  void hideSendingProgressBar() {
-    _sendingMsgProgressBar.hide();
   }
 }

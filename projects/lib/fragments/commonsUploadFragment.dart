@@ -126,6 +126,7 @@ class InformationCollector {
   List<Map<String, dynamic>?> depictionsThumb = List.empty(growable: true);
   String? preFillContent; // Is loaded into typeahead categories field
   String? description;
+  bool ownWork = false;
   String? source;
   String? author;
   String? license = 'CC0';
@@ -133,9 +134,19 @@ class InformationCollector {
 
   // Should only be called when all fields are filled correctly
   submitData() async {
+    String _author = author!;
+    String _source = source!;
+    if (ownWork) {
+      Userdata? userdata = await LoginHandler().getUserInformationFromFile();
+      if (userdata == null) {
+        throw ("Userdata is null.");
+      }
+      _author = '[[User:${userdata.username}|${userdata.username}]]';
+      _source = "Own Work";
+    }
     try {
-      await UploadService().uploadImage(image!, fileName! + fileType!, source!,
-          description!, author!, license!, date, categories, depictions);
+      await UploadService().uploadImage(image!, fileName! + fileType!, _source,
+          description!, _author, license!, date, categories, depictions);
     } catch (e) {
       print(e);
     }
@@ -151,6 +162,7 @@ class InformationCollector {
     depictions.clear();
     depictionsThumb.clear();
     preFillContent = null;
+    ownWork = false;
     source = null;
     author = null;
     license = 'CC0';

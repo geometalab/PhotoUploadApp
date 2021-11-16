@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/api/loginHandler.dart';
 
 import '../commonsUploadFragment.dart';
 
@@ -79,21 +80,48 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         ),
         Padding(
           padding: EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Checkbox(
+                  value: collector.ownWork,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value == true) {
+                        collector.source = "Own Work";
+                        LoginHandler().getUserInformationFromFile().then(
+                            (value) => collector.author = value!.username);
+                        collector.ownWork = true;
+                      } else {
+                        collector.source = "";
+                        collector.author = "";
+                        collector.ownWork = false;
+                      }
+                    });
+                    setState(() {});
+                  }),
+              Text("This file is my own work"),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
           child: TextFormField(
               initialValue: collector.source,
               onChanged: (value) {
                 collector.source = value;
               },
-              // TODO is it always "Own Work"? Or should there at least be a checkbox "not my work" (and only when checked show textfield)?
+              enabled: !collector.ownWork,
               decoration: const InputDecoration(
                   icon: Icon(Icons.source),
                   labelText: 'Source',
-                  hintText: 'If made by you, enter "Own Work"')),
+                  hintText: 'Where this digital file came from')),
         ),
         Padding(
           padding: EdgeInsets.all(8),
           child: TextFormField(
               initialValue: collector.author,
+              enabled: !collector.ownWork,
               onChanged: (value) {
                 collector.author = value;
               },

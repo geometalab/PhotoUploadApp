@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projects/api/uploadService.dart';
+import 'package:projects/pages/menuDrawer.dart';
+import 'package:provider/provider.dart';
 
 class UploadProgressBar {
   OverlayEntry? _progressOverlayEntry;
@@ -53,6 +55,7 @@ class UploadProgressBar {
                             value: snapshot.data,
                           );
                         } else {
+                          // TODO make better successful upload screen (maybe display upload or smth)
                           // If value is > 1.0
                           child = Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,6 +70,9 @@ class UploadProgressBar {
                               TextButton(
                                   onPressed: () {
                                     hide();
+                                    Provider.of<ViewSwitcher>(context,
+                                            listen: false)
+                                        .viewIndex = 2;
                                   },
                                   child: Text("return to home")),
                             ],
