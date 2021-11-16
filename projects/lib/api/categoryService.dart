@@ -30,6 +30,13 @@ class CategoryService {
       String title = element['title'];
       return title.startsWith("File:");
     });
+    // Remove all "Category:" prefixes.
+    for (var suggestion in suggestionsList) {
+      if (suggestion['title'].toString().startsWith("Category:")) {
+        suggestion['title'] =
+            suggestion['title'].toString().replaceFirst("Category:", "");
+      }
+    }
     return new Future.value(suggestionsList);
   }
 }
