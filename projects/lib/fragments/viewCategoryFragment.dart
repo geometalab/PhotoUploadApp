@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/api/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
+import 'package:projects/pages/menuDrawer.dart';
+import 'package:provider/provider.dart';
 
 // TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)
@@ -87,15 +89,9 @@ class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          setState(() {
-            collector.preFillContent = categoryTitle;
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CommonsUploadFragment()), // TODO work with providers to switch pages
-            );
-          });
+          collector.preFillContent = categoryTitle;
+          Navigator.pop(context);
+          Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
         },
         label: Text("Upload to this Category"),
         icon: Icon(Icons.add),

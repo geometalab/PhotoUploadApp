@@ -99,7 +99,7 @@ class HomePageState extends State<HomePage> {
   }
 
   onSelectItem(int index) {
-    setState(() => _selectedDrawerIndex = index);
+    _selectedDrawerIndex = index;
     Navigator.of(context).pop();
   }
 
@@ -115,12 +115,13 @@ class HomePageState extends State<HomePage> {
         drawerOptions.add(new Divider());
       } else {
         drawerOptions.add(new ListTile(
-          leading: new Icon(d.icon),
-          title: new Text(d.title),
-          selected: i == _selectedDrawerIndex,
-          onTap: () =>
-              Provider.of<ViewSwitcher>(context, listen: false).switchView(i),
-        ));
+            leading: new Icon(d.icon),
+            title: new Text(d.title),
+            selected: i == _selectedDrawerIndex,
+            onTap: () {
+              Navigator.of(context).pop();
+              Provider.of<ViewSwitcher>(context, listen: false).viewIndex = i;
+            }));
       }
     }
 
@@ -215,7 +216,7 @@ class ViewSwitcher extends ChangeNotifier {
     return _viewIndex;
   }
 
-  void switchView(int viewIndex) {
+  set viewIndex(int viewIndex) {
     _viewIndex = viewIndex;
     notifyListeners();
   }
