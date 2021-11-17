@@ -10,6 +10,7 @@ class DescriptionFragment extends StatefulWidget {
 }
 
 class _DescriptionFragment extends State<DescriptionFragment> {
+  // TODO maybe the image should be shown at the top here, so user can have a look at it when making description
   InformationCollector collector = new InformationCollector();
 
   @override
@@ -22,8 +23,9 @@ class _DescriptionFragment extends State<DescriptionFragment> {
   List<Widget> descriptionWidgets() {
     List<Widget> list = new List.empty(growable: true);
     list.add(mediaTitleWidget());
+    list.add(Divider(indent: 10, endIndent: 10));
     list.add(Padding(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.only(top: 16, left: 8, right: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -44,8 +46,14 @@ class _DescriptionFragment extends State<DescriptionFragment> {
     if (collector.description.isEmpty) {
       collector.description.add(Description(language: "en"));
     }
-
+    String? descriptionLabel;
     for (int i = 0; i < collector.description.length; i++) {
+      descriptionLabel = data.languages['${collector.description[i].language}'];
+      if (descriptionLabel == null) {
+        throw ("Description language could not be resolved");
+      }
+      descriptionLabel += " description";
+
       list.add(Padding(
           padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: SizedBox(
@@ -57,14 +65,15 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                       child: Padding(
                     padding: EdgeInsets.only(bottom: 1),
                     child: TextFormField(
+                        // TODO flexible height fields
                         initialValue: collector.description[i].content,
                         onChanged: (value) {
                           collector.description[i].content = value;
                         },
                         maxLines: 7,
                         keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
-                          labelText: 'Description',
+                        decoration: InputDecoration(
+                          labelText: descriptionLabel,
                           hintText: 'Write a meaningful description',
                         )),
                   )),
@@ -75,16 +84,21 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            collector.description.removeAt(i);
-                          });
-                        },
-                        icon: Icon(Icons.close),
-                        color: CustomColors()
-                            .getDefaultIconColor(Theme.of(context)),
-                      ),
+                      if (i != 0)
+                        IconButton(
+                          // TODO if text is entered, "are you sure" prompt before deleting
+                          onPressed: () {
+                            setState(() {
+                              collector.description.removeAt(i);
+                            });
+                          },
+                          icon: Icon(Icons.close),
+                          color: CustomColors()
+                              .getDefaultIconColor(Theme.of(context)),
+                        ),
+                      if (i == 0)
+                        // This widget ensures the dropdown remains aligned with text input
+                        Container(),
                       DropdownButton<String>(
                         value: collector.description[i].language,
                         onChanged: (String? newValue) {

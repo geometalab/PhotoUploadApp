@@ -1,12 +1,12 @@
 // TODO expand
 const Map<String, String> languages = {
-  'en': 'english',
-  'de': 'german',
-  'fr': 'french',
-  'ru': 'russian',
-  'es': 'spanish',
-  'pt': 'portuguese',
-  'zh': 'chinese',
-  'ko': 'korean',
-  'ja': 'japanese',
+  'en': 'English',
+  'de': 'German',
+  'fr': 'French',
+  'ru': 'Russian',
+  'es': 'Spanish',
+  'pt': 'Portuguese',
+  'zh': 'Chinese',
+  'ko': 'Korean',
+  'ja': 'Japanese',
 };
