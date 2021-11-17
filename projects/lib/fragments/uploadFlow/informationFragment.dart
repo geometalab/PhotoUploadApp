@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/style/themes.dart';
 
 import '../commonsUploadFragment.dart';
 
@@ -98,13 +99,16 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                 children: [
                   Icon(
                     Icons.description_outlined,
-                    color: Theme.of(context).disabledColor,
+                    color:
+                        CustomColors().getDefaultIconColor(Theme.of(context)),
                   ),
                   Padding(padding: EdgeInsets.only(left: 18)),
                   Text(
                     "License: ",
                     textScaleFactor: 1.2,
-                    style: TextStyle(color: Theme.of(context).disabledColor),
+                    style: TextStyle(
+                        color: CustomColors()
+                            .getDefaultIconColor(Theme.of(context))),
                   ),
                 ],
               ),
@@ -152,13 +156,16 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   children: [
                     Icon(
                       Icons.calendar_today,
-                      color: Theme.of(context).disabledColor,
+                      color:
+                          CustomColors().getDefaultIconColor(Theme.of(context)),
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 9)),
                     Text(
                       'Date:',
                       textScaleFactor: 1.2,
-                      style: TextStyle(color: Theme.of(context).disabledColor),
+                      style: TextStyle(
+                          color: CustomColors()
+                              .getDefaultIconColor(Theme.of(context))),
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     Text(
