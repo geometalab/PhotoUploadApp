@@ -87,12 +87,15 @@ class ReviewFragmentState extends State<ReviewFragment> {
                             icon: titleIcon,
                             replaceEmpty: true,
                           ),
+                          /*
                           ValueLabelField(
                             collector.description,
                             "image description",
                             icon: descriptionIcon,
                             replaceEmpty: true,
                           ),
+
+                           */
                           ValueLabelField(
                             collector.author,
                             "author",

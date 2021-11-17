@@ -37,50 +37,6 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         Padding(
           padding: EdgeInsets.all(8),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: TextFormField(
-                  initialValue: collector.fileName,
-                  onChanged: (value) {
-                    collector.fileName = value;
-                  },
-                  // TODO check file name for illegal chars, maybe enforce min and max length
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.file_copy_outlined),
-                    labelText: 'File Name',
-                    hintText: 'Choose a descriptive name',
-                  ),
-                ),
-              ),
-              if (collector.fileType != null)
-                Padding(
-                  padding: EdgeInsets.only(right: 8, left: 8, top: 16),
-                  child: Text(collector.fileType!,
-                      style: Theme.of(context).textTheme.subtitle1),
-                ),
-            ],
-          ),
-        ),
-        Padding(
-          // TODO allow desc in different languages, also multiple languages per image.
-          padding: EdgeInsets.all(8),
-          child: TextFormField(
-              initialValue: collector.description,
-              onChanged: (value) {
-                collector.description = value;
-              },
-              maxLines: 7,
-              keyboardType: TextInputType.multiline,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.text_fields_outlined),
-                labelText: 'Description',
-                hintText: 'Write a meaningful description',
-              )),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8),
-          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Checkbox(
@@ -142,13 +98,13 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                 children: [
                   Icon(
                     Icons.description_outlined,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).disabledColor,
                   ),
                   Padding(padding: EdgeInsets.only(left: 18)),
                   Text(
                     "License: ",
                     textScaleFactor: 1.2,
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: Theme.of(context).disabledColor),
                   ),
                 ],
               ),
@@ -196,13 +152,13 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                   children: [
                     Icon(
                       Icons.calendar_today,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).disabledColor,
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 9)),
                     Text(
                       'Date:',
                       textScaleFactor: 1.2,
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(color: Theme.of(context).disabledColor),
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     Text(
