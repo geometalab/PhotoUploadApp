@@ -39,4 +39,13 @@ class CustomColors {
   static const NO_IMAGE_COLOR = Colors.grey;
   static const NO_IMAGE_CONTENTS_COLOR = Colors.white70;
   static const WIKIMEDIA_THEME_BLUE = Color.fromRGBO(0, 99, 152, 1.0);
+
+  Color getDefaultIconColor(ThemeData themeData) {
+    switch (themeData.brightness) {
+      case Brightness.dark:
+        return Colors.white70;
+      case Brightness.light:
+        return Colors.black45;
+    }
+  }
 }

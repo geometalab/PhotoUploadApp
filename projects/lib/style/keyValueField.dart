@@ -7,7 +7,7 @@ class ValueLabelField extends StatelessWidget {
   final String? label;
   final Icon? icon;
   final double? padding;
-  late final bool replaceEmpty;
+  late final bool replaceEmpty; // Replaces "" with "no value"
 
   ValueLabelField(
     this.value,

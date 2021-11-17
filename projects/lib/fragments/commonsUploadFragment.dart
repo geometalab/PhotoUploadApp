@@ -5,6 +5,7 @@ import 'package:progress_tab_bar/progress_tab_bar.dart';
 import 'package:projects/api/loginHandler.dart';
 import 'package:projects/api/uploadService.dart';
 import 'package:projects/fragments/singlePage/notLoggedIn.dart';
+import 'package:projects/fragments/uploadFlow/descriptionFragment.dart';
 import 'package:projects/fragments/uploadFlow/informationFragment.dart';
 import 'package:projects/fragments/uploadFlow/reviewFragment.dart';
 import 'package:projects/fragments/uploadFlow/selecItems.dart';
@@ -71,11 +72,18 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                     selectedTab = 3;
                   });
                 },
-                label: "Add information"),
+                label: "Describe"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 4;
+                  });
+                },
+                label: "Add information"),
+            ProgressTab(
+                onPressed: () {
+                  setState(() {
+                    selectedTab = 5;
                   });
                 },
                 label: "Review"),
@@ -98,8 +106,10 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       case 2:
         return StatefulSelectItemFragment(0);
       case 3:
-        return StatefulInformationFragment();
+        return DescriptionFragment();
       case 4:
+        return StatefulInformationFragment();
+      case 5:
         return ReviewFragment();
       default:
         throw Exception("Invalid tab index");
@@ -125,7 +135,7 @@ class InformationCollector {
   List<String> depictions = List.empty(growable: true);
   List<Map<String, dynamic>?> depictionsThumb = List.empty(growable: true);
   String? preFillContent; // Is loaded into typeahead categories field
-  String? description;
+  List<Description> description = List.empty(growable: true);
   bool ownWork = false;
   String? source;
   String? author;
@@ -146,7 +156,7 @@ class InformationCollector {
     }
     try {
       await UploadService().uploadImage(image!, fileName! + fileType!, _source,
-          description!, _author, license!, date, categories, depictions);
+          description, _author, license!, date, categories, depictions);
     } catch (e) {
       print(e);
     }
@@ -156,7 +166,7 @@ class InformationCollector {
     image = null;
     fileName = null;
     fileType = null;
-    description = null;
+    description.clear();
     categories.clear();
     categoriesThumb.clear();
     depictions.clear();

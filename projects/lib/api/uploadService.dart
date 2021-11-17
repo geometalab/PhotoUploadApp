@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/api/loginHandler.dart';
+import 'package:projects/fragments/uploadFlow/descriptionFragment.dart';
 import '../config.dart';
 
 // TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates (or check if already taken)
@@ -15,7 +16,7 @@ class UploadService {
       XFile image,
       String fileName,
       String source,
-      String description,
+      List<Description> description,
       String author,
       String license,
       DateTime date,
@@ -65,7 +66,7 @@ class UploadService {
 
   Future<http.Response> _editDetails(
       String author,
-      String description,
+      List<Description> description,
       String license,
       String source,
       DateTime date,
@@ -74,14 +75,20 @@ class UploadService {
       String token) async {
     String editSummary =
         'Added file details & description. Edited by Wikimedia Commons Uploader.'; // TODO insert final name once determined
+    String descriptionString = "";
+
+    for (Description description in description) {
+      descriptionString +=
+          '{{${description.language}|1=${description.content}}} ';
+    }
 
     // TODO add "depicts"
     // File Description
     // DO NOT INDENT!
-    String descriptionString = """
+    String informationString = """
 =={{int:filedesc}}== 
 {{Information 
-|description={{en|1=$description}} 
+|description=$descriptionString 
 |date=${date.year}-${date.month}-${date.day} 
 |source=$source 
 |author=$author 
@@ -95,7 +102,7 @@ class UploadService {
 """;
 
     for (String category in categories) {
-      descriptionString += "[[Category:$category]] ";
+      informationString += "[[Category:$category]] ";
     }
 
     Future<http.Response> response = http.post(
@@ -106,7 +113,7 @@ class UploadService {
         },
         body: <String, String>{
           'title': 'File:' + filename,
-          'text': descriptionString,
+          'text': informationString,
           'summary': editSummary,
           'token': token,
         });

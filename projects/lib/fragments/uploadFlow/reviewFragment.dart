@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/fragments/uploadFlow/descriptionFragment.dart';
 import 'package:projects/fragments/uploadFlow/uploadProgressBar.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/themes.dart';
 import '../commonsUploadFragment.dart';
 import 'dart:io';
+import 'package:projects/model/datasets.dart' as data;
 
 class ReviewFragment extends StatefulWidget {
   @override
@@ -16,12 +18,8 @@ class ReviewFragment extends StatefulWidget {
 class ReviewFragmentState extends State<ReviewFragment> {
   InformationCollector collector = new InformationCollector();
   List<Widget> infoText = List.empty(growable: true);
-  Icon? fileNameIcon,
-      titleIcon,
-      authorIcon,
-      licenseIcon,
-      descriptionIcon,
-      categoryIcon;
+  Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, categoryIcon;
+  List<Icon?> descriptionIcon = List.empty(growable: true);
 
   Icon errorIcon(BuildContext context) {
     return Icon(
@@ -87,11 +85,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
                             icon: titleIcon,
                             replaceEmpty: true,
                           ),
-                          ValueLabelField(
-                            collector.description,
-                            "image description",
-                            icon: descriptionIcon,
-                            replaceEmpty: true,
+                          Column(
+                            children: descriptionsBuilder(),
                           ),
                           ValueLabelField(
                             collector.author,
@@ -142,18 +137,17 @@ class ReviewFragmentState extends State<ReviewFragment> {
     bool isError = false;
 
     infoText.clear(); // Clear all warnings and errors
+    descriptionIcon.clear();
 
     // The fields which need to be filled out
     if (collector.image == null ||
-            collector.fileName == "" ||
-            collector.fileName == null ||
-            collector.source == "" ||
-            collector.source == null ||
-            collector.author == "" ||
-            collector.author == null ||
-            collector.license == "" ||
-            collector.license == null // Should not be possible
-        ) {
+        collector.fileName == "" ||
+        collector.fileName == null ||
+        collector.source == "" ||
+        collector.source == null ||
+        collector.author == "" ||
+        collector.author == null ||
+        collector.license == "") {
       isError = true;
     }
 
@@ -181,9 +175,49 @@ class ReviewFragmentState extends State<ReviewFragment> {
       titleIcon = errorIcon(context);
     }
 
-    if (collector.description == "" || collector.description == null) {
-      infoText.add(warningText(context, "No description has been added"));
-      descriptionIcon = warningIcon(context);
+    if (collector.description.isEmpty) {
+      collector.description.add(Description(language: "en"));
+    }
+
+    if (collector.description.length == 1 &&
+        collector.description[0].content == "") {
+      infoText.add(errorText(context, "Add at least one description"));
+      descriptionIcon.insert(0, errorIcon(context));
+      isError = true;
+    } else {
+      bool alreadyWarned = false;
+      for (Description description in collector.description) {
+        descriptionIcon.add(null);
+        if (description.content.length < 10) {
+          // Add info text only if not already in place
+          if (!alreadyWarned) {
+            infoText.add(warningText(context, "A description is very short"));
+            alreadyWarned = true;
+          }
+          descriptionIcon.insert(
+              collector.description.indexOf(description), warningIcon(context));
+        }
+        if (description.content.isEmpty) {
+          infoText.add(errorText(context, "A description is empty"));
+          descriptionIcon.insert(
+              collector.description.indexOf(description), errorIcon(context));
+          isError = true;
+        }
+      }
+      // If a language appears in more then one desc
+      if (collector.description.any((element) {
+        int numberOfAppearances = 0;
+        for (Description description in collector.description) {
+          if (description.language == element.language) {
+            numberOfAppearances++;
+          }
+        }
+        return numberOfAppearances > 1;
+      })) {
+        infoText.add(errorText(
+            context, "Multiple descriptions are in the same language"));
+        isError = true;
+      }
     }
 
     if (collector.author == "" || collector.author == null) {
@@ -224,6 +258,22 @@ class ReviewFragmentState extends State<ReviewFragment> {
         ),
       );
     }
+  }
+
+  List<Widget> descriptionsBuilder() {
+    List<Widget> list = List.empty(growable: true);
+    for (Description description in collector.description) {
+      String descriptionLabel = data.languages['${description.language}']!;
+      descriptionLabel += " description";
+      list.add(ValueLabelField(
+        description.content,
+        descriptionLabel,
+        icon: descriptionIcon
+            .elementAt(collector.description.indexOf(description)),
+        replaceEmpty: true,
+      ));
+    }
+    return list;
   }
 
   // The widget for the Categories and Depicts summaries
