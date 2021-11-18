@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/api/deepLinkListener.dart';
-import 'package:projects/api/loginHandler.dart';
+import 'package:projects/controller/deepLinkListener.dart';
+import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/userAvatar.dart';

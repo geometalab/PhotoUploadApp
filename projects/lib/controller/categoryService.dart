@@ -5,7 +5,7 @@ class CategoryService {
   Future<List<Map<String, dynamic>>> getSuggestions(String pattern) async {
     var listedSuggestions;
     String request =
-        'https://api.wikimedia.org/core/v1/commons/search/title?q=' +
+        'https://controller.wikimedia.org/core/v1/commons/search/title?q=' +
             pattern +
             '&limit=6';
     try {

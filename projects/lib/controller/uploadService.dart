@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/api/loginHandler.dart';
+import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/fragments/uploadFlow/descriptionFragment.dart';
 import '../config.dart';
 

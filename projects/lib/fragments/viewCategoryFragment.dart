@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:projects/api/imageService.dart';
+import 'package:projects/controller/imageService.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/uploadFlow/selectImage.dart';
 import 'package:projects/pages/menuDrawer.dart';

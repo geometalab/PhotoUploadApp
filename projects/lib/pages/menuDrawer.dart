@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/api/connectionStatus.dart';
-import 'package:projects/api/lifeCycleEventHandler.dart';
-import 'package:projects/api/loginHandler.dart';
-import 'package:projects/api/pictureOfTheDayService.dart';
-import 'package:projects/api/settingsManager.dart';
+import 'package:projects/controller/connectionStatus.dart';
+import 'package:projects/controller/lifeCycleEventHandler.dart';
+import 'package:projects/controller/loginHandler.dart';
+import 'package:projects/controller/pictureOfTheDayService.dart';
+import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/fragments/homeFragment.dart';
 import 'package:projects/fragments/commonsUploadFragment.dart';
 import 'package:projects/fragments/settingsFragment.dart';

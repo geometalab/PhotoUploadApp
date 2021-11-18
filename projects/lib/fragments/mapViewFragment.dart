@@ -5,7 +5,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:projects/MapPopUps/categoryMapPopup.dart';
-import 'package:projects/api/nearbyCategoriesService.dart';
+import 'package:projects/controller/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 
 class StatefulMapFragment extends StatefulWidget {

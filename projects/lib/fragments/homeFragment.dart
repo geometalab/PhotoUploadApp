@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:projects/api/pictureOfTheDayService.dart';
+import 'package:projects/controller/pictureOfTheDayService.dart';
 import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
 import 'package:projects/fragments/articles/reusingContentFragment.dart';
 import 'package:projects/fragments/articles/uploadGuideFragment.dart';

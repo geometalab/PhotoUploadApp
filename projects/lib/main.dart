@@ -1,10 +1,10 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/api/settingsManager.dart';
+import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 import 'package:provider/provider.dart';
-import 'api/connectionStatus.dart';
+import 'controller/connectionStatus.dart';
 
 // TODO Improve look & feel
 // TODO create a Logo
