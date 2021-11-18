@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:projects/controller/pictureOfTheDayService.dart';
-import 'package:projects/fragments/articles/pictureOfTheDayFragment.dart';
-import 'package:projects/fragments/articles/reusingContentFragment.dart';
-import 'package:projects/fragments/articles/uploadGuideFragment.dart';
-import 'package:projects/fragments/mapViewFragment.dart';
-import 'package:projects/fragments/uploadFlow/selectImage.dart';
+import 'package:projects/view/articles/pictureOfTheDayFragment.dart';
+import 'package:projects/view/articles/reusingContentFragment.dart';
+import 'package:projects/view/articles/uploadGuideFragment.dart';
+import 'package:projects/view/mapViewFragment.dart';
+import 'package:projects/view/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 class HomeFragment extends StatelessWidget {

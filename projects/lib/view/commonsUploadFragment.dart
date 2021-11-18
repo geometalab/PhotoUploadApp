@@ -4,12 +4,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:progress_tab_bar/progress_tab_bar.dart';
 import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/controller/uploadService.dart';
-import 'package:projects/fragments/singlePage/notLoggedIn.dart';
-import 'package:projects/fragments/uploadFlow/descriptionFragment.dart';
-import 'package:projects/fragments/uploadFlow/informationFragment.dart';
-import 'package:projects/fragments/uploadFlow/reviewFragment.dart';
-import 'package:projects/fragments/uploadFlow/selecItems.dart';
-import 'package:projects/fragments/uploadFlow/selectImage.dart';
+import 'package:projects/view/singlePage/notLoggedIn.dart';
+import 'package:projects/view/uploadFlow/descriptionFragment.dart';
+import 'package:projects/view/uploadFlow/informationFragment.dart';
+import 'package:projects/view/uploadFlow/reviewFragment.dart';
+import 'package:projects/view/uploadFlow/selecItems.dart';
+import 'package:projects/view/uploadFlow/selectImage.dart';
 import 'dart:io';
 
 class CommonsUploadFragment extends StatefulWidget {

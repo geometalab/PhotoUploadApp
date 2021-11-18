@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/fragments/articles/uploadGuideFragment.dart';
+import 'package:projects/view/articles/uploadGuideFragment.dart';
 import 'package:projects/style/textStyles.dart';
 
 import '../commonsUploadFragment.dart';
