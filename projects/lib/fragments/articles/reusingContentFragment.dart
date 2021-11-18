@@ -61,8 +61,8 @@ class ReusingContentFragment extends StatelessWidget {
           UnorderedList([
             "some licenses require that the original creator be attributed;",
             "some licenses require that the specific license be identified when reusing (including, in some cases, stating or linking to the terms of the license);",
-            "some licenses require that if you modify the work, your modifications must also be similarly freely licensed; and finally.",
-            "content in the public domain may not have a strict legal requirement of attribution (depending on the jurisdiction of content reuse), but attribution is recommended to give correct provenance."
+            "some licenses require that if you modify the work, your modifications must also be similarly freely licensed; and finally...",
+            "...content in the public domain may not have a strict legal requirement of attribution (depending on the jurisdiction of content reuse), but attribution is recommended to give correct provenance."
           ], customStyles.articleText),
           Padding(padding: EdgeInsets.only(bottom: 8)),
           TextButton(

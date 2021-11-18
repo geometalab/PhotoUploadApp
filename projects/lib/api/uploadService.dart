@@ -48,6 +48,28 @@ class UploadService {
     progressStream.doneUploading();
   }
 
+  simulatedUploadImage() async {
+    UploadProgressStream progressStream = UploadProgressStream();
+
+    int progressNumber = 3; // represents times progress() is called
+
+    progressStream.reset();
+    await (Future.delayed(Duration(milliseconds: 500)));
+    progressStream.progress(progressNumber);
+
+    await (Future.delayed(Duration(milliseconds: 600)));
+
+    progressStream.progress(progressNumber);
+
+    await (Future.delayed(Duration(milliseconds: 900)));
+
+    progressStream.progress(progressNumber);
+
+    await (Future.delayed(Duration(milliseconds: 700)));
+
+    progressStream.doneUploading();
+  }
+
   Future<http.Response> _sendImage(
       XFile image, String fileName, String csrfToken) async {
     var request = http.MultipartRequest(
