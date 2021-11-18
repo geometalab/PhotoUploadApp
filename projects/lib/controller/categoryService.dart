@@ -13,8 +13,9 @@ class CategoryService {
         return Future.value(
             []); // Search Results only start to get shown after 2 entered chars
       }
-      Response response = await get(Uri.parse(request));
-      var hashMap = jsonDecode(response.body);
+      Response response = await get(Uri.parse(request),
+          headers: {'Content-Type': 'application/json'});
+      var hashMap = jsonDecode(utf8.decode(response.bodyBytes));
       var suggestions = hashMap.entries.toList(growable: true);
       List tempList = suggestions[0].value;
       listedSuggestions = tempList

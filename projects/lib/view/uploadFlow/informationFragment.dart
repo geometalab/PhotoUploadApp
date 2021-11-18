@@ -64,7 +64,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         Padding(
           padding: EdgeInsets.all(8),
           child: TextFormField(
-              initialValue: collector.source,
+              controller: TextEditingController(text: collector.source),
               onChanged: (value) {
                 collector.source = value;
               },
@@ -77,14 +77,15 @@ class _InformationFragment extends State<StatefulInformationFragment> {
         Padding(
           padding: EdgeInsets.all(8),
           child: TextFormField(
-              initialValue: collector.author,
+              controller: TextEditingController(text: collector.author),
               enabled: !collector.ownWork,
               onChanged: (value) {
                 collector.author = value;
               },
               decoration: const InputDecoration(
                   icon: Icon(Icons.person),
-                  labelText: 'Author',
+                  labelText:
+                      'Author', // TODO Author is not always loaded when spamming checkbox
                   hintText: 'Original author of the file')),
         ),
         Padding(

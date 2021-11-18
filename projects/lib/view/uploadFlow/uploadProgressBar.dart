@@ -26,7 +26,7 @@ class UploadProgressBar {
       builder: (BuildContext context) => Stack(
             children: <Widget>[
               Container(
-                color: Colors.grey.withOpacity(0.7),
+                color: Colors.black45.withOpacity(0.75),
                 child: Center(
                   // Builder for the progress stream which contains the upload progress as a double
                   child: StreamBuilder<double>(
@@ -67,14 +67,18 @@ class UploadProgressBar {
                               ),
                               Text("Upload successful",
                                   style: Theme.of(context).textTheme.bodyText1),
-                              TextButton(
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                              ),
+                              ElevatedButton(
                                   onPressed: () {
                                     hide();
                                     Provider.of<ViewSwitcher>(context,
                                             listen: false)
-                                        .viewIndex = 2;
+                                        .viewIndex = 0;
                                   },
-                                  child: Text("return to home")),
+                                  child: Text(
+                                      "Back to home")), // TODO better wording
                             ],
                           );
                         }

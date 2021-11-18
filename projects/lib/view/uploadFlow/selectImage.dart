@@ -128,6 +128,7 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
                 onPressed: () async {
                   collector.image =
                       await _picker.pickImage(source: ImageSource.gallery);
+                  setState(() {});
                 },
                 child: SizedBox(
                   width: 200,
@@ -161,6 +162,7 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
                   onPressed: () async {
                     collector.image =
                         await _picker.pickImage(source: ImageSource.camera);
+                    setState(() {});
                   },
                   child: SizedBox(
                     width: 200,
