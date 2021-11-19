@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/controller/deepLinkListener.dart';
 import 'package:projects/controller/loginHandler.dart';
+import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/userAvatar.dart';
+import 'package:provider/provider.dart';
 
 class UserFragment extends StatefulWidget {
   @override
@@ -18,11 +20,11 @@ class _UserFragmentState extends State<UserFragment> {
   late DeepLinkListener deepLinkListener;
 
   _UserFragmentState() {
-    // TODO access token is retrieved twice, which should not happen
     deepLinkListener = new DeepLinkListener();
-    deepLinkListener.addListener(() {
+    deepLinkListener.addListener(() async {
       // On return to app from app, refresh widget
-      pullRefresh();
+      await pullRefresh();
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 5;
     });
   }
 
@@ -85,9 +87,8 @@ class _UserFragmentState extends State<UserFragment> {
             child: Text("My uploads")),
         OutlinedButton(
             onPressed: () {
-              setState(() {
-                loginHandler.logOut();
-              });
+              loginHandler.logOut();
+              pullRefresh();
             },
             child: Text("Log out")),
       ],

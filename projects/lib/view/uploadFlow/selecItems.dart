@@ -5,7 +5,7 @@ import 'package:projects/controller/categoryService.dart';
 import 'package:projects/style/themes.dart';
 import '../commonsUploadFragment.dart';
 
-// TODO display some text in lower half when no category has been added
+// TODO display something in lower half when no category has been added, so it doesnt look emtpty
 
 class StatefulSelectItemFragment extends StatefulWidget {
   // If 0, uses categories / if 1, uses depicts

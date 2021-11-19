@@ -42,9 +42,8 @@ class _CategoryPopupState extends State<CategoryPopup> {
                         (BuildContext context, AsyncSnapshot<Image> snapshot) {
                       Widget thumbnail;
                       if (snapshot.hasData) {
-                        // TODO Investigate case with late image popup
                         thumbnail = snapshot
-                            .data!; // Sometimes (maybe because of file type or res), the progress indicator appears, but it still takes a few seconds for image to appear
+                            .data!; // TODO Sometimes (maybe because of file type or res), the progress indicator disappears, but it still takes a few seconds for image to appear
                       } else if (snapshot.hasError) {
                         throw ("Could not display thumbnail");
                       } else {

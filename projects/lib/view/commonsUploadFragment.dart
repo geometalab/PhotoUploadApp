@@ -22,7 +22,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO noticeable frame drop when switching tabs
+    // TODO noticeable frame drop when switching tabs  (maybe my phone is just shit)
     return new Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         resizeToAvoidBottomInset: false,
@@ -156,7 +156,7 @@ class InformationCollector {
     }
     try {
       await UploadService().uploadImage(image!, fileName! + fileType!, _source,
-         description, _author, license!, date, categories, depictions);
+          description, _author, license!, date, categories, depictions);
     } catch (e) {
       throw (e);
     }

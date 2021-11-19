@@ -102,7 +102,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
                           ),
                           ValueLabelField(
                               DateFormat.yMd().format(collector.date),
-                              "date of creation"), // TODO local format as well
+                              "date of creation"), // TODO local format instead of yMd
                         ],
                       ),
                     )),

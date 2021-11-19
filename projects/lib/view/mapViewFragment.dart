@@ -48,7 +48,6 @@ class _MapFragment extends State<StatefulMapFragment> {
                 subdomains: ['a', 'b', 'c']),
             LocationMarkerLayerOptions(showAccuracyCircle: true),
             MarkerClusterLayerOptions(
-              // TODO get markers to rotate as well
               popupOptions: PopupOptions(
                 popupBuilder: (BuildContext context, Marker marker) =>
                     CategoryPopup(marker),

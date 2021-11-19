@@ -26,8 +26,6 @@ class UploadProgressBar {
   }
 
   OverlayEntry _createdProgressEntry(BuildContext context) => OverlayEntry(
-          // TODO smooth fade in of uploadProgressBar
-          // TODO smooth ProgressIndicator
           // TODO transition from ProgressIndicator to Checkmark
           // TODO transition checkmark up when text is displayed
           builder: (BuildContext context) {
@@ -57,7 +55,7 @@ class UploadProgressBar {
                       done = snapshot.data!.done;
                       streamedProgressValue = snapshot.data!.progress;
                       if (snapshot.data!.done) {
-                        // TODO make better successful upload screen (maybe display upload or smth)
+                        // TODO make better successful upload screen (maybe display upload summary or smth)
                         // If upload is done
                         child = Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -136,11 +134,10 @@ class UploadProgressBar {
       // incrementChangeValue = (streamedProgressValue - smoothProgressValue.value) * 0.01;
       // incrementValue += incrementChangeValue;
       double distance = (streamedProgressValue - smoothProgressValue.value) * 4;
-      if(distance > 1.0) {
-       distance = 1;
+      if (distance > 1.0) {
+        distance = 1;
       }
-      incrementValue = (Curves.easeInQuart
-              .transform(distance)) / 1000;
+      incrementValue = (Curves.easeInQuart.transform(distance)) / 1000;
       smoothProgressValue.value = smoothProgressValue.value + incrementValue;
     });
   }

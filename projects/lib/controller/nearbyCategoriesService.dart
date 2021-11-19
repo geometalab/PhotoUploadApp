@@ -18,7 +18,6 @@ class NearbyCategoriesService {
     final response = await get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      // TODO Query optimisation => (www.wikidata.org/wiki/Wikidata:SPARQL_query_service/query_optimization)
       XmlDocument xml = XmlDocument.parse(response.body);
       var xmlList = xml
           .getElement("sparql")!

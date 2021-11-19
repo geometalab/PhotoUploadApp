@@ -174,8 +174,8 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     Text(
-                      DateFormat.yMd()
-                          .format(collector.date), // TODO local format as well
+                      DateFormat.yMd().format(
+                          collector.date), // TODO local format instead of yMd
                       textScaleFactor: 1.1,
                     ),
                   ],

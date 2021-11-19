@@ -159,7 +159,6 @@ class _DescriptionFragment extends State<DescriptionFragment> {
               onChanged: (value) {
                 collector.fileName = value;
               },
-              // TODO check file name for illegal chars, maybe enforce min and max length
               decoration: const InputDecoration(
                 icon: Icon(Icons.file_copy_outlined),
                 labelText: 'File Name',

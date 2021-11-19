@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
+// TODO after coming back from branch.io, there is a short, sometimes long wait time
 
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
@@ -53,8 +54,8 @@ class LoginHandler {
       return false;
   }
 
-  logOut() {
-    _deleteUserDataInFile();
+  logOut() async {
+    await _deleteUserDataInFile();
   }
 
   openWebLogin() {
@@ -64,7 +65,7 @@ class LoginHandler {
   }
 
   openWebSignUp() {
-    // TODO Return to app directly? https://www.mediawiki.org/wiki/Onboarding_new_Wikipedians/Account_creation_pathways
+    // TODO Return to app directly if possible https://www.mediawiki.org/wiki/Onboarding_new_Wikipedians/Account_creation_pathways
     String url =
         "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount";
     _openURL(url);
@@ -74,7 +75,6 @@ class LoginHandler {
     String url =
         "https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/$username";
     _openURL(url);
-    // TODO make sure what function should do
   }
 
   Future<Userdata> getTokens(String authCode) async {
@@ -230,8 +230,8 @@ class LoginHandler {
     return file.readAsString();
   }
 
-  _deleteUserDataInFile() {
-    _writeToFile(CREDENTIALS_FILE, "");
+  _deleteUserDataInFile() async {
+    await _writeToFile(CREDENTIALS_FILE, "");
   }
 
   Future<String> _getClientSecret() async {

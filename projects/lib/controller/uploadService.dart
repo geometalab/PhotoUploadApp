@@ -53,7 +53,8 @@ class UploadService {
     }
   }
 
-  simulatedUploadImage() async { // For debugging
+  simulatedUploadImage() async {
+    // For debugging
     UploadProgressStream progressStream = UploadProgressStream();
 
     int progressNumber = 3; // represents times progress() is called
@@ -109,7 +110,6 @@ class UploadService {
           '{{${description.language}|1=${description.content}}} ';
     }
 
-    // TODO add "depicts"
     // File Description
     // DO NOT INDENT!
     String informationString = """

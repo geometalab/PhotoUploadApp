@@ -103,7 +103,6 @@ class HomeFragment extends StatelessWidget {
                   );
                 }
                 return AnimatedSwitcher(
-                  // TODO Smoother transition
                   duration: Duration(milliseconds: 1000),
                   child: child,
                 );
@@ -113,49 +112,21 @@ class HomeFragment extends StatelessWidget {
     }
 
     return new Scaffold(
-        body: Center(
-            child: ListView(
-          scrollDirection: Axis.vertical,
-          padding: EdgeInsets.all(8),
-          children: [
-            headerWidget(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: articleList.generateLists(
-                  context, articleList.generateCards(context)),
-            ),
-          ],
-        )),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: ButtonNavigationBar(
-          children: [
-            ButtonNavigationItem(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StatefulMapFragment()));
-              },
-              icon: Icon(Icons.map_outlined),
-            ),
-            ButtonNavigationItem(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SelectImageFragment()),
-                  );
-                },
-                width: 155,
-                label: "Upload Media",
-                icon: Icon(Icons.add)),
-            ButtonNavigationItem(
-                onPressed: () {
-                  // TODO Implement search
-                },
-                icon: Icon(Icons.search))
-          ],
-        ));
+      body: Center(
+          child: ListView(
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.all(8),
+        children: [
+          headerWidget(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: articleList.generateLists(
+                context, articleList.generateCards(context)),
+          ),
+        ],
+      )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }
 

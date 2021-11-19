@@ -146,7 +146,6 @@ class HomePageState extends State<HomePage> {
 
   Widget drawerHeader() {
     return FutureBuilder(
-      // TODO this gets the info before it is written to file in case of login, resulting in the drawer staying in the wrong state for one refresh
       future: LoginHandler().getUserInformationFromFile(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
@@ -185,7 +184,7 @@ class HomePageState extends State<HomePage> {
             );
           } else {
             decoration = BoxDecoration(
-                // TODO implement no background image
+                // TODO make beautiful for no background image
                 );
           }
           return UserAccountsDrawerHeader(
