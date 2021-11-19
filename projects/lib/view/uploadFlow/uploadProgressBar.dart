@@ -29,10 +29,10 @@ class UploadProgressBar {
                 color: Colors.black45.withOpacity(0.75),
                 child: Center(
                   // Builder for the progress stream which contains the upload progress as a double
-                  child: StreamBuilder<double>(
+                  child: StreamBuilder<UploadStatus>(
                     stream: UploadProgressStream().stream,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<double> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<UploadStatus> snapshot) {
                       // Child which gets inserted into the AnimatedSwitcher
                       Widget child;
                       // Checkmark which gets displayed on upload finish
@@ -46,17 +46,13 @@ class UploadProgressBar {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         child = CircularProgressIndicator();
                       } else {
-                        if (snapshot.data == 1.0) {
+                        if (snapshot.data!.progress == 1.0 &&
+                            !snapshot.data!.done) {
                           // If uploading is done
                           return checkMark;
-                        } else if (snapshot.data! < 1.0) {
-                          // If uploading is in progress
-                          child = CircularProgressIndicator(
-                            value: snapshot.data,
-                          );
-                        } else {
+                        } else if (snapshot.data!.done) {
                           // TODO make better successful upload screen (maybe display upload or smth)
-                          // If value is > 1.0
+                          // If upload is done
                           child = Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -80,6 +76,27 @@ class UploadProgressBar {
                                   child: Text(
                                       "Back to home")), // TODO better wording
                             ],
+                          );
+                        } else if (snapshot.data!.error) {
+                          child = Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error_outlined,
+                                color: Theme.of(context).errorColor,
+                                size: 40,
+                              ),
+                              Text(
+                                  "An error has occured: " +
+                                      snapshot.data!.message,
+                                  style: Theme.of(context).textTheme.bodyText1),
+                            ],
+                          );
+                        } else {
+                          // If uploading is in progress
+                          child = CircularProgressIndicator(
+                            value: snapshot.data!.progress,
                           );
                         }
                       }

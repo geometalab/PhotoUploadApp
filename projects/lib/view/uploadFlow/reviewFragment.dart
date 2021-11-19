@@ -154,9 +154,13 @@ class ReviewFragmentState extends State<ReviewFragment> {
     if (collector.image == null) {
       infoText.add(errorText(context, "Select the image you want to upload"));
     }
-
+    final validFileNameChars = RegExp(r'^[a-zA-Z0-9_\- ]+$');
     if (collector.fileName == "" || collector.fileName == null) {
       infoText.add(errorText(context, "File name needs to be set"));
+      fileNameIcon = errorIcon(context);
+      isError = true;
+    } else if (!validFileNameChars.hasMatch(collector.fileName!)) {
+      infoText.add(errorText(context, "Illegal characters in file name"));
       fileNameIcon = errorIcon(context);
       isError = true;
     } else if (collector.fileName!.length < 7) {

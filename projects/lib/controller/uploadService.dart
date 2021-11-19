@@ -23,29 +23,33 @@ class UploadService {
       List<String> categories,
       List<String> depictions) async {
     UploadProgressStream progressStream = UploadProgressStream();
-
     int progressNumber = 3; // represents times progress() is called
+    var map;
+    String token;
 
     progressStream.reset();
     await (Future.delayed(Duration(milliseconds: 500)));
     progressStream.progress(progressNumber);
 
-    var map = await _getCsrfToken();
-    String token = map["tokens"]["csrftoken"];
-    await _sendImage(image, fileName, token);
+    try {
+      map = await _getCsrfToken();
+      token = map["tokens"]["csrftoken"];
+      await _sendImage(image, fileName, token);
+      progressStream.progress(progressNumber);
 
-    progressStream.progress(progressNumber);
+      map = await _getCsrfToken();
+      token = map["tokens"]["csrftoken"];
+      await _editDetails(author, description, license, source, date, categories,
+          fileName, token);
+      progressStream.progress(progressNumber);
 
-    map = await _getCsrfToken();
-    token = map["tokens"]["csrftoken"];
-    await _editDetails(author, description, license, source, date, categories,
-        fileName, token);
-
-    progressStream.progress(progressNumber);
-
-    // Simulated _editDepictions()
-    await (Future.delayed(Duration(milliseconds: 700)));
-    progressStream.doneUploading();
+      map = await _getCsrfToken();
+      token = map["tokens"]["csrftoken"];
+      _editDepictions(depictions, token);
+      progressStream.doneUploading();
+    } catch (e) {
+      progressStream.error(e.toString());
+    }
   }
 
   simulatedUploadImage() async {
@@ -150,6 +154,7 @@ class UploadService {
   Future<http.Response> _editDepictions(
       List<String> depicts, String token) async {
     // TODO Implement _editDepictions
+    await (Future.delayed(Duration(milliseconds: 700)));
     throw UnimplementedError("_editDepictions is not implemented.");
   }
 
@@ -252,13 +257,13 @@ class UploadService {
 // 1.0        ->  Uploading finished
 // 2.0        ->  is set a second after doneDownloading() is called
 class UploadProgressStream {
-  double _progress = 0.0;
-  static StreamController<double> _controller =
-      StreamController<double>.broadcast();
+  UploadStatus _status = UploadStatus(progress: 0.0);
+  static StreamController<UploadStatus> _controller =
+      StreamController<UploadStatus>.broadcast();
 
   reset() {
-    _progress = 0.0;
-    _controller.add(_progress);
+    _status = UploadStatus();
+    _controller.add(_status);
   }
 
   progress(int count) {
@@ -266,25 +271,55 @@ class UploadProgressStream {
     // which helps calculate how much a single progress() should advance
     // the progress value
     double _progressValue = 1.0 / (count + 1);
-    _progress += _progressValue;
-    _controller.add(_progress);
+    _status.addProgress(_progressValue);
+    _controller.add(_status);
   }
 
   doneUploading() async {
-    _progress = 1.0;
-    _controller.add(_progress);
+    _status = UploadStatus(progress: 1.0);
+    _controller.add(_status);
     await Future.delayed(Duration(milliseconds: 1000));
     doneProcessing();
   }
 
   doneProcessing() {
-    _progress = 2.0;
-    _controller.add(_progress);
+    _status.done = true;
+    _controller.add(_status);
+  }
+
+  error(String message) {
+    _status = UploadStatus(error: true, message: message);
+    _controller.add(_status);
+  }
+
+  warning(String message) {
+    _status.warning = true;
+    _status.message = message;
+    _controller.add(_status);
   }
 
   void dispose() {
     _controller.close();
   }
 
-  Stream<double> get stream => _controller.stream;
+  Stream<UploadStatus> get stream => _controller.stream;
+}
+
+class UploadStatus {
+  double progress;
+  bool done;
+  bool warning;
+  bool error;
+  String message;
+
+  UploadStatus(
+      {this.progress = 0.0,
+      this.done = false,
+      this.warning = false,
+      this.error = false,
+      this.message = ""});
+
+  addProgress(double value) {
+    progress += value;
+  }
 }

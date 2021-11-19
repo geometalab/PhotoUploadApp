@@ -46,8 +46,13 @@ class _InformationFragment extends State<StatefulInformationFragment> {
                     setState(() {
                       if (value == true) {
                         collector.source = "Own Work";
-                        LoginHandler().getUserInformationFromFile().then(
-                            (value) => collector.author = value!.username);
+                        LoginHandler()
+                            .getUserInformationFromFile()
+                            .then((value) {
+                          setState(() {
+                            collector.author = value!.username;
+                          });
+                        });
                         collector.ownWork = true;
                       } else {
                         collector.source = "";
@@ -85,7 +90,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               decoration: const InputDecoration(
                   icon: Icon(Icons.person),
                   labelText:
-                      'Author', // TODO Author is not always loaded when spamming checkbox
+                      'Author',
                   hintText: 'Original author of the file')),
         ),
         Padding(

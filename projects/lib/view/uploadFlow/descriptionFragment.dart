@@ -153,7 +153,9 @@ class _DescriptionFragment extends State<DescriptionFragment> {
         children: [
           Expanded(
             child: TextFormField(
-              initialValue: collector.fileName,
+              controller: TextEditingController(
+                text: collector.fileName,
+              ),
               onChanged: (value) {
                 collector.fileName = value;
               },
