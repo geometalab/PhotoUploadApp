@@ -155,9 +155,8 @@ class InformationCollector {
       _source = "Own Work";
     }
     try {
-      await UploadService().simulatedUploadImage();
-      // await UploadService().uploadImage(image!, fileName! + fileType!, _source,
-      //    description, _author, license!, date, categories, depictions);
+      await UploadService().uploadImage(image!, fileName! + fileType!, _source,
+         description, _author, license!, date, categories, depictions);
     } catch (e) {
       throw (e);
     }

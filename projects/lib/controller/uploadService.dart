@@ -8,6 +8,7 @@ import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import '../config.dart';
 
 // TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates (or check if already taken)
+// TODO get response in case of error and extract error message, which then should be thrown to catch for the progress indicator
 
 class UploadService {
   static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
@@ -52,24 +53,24 @@ class UploadService {
     }
   }
 
-  simulatedUploadImage() async {
+  simulatedUploadImage() async { // For debugging
     UploadProgressStream progressStream = UploadProgressStream();
 
     int progressNumber = 3; // represents times progress() is called
 
     progressStream.reset();
-    await (Future.delayed(Duration(milliseconds: 500)));
+    await (Future.delayed(Duration(milliseconds: 200)));
     progressStream.progress(progressNumber);
 
-    await (Future.delayed(Duration(milliseconds: 600)));
-
-    progressStream.progress(progressNumber);
-
-    await (Future.delayed(Duration(milliseconds: 900)));
+    await (Future.delayed(Duration(milliseconds: 200)));
 
     progressStream.progress(progressNumber);
 
-    await (Future.delayed(Duration(milliseconds: 700)));
+    await (Future.delayed(Duration(milliseconds: 200)));
+
+    progressStream.progress(progressNumber);
+
+    await (Future.delayed(Duration(milliseconds: 200)));
 
     progressStream.doneUploading();
   }
@@ -278,7 +279,7 @@ class UploadProgressStream {
   doneUploading() async {
     _status = UploadStatus(progress: 1.0);
     _controller.add(_status);
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(Duration(milliseconds: 2000));
     doneProcessing();
   }
 

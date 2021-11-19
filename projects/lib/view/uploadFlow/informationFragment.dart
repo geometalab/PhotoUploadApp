@@ -89,8 +89,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
               },
               decoration: const InputDecoration(
                   icon: Icon(Icons.person),
-                  labelText:
-                      'Author',
+                  labelText: 'Author',
                   hintText: 'Original author of the file')),
         ),
         Padding(

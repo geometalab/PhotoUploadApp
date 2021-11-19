@@ -25,7 +25,7 @@ class ImageService {
 
   Future<List<ImageURL>> _getImageURLs(String category, int width) async {
     String url =
-        "https://commons.wikimedia.org/w/controller.php?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&format=json";
+        "https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&format=json";
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
