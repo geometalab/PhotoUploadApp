@@ -52,6 +52,7 @@ class _UserFragmentState extends State<UserFragment> {
 
   Future<void> pullRefresh() async {
     await LoginHandler().checkCredentials();
+    Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 5;
     setState(() {});
   }
 

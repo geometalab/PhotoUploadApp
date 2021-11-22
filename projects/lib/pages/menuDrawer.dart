@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/connectionStatus.dart';
@@ -171,10 +172,15 @@ class HomePageState extends State<HomePage> {
             padding: EdgeInsets.zero,
           );
         } else {
+          SettingsManager sm = SettingsManager();
           Userdata data = snapshot.data;
           Decoration? decoration;
-          String? imagePath = SettingsManager().getBackgroundImage();
-          if (imagePath != null) {
+          String? imagePath = sm.getBackgroundImage();
+          if (imagePath == null) {
+            imagePath = SettingsFragment().assetImages()[0];
+            sm.setBackgroundImage(imagePath);
+          }
+          if (imagePath.isNotEmpty) {
             decoration = BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
@@ -184,8 +190,7 @@ class HomePageState extends State<HomePage> {
             );
           } else {
             decoration = BoxDecoration(
-                // TODO make beautiful for no background image
-                );
+                color: Theme.of(context).colorScheme.primaryVariant);
           }
           return UserAccountsDrawerHeader(
               decoration: decoration,

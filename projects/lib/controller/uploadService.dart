@@ -86,7 +86,6 @@ class UploadService {
     request.headers['Authorization'] = "Bearer " + await _getAccessToken();
     request.fields['token'] = csrfToken;
     request.files.add(await _convertToMultiPartFile(image, fileName));
-    print(request.headers.toString());
 
     var streamResponse = await request.send();
     return http.Response.fromStream(streamResponse);

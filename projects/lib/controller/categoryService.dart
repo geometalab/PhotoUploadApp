@@ -23,7 +23,7 @@ class CategoryService {
               {'title': e['title'], 'id': e['id'], 'thumbnail': e['thumbnail']})
           .toList();
     } catch (e) {
-      print("Error while getting autocomplete results from Wikimedia: $e");
+      throw ("Error while getting autocomplete results from Wikimedia: $e");
     }
     List<Map<String, dynamic>> suggestionsList = listedSuggestions;
     // Remove all file items

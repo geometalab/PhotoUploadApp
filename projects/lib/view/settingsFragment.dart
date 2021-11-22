@@ -28,7 +28,6 @@ class SettingsFragment extends StatelessWidget {
     callBack(int newIndex) {
       String path = assetImages()[newIndex];
       manager.setBackgroundImage(path);
-      print("Set new image path: " + path);
     }
 
     return new Center(
@@ -129,15 +128,15 @@ class SettingsFragment extends StatelessWidget {
 
   List<String> assetImages() {
     String path = "assets/media/backgrounds/";
-    List<String> images = List.empty(growable: true);
-    images.add(path + "aurora.jpg");
-    images.add(path + "frogs.jpg");
-    images.add(path + "national_park.jpg");
-    images.add(path + "old_town.jpg");
-    images.add(path + "roundhouse.jpg");
-    images.add(path + "train.jpg");
-    images.add(path + "waterfalls.jpg");
-    images.add("");
-    return images;
+    return [
+      path + "aurora.jpg",
+      path + "frogs.jpg",
+      path + "national_park.jpg",
+      path + "old_town.jpg",
+      path + "roundhouse.jpg",
+      path + "train.jpg",
+      path + "waterfalls.jpg",
+      ""
+    ];
   }
 }

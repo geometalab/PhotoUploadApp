@@ -146,9 +146,7 @@ class ArticleList {
     List<Article> articles = ArticleList.articles;
 
     if (articles.length == 0) {
-      print("No articles to be displayed");
-      articles.add(Article(
-          title: "No articles", description: "add a article to be displayed"));
+      throw ("No articles to be displayed");
     }
 
     for (Article article in articles) {

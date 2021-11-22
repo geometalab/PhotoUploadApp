@@ -22,7 +22,7 @@ class DeepLinkListener extends ChangeNotifier {
       }
     }, onError: (error) {
       PlatformException platformException = error as PlatformException;
-      print('${platformException.code} - ${platformException.message}');
+      throw ('${platformException.code} - ${platformException.message}');
     });
   }
 }
