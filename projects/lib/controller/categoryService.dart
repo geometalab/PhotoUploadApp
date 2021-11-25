@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:projects/controller/settingsManager.dart';
 
 class CategoryService {
   Future<List<Map<String, dynamic>>> getSuggestions(String pattern) async {
@@ -9,7 +10,9 @@ class CategoryService {
             pattern +
             '&limit=6';
     try {
-      if (pattern.isEmpty || pattern.length < 2) {
+      if (pattern.isEmpty) {
+        return Future.value(recentlyUsedCategories());
+      } else if (pattern.length < 2) {
         return Future.value(
             []); // Search Results only start to get shown after 2 entered chars
       }
@@ -39,6 +42,16 @@ class CategoryService {
       }
     }
     return new Future.value(suggestionsList);
+  }
+
+  List<Map<String, dynamic>> recentlyUsedCategories() {
+    List<String> cacheList =
+        SettingsManager().getCachedCategories() ?? List.empty();
+    List<Map<String, dynamic>> returnList = List.empty(growable: true);
+    for (String category in cacheList) {
+      returnList.add({"title": category, "id": "Recently used"});
+    }
+    return returnList;
   }
 }
 

@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projects/controller/categoryService.dart';
+import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/style/themes.dart';
 import '../commonsUploadFragment.dart';
 
 // TODO display something in lower half when no category has been added, so it doesnt look emtpty
+// TODO don't allow duplicates
 
 class StatefulSelectItemFragment extends StatefulWidget {
   // If 0, uses categories / if 1, uses depicts
@@ -74,16 +76,17 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
             },
             itemBuilder: (context, Map<String, dynamic> suggestion) {
               return ListTile(
+                // TODO Add Wiki ID in List tile
                 title: Text(suggestion['title']!),
                 subtitle: Text('${suggestion['id']}'),
               );
             },
             onSuggestionSelected: (Map<String, dynamic> suggestion) {
-              // TODO Add Wiki ID in List tile
               setState(() {
                 if (useCase == 0) {
                   collector.categories.add(suggestion['title']!);
                   collector.categoriesThumb.add(suggestion['thumbnail']);
+                  SettingsManager().addToCachedCategories(suggestion['title']);
                 } else {
                   collector.depictions.add(suggestion['title']!);
                   collector.depictionsThumb.add(suggestion['thumbnail']);
