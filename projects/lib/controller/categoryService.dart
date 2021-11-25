@@ -3,7 +3,8 @@ import 'package:http/http.dart';
 import 'package:projects/controller/settingsManager.dart';
 
 class CategoryService {
-  Future<List<Map<String, dynamic>>> getSuggestions(String pattern) async {
+  Future<List<Map<String, dynamic>>> getSuggestions(
+      String pattern, int useCase) async {
     var listedSuggestions;
     String request =
         'https://api.wikimedia.org/core/v1/commons/search/title?q=' +

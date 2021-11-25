@@ -68,11 +68,10 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
                     fontSize: 20,
                     color: Theme.of(context).textTheme.bodyText1!.color),
                 decoration: InputDecoration(
-                    labelText:
-                        "Enter fitting keywords", // TODO maybe change this per useCase
+                    labelText: labelText(useCase),
                     border: OutlineInputBorder())),
             suggestionsCallback: (pattern) async {
-              return await cs.getSuggestions(pattern);
+              return await cs.getSuggestions(pattern, useCase);
             },
             itemBuilder: (context, Map<String, dynamic> suggestion) {
               return ListTile(
@@ -90,6 +89,7 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
                 } else {
                   collector.depictions.add(suggestion['title']!);
                   collector.depictionsThumb.add(suggestion['thumbnail']);
+                  SettingsManager().addToCachedCategories(suggestion['title']);
                 }
               });
             },
@@ -130,6 +130,14 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
         ),
       )
     ]);
+  }
+
+  String labelText(int useCase) {
+    if (useCase == 0) {
+      return "Enter fitting categories";
+    } else {
+      return "What is depicted on the image?";
+    }
   }
 
   Widget thumbnail(Map? thumbnail) {

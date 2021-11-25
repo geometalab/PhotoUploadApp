@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
 import 'package:projects/style/keyValueField.dart';
@@ -242,7 +243,25 @@ class ReviewFragmentState extends State<ReviewFragment> {
   // Supplies the image or a placeholder if no image is in the collector
   Widget image() {
     if (collector.image != null) {
-      return Image.file(File(collector.image!.path));
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HeroPhotoViewRouteWrapper(
+                  imageProvider: FileImage(File(collector.image!.path)),
+                ),
+              ));
+        },
+        child: Container(
+          child: Hero(
+            tag: "someTag",
+            child: Image.file(
+              File(collector.image!.path),
+            ),
+          ),
+        ),
+      );
     } else {
       return Container(
         alignment: Alignment.center,

@@ -36,7 +36,7 @@ class _InformationFragment extends State<StatefulInformationFragment> {
       child: SingleChildScrollView(
           child: Column(children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.only(top: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
