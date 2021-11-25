@@ -32,7 +32,7 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             contentContainer(introText()),
-            contentContainer(imageSelect()),
+            contentContainer(imageSelectWidget()),
           ],
         ),
       ),
@@ -62,7 +62,7 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
     );
   }
 
-  Widget imageSelect() {
+  Widget imageSelectWidget() {
     if (collector.image != null) {
       return FutureBuilder(
           future: futureCollector(),
@@ -210,6 +210,16 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
       infoMap['width'] = decodedImage.width;
       infoMap['height'] = decodedImage.height;
       infoMap['fileName'] = File(collector.image!.name).toString().substring(6);
+
+      // If prefillContent is defined and title is empty, we can auto generate a file name
+      if (collector.preFillContent != null &&
+          (collector.fileName == null || collector.fileName!.isEmpty)) {
+        if (infoMap.containsKey("dateTime") &&
+            collector.preFillContent!.isNotEmpty) {
+          collector.fileName =
+              "${collector.preFillContent!.replaceAll(" ", "_")}_${collector.date.year}-${collector.date.month}-${collector.date.day}";
+        }
+      }
 
       String fileName = infoMap['fileName'].toString().split(".")[1];
       infoMap['fileType'] = "." + fileName.substring(0, fileName.length - 1);
