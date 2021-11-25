@@ -58,6 +58,7 @@ class NearbyCategoriesService {
   }
 
   cacheMerge(List<CategoryLocation> fetchedCategories) {
+    // TODO is there a concern for too big of a cache list?
     for (CategoryLocation fetchedLocation in fetchedCategories) {
       bool duplicate = false;
       for (CategoryLocation cachedLocation in cacheList) {

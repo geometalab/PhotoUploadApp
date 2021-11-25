@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -7,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:projects/view/mapPopUps/categoryMapPopup.dart';
 import 'package:projects/controller/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'dart:math' as Math;
 
 class StatefulMapFragment extends StatefulWidget {
   @override
@@ -15,6 +17,8 @@ class StatefulMapFragment extends StatefulWidget {
 
 class _MapFragment extends State<StatefulMapFragment> {
   List<Marker> _markerList = List.empty(growable: true);
+  LatLng? lastLoadPosition;
+  bool tooFarOut = false;
 
   final MapController mapController = new MapController();
   final NearbyCategoriesService ncs = new NearbyCategoriesService();
@@ -37,6 +41,9 @@ class _MapFragment extends State<StatefulMapFragment> {
               minZoom: 2,
               maxZoom: 18,
               enableScrollWheel: true,
+              onPositionChanged: (MapPosition position, bool hasGesture) {
+                onMapMove(position, hasGesture);
+              },
               plugins: <MapPlugin>[
                 LocationMarkerPlugin(),
                 MarkerClusterPlugin()
@@ -65,7 +72,7 @@ class _MapFragment extends State<StatefulMapFragment> {
                   backgroundColor: Theme.of(context).primaryColor,
                 );
               },
-              markers: getMarkerList(),
+              markers: getMarkerList(tooFarOut),
               maxClusterRadius: 120,
               size: Size(40, 40),
               fitBoundsOptions: FitBoundsOptions(
@@ -73,24 +80,25 @@ class _MapFragment extends State<StatefulMapFragment> {
               ),
             ),
           ]),
-      floatingActionButton: new FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: infoMenu(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget? infoMenu() {
+    if (tooFarOut) {
+      return FloatingActionButton.extended(
+        label: Text("Zoom in to view categories"),
+        icon: Icon(Icons.help),
+        heroTag: "helpIcon",
         onPressed: () {
-          ncs
-              .markerBuilder(
-                  ncs.getNearbyCategories(mapController.center.latitude,
-                      mapController.center.longitude, calculateKmRadius()),
-                  context)
-              .then((value) {
-            _markerList = value;
-            setState(() {});
+          setState(() {
+            mapController.move(mapController.center, 12.5);
+            tooFarOut = false;
           });
         },
-        label: Text("Search in this area"),
-        icon: Icon(Icons.search),
-        heroTag: "searchBtn",
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -104,6 +112,18 @@ class _MapFragment extends State<StatefulMapFragment> {
     });
   }
 
+  loadNearbyCategories() {
+    ncs
+        .markerBuilder(
+            ncs.getNearbyCategories(mapController.center.latitude,
+                mapController.center.longitude, calculateKmRadius()),
+            context)
+        .then((value) {
+      _markerList = value;
+      setState(() {});
+    });
+  }
+
   int calculateKmRadius() {
     // Resources:
     // https://wiki.openstreetmap.org/wiki/Zoom_levels
@@ -113,7 +133,7 @@ class _MapFragment extends State<StatefulMapFragment> {
     // 12 | 17 km
     // 13 | 9.5 km
     // 15 | 3.4 km
-    // 17 | 0.766
+    // 17 | 0.766 km
 
     if (mapController.zoom > 17.0) {
       return 1;
@@ -140,8 +160,12 @@ class _MapFragment extends State<StatefulMapFragment> {
     return latLng;
   }
 
-  List<Marker> getMarkerList() {
-    return _markerList;
+  List<Marker> getMarkerList(bool tooFarOut) {
+    if (!tooFarOut) {
+      return _markerList;
+    } else {
+      return List.empty();
+    }
   }
 
   LatLngBounds getMarkerListMiddle(List<Marker> markers) {
@@ -165,5 +189,54 @@ class _MapFragment extends State<StatefulMapFragment> {
       LatLng(maxLat + margin, minLng - margin),
       LatLng(minLat - margin, maxLng + margin)
     ]);
+  }
+
+  onMapMove(MapPosition position, bool hasGesture) {
+    // If the onMove doesnt include a (user) gesture, it is the move on user position, in which case we just want to load the markers, as we dont want to trigger a setState during build.
+    if (hasGesture) {
+      bool valueBefore = tooFarOut;
+      if (mapController.zoom >= 12) {
+        tooFarOut = false;
+      } else {
+        tooFarOut = true;
+      }
+
+      if (tooFarOut != valueBefore) {
+        setState(() {});
+      }
+
+      if (lastLoadPosition == null) {
+        lastLoadPosition = position.center;
+        loadNearbyCategories();
+      } else {
+        // Checks if the map has moved more than 1.5km since tha last categories have been loaded
+        // If so, new categories are loaded in
+        if (latLngDistance(position.center!, lastLoadPosition!) > 1.5) {
+          lastLoadPosition = position.center;
+          loadNearbyCategories();
+        }
+      }
+    } else {
+      loadNearbyCategories();
+      lastLoadPosition = position.center;
+    }
+  }
+
+  double latLngDistance(LatLng latLng1, LatLng latLng2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(latLng2.latitude - latLng1.latitude);
+    var dLon = deg2rad(latLng2.longitude - latLng1.longitude);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(latLng1.latitude)) *
+            Math.cos(deg2rad(latLng2.latitude)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  }
+
+  double deg2rad(deg) {
+    return deg * (Math.pi / 180);
   }
 }
