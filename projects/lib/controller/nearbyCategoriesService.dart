@@ -8,6 +8,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:xml/xml.dart';
 
 class NearbyCategoriesService {
+  List<CategoryLocation> cacheList = List.empty(growable: true);
+
   Future<List<CategoryLocation>> getNearbyCategories(
       double lat, double lng, int radius) async {
     String url =
@@ -47,10 +49,25 @@ class NearbyCategoriesService {
               commonsString, double.parse(lng), double.parse(lat)));
         }
       }
-      return resultList;
+      cacheMerge(resultList);
+      return cacheList;
     } else {
       throw "Couldn't get nearest Items from Wikimedia Query. Status Code " +
           response.statusCode.toString();
+    }
+  }
+
+  cacheMerge(List<CategoryLocation> fetchedCategories) {
+    for (CategoryLocation fetchedLocation in fetchedCategories) {
+      bool duplicate = false;
+      for (CategoryLocation cachedLocation in cacheList) {
+        if (fetchedLocation.equals(cachedLocation)) {
+          duplicate = true;
+        }
+      }
+      if (!duplicate) {
+        cacheList.add(fetchedLocation);
+      }
     }
   }
 
@@ -78,10 +95,20 @@ class NearbyCategoriesService {
   }
 }
 
+// TODO detect if category already has images, and if not, display on map
 class CategoryLocation {
   double lat;
   double lng;
   String commons;
 
   CategoryLocation(this.commons, this.lat, this.lng);
+
+  bool equals(CategoryLocation categoryLocation) {
+    if (this.commons == categoryLocation.commons &&
+        this.lng == categoryLocation.lng &&
+        this.lat == categoryLocation.lat) {
+      return true;
+    } else
+      return false;
+  }
 }
