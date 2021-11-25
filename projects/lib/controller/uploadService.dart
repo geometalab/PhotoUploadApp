@@ -50,6 +50,7 @@ class UploadService {
       progressStream.doneUploading();
     } catch (e) {
       progressStream.error(e.toString());
+      throw (e);
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/view/articles/uploadGuideFragment.dart';
 import 'package:projects/style/textStyles.dart';
+import 'package:exif/exif.dart';
 
 import '../commonsUploadFragment.dart';
 
@@ -182,17 +183,43 @@ class SelectImageFragmentState extends State<SelectImageFragment> {
   }
 
   Future<Map> futureCollector() async {
-    Map<String, dynamic> map = new Map();
-    map['image'] = Image.file(File(collector.image!.path), height: 100);
-    var decodedImage =
-        await decodeImageFromList(await collector.image!.readAsBytes());
-    map['width'] = decodedImage.width;
-    map['height'] = decodedImage.height;
-    map['fileName'] = File(collector.image!.name).toString().substring(6);
-    String fileName = map['fileName'].toString().split(".")[1];
-    map['fileType'] = "." + fileName.substring(0, fileName.length - 1);
-    collector.fileType = map['fileType'];
-    return map;
+    // TODO check if metadata tags are same on other devices
+    try {
+      Map<String, dynamic> infoMap = new Map();
+      infoMap['image'] = Image.file(File(collector.image!.path), height: 100);
+      final imageBytes = await collector.image!.readAsBytes();
+      final decodedImage = await decodeImageFromList(imageBytes);
+      final exifData = await readExifFromBytes(imageBytes);
+
+      if (exifData.containsKey('Image DateTime')) {
+        infoMap['dateTime'] = exifData['Image DateTime']!.printable;
+      }
+      if (exifData.containsKey('GPS GPSLatitudeRef') &&
+          exifData.containsKey('GPS GPSLatitude') &&
+          exifData.containsKey('GPS GPSLongitudeRef') &&
+          exifData.containsKey('GPS GPSLongitude')) {
+        infoMap['gpsLatRef'] = exifData['GPS GPSLatitudeRef']!.printable;
+        infoMap['gpsLat'] = exifData['GPS GPSLatitude']!.printable;
+
+        infoMap['gpsLngRef'] = exifData['GPS GPSLongitudeRef']!.printable;
+        infoMap['gpsLng'] = exifData['GPS GPSLongitude']!.printable;
+      }
+      collector.date =
+          DateTime.parse(infoMap['dateTime'].toString().replaceAll(":", ""));
+
+      infoMap['width'] = decodedImage.width;
+      infoMap['height'] = decodedImage.height;
+      infoMap['fileName'] = File(collector.image!.name).toString().substring(6);
+
+      String fileName = infoMap['fileName'].toString().split(".")[1];
+      infoMap['fileType'] = "." + fileName.substring(0, fileName.length - 1);
+      collector.fileType = infoMap['fileType'];
+      return infoMap;
+    } catch (e) {
+      // Somehow, thrown errors don't get printed to console, so I print them as well.
+      print("Error while processing image: $e");
+      throw ("Error while processing image: $e");
+    }
   }
 
   Widget introText() {

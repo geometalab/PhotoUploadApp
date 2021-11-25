@@ -52,6 +52,7 @@ dependencies:
   progress_tab_bar: ^0.1.3
   intl: ^0.17.0
   webfeed: any
+  exif: ^3.0.1
 
 
 dev_dependencies:
