@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as assertions;
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/connectionStatus.dart';
 import 'package:projects/controller/lifeCycleEventHandler.dart';
 import 'package:projects/controller/loginHandler.dart';
@@ -16,6 +17,7 @@ import 'package:projects/view/mapViewFragment.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/userAvatar.dart';
 import 'package:provider/provider.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class DrawerItem {
   String title;
@@ -50,12 +52,29 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     ConnectionStatusListener connectionStatus =
         ConnectionStatusListener.getInstance();
     _connectionChangeStream =
         connectionStatus.connectionChange.listen(connectionChanged);
     connectionStatus.checkConnection().then((value) => connectionChanged(
         connectionStatus.hasConnection)); // For check on startup
+
+    // For sharing images coming from outside the app while the app is in the memory
+    ReceiveSharingIntent.getMediaStream().listen((List<SharedMediaFile> value) {
+      setState(() {
+        processExternalIntent(value);
+      });
+    }, onError: (err) {
+      throw ("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      setState(() {
+        processExternalIntent(value);
+      });
+    });
 
     PictureOfTheDayService().getPictureOfTheDay(); // Preload POTD
 
@@ -102,6 +121,24 @@ class HomePageState extends State<HomePage> {
   onSelectItem(int index) {
     _selectedDrawerIndex = index;
     Navigator.of(context).pop();
+  }
+
+  // Gets called when a external intent is received
+  processExternalIntent(List<SharedMediaFile> sharedMediaList) {
+    if (sharedMediaList.isNotEmpty) {
+      // Clear the information collector and add the passed data
+      InformationCollector ic = InformationCollector();
+      ic.clear();
+      ic.image = XFile(sharedMediaList.first.path);
+
+      // Close all routes in case one is open
+      while (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      // Switch to the upload menu
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
+    }
   }
 
   @override
@@ -206,9 +243,9 @@ class HomePageState extends State<HomePage> {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(assertions.DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamSubscription>(
+    properties.add(assertions.DiagnosticsProperty<StreamSubscription>(
         '_connectionChangeStream', _connectionChangeStream));
   }
 }

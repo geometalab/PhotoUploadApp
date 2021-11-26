@@ -53,6 +53,7 @@ dependencies:
   intl: ^0.17.0
   webfeed: any
   exif: ^3.0.1
+  receive_sharing_intent: ^1.4.5
 
 
 dev_dependencies:
