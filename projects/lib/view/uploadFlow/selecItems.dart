@@ -103,27 +103,30 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
           itemBuilder: (BuildContext context, int i) {
             return Card(
               child: ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 leading: Padding(
-                  padding: EdgeInsets.all(6),
+                  padding: EdgeInsets.only(top: 6, bottom: 6),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: thumbnail(thumbs[i]),
                   ),
                 ),
                 title: Text(titles[i]), // TODO Text all on same vertical line
-                trailing: Icon(Icons.remove),
-                onTap: () {
-                  setState(() {
-                    _typeAheadController.clear();
-                    if (useCase == 0) {
-                      collector.categories.removeAt(i);
-                      collector.categoriesThumb.removeAt(i);
-                    } else {
-                      collector.depictions.removeAt(i);
-                      collector.depictionsThumb.removeAt(i);
-                    }
-                  });
-                },
+                trailing: IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () {
+                    setState(() {
+                      _typeAheadController.clear();
+                      if (useCase == 0) {
+                        collector.categories.removeAt(i);
+                        collector.categoriesThumb.removeAt(i);
+                      } else {
+                        collector.depictions.removeAt(i);
+                        collector.depictionsThumb.removeAt(i);
+                      }
+                    });
+                  },
+                ),
               ),
             );
           },

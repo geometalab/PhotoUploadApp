@@ -388,9 +388,12 @@ class ReviewFragmentState extends State<ReviewFragment> {
               style: objectDescription,
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: thumbnail,
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: thumbnail,
+            ),
           ),
         ],
       ));
