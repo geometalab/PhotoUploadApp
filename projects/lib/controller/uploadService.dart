@@ -44,9 +44,11 @@ class UploadService {
           fileName, token);
       progressStream.progress(progressNumber);
 
-      map = await _getCsrfToken();
-      token = map["tokens"]["csrftoken"];
-      _editDepictions(depictions, token);
+      // map = await _getCsrfToken();
+      // token = map["tokens"]["csrftoken"];
+      // _editDepictions(depictions, token);
+      await (Future.delayed(Duration(milliseconds: 200)));
+
       progressStream.doneUploading();
     } catch (e) {
       progressStream.error(e.toString());

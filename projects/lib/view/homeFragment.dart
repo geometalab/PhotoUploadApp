@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,8 +7,6 @@ import 'package:projects/controller/pictureOfTheDayService.dart';
 import 'package:projects/view/articles/pictureOfTheDayFragment.dart';
 import 'package:projects/view/articles/reusingContentFragment.dart';
 import 'package:projects/view/articles/uploadGuideFragment.dart';
-import 'package:projects/view/mapViewFragment.dart';
-import 'package:projects/view/uploadFlow/selectImage.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 class HomeFragment extends StatelessWidget {
@@ -30,16 +27,6 @@ class HomeFragment extends StatelessWidget {
         description:
             "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
         onTap: ReusingContentFragment()));
-    articleList.add(new Article(
-      title: "Title two",
-      description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when...",
-    ));
-    articleList.add(new Article(
-        title: "title 3",
-        description: "desciription sadjf sadf",
-        image: Image.network(
-            "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg")));
 
     // ------------------------------
 

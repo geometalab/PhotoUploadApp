@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/view/aboutFragment.dart';
 import 'package:projects/view/singlePage/imageSelector.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
 
 class SettingsFragment extends StatelessWidget {
-  late SettingsManager manager;
+  late final SettingsManager manager;
   @override
   Widget build(BuildContext context) {
     manager = SettingsManager();

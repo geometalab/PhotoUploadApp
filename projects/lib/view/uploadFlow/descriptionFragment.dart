@@ -44,7 +44,9 @@ class _DescriptionFragment extends State<DescriptionFragment> {
       ),
     ));
     if (collector.description.isEmpty) {
-      collector.description.add(Description(language: "en"));
+      collector.description.add(Description(
+          language:
+              "en")); // TODO localize language with preferences, phone language
     }
     String? descriptionLabel;
     for (int i = 0; i < collector.description.length; i++) {

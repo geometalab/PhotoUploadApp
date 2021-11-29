@@ -112,8 +112,8 @@ class ReviewFragmentState extends State<ReviewFragment> {
                 ),
                 listWidgetBuilder(0),
                 Padding(padding: EdgeInsets.symmetric(vertical: 6)),
-                listWidgetBuilder(1),
-                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                // listWidgetBuilder(1),
+                // Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Column(
                   children: infoText,
                 ),
@@ -234,9 +234,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
       infoText.add(warningText(context, "No categories have been added"));
     }
 
-    if (collector.depictions.isEmpty) {
-      infoText.add(warningText(context, "No depictions have been added"));
-    }
+    // if (collector.depictions.isEmpty) {
+    //   infoText.add(warningText(context, "No depictions have been added"));
+    // }
     return isError;
   }
 

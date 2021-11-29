@@ -48,7 +48,7 @@ class _SelectItemFragment extends State<StatefulSelectItemFragment> {
     }
     final TextEditingController _typeAheadController =
         TextEditingController(text: prefillContent);
-    // TODO atm the prefilled content gets only suggested, but not acctually prefilled in the text field
+    // TODO atm the prefilled content gets only suggested, but not actually prefilled in the text field
     collector.preFillContent =
         null; // Empty prefill content or it will appear again after selection
 

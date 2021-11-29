@@ -52,38 +52,40 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                   });
                 },
                 label: "Select File"),
+            /*
+            ProgressTab( // TODO implement depictions
+            onPressed: () {
+                  setState(() {
+                    selectedTab = 1;
+                  });
+                },
+                label: "Depicts"),
+             */
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 1;
                   });
                 },
-                label: "Depicts"),
+                label: "Categories"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 2;
                   });
                 },
-                label: "Categories"),
+                label: "Describe"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
                     selectedTab = 3;
                   });
                 },
-                label: "Describe"),
-            ProgressTab(
-                onPressed: () {
-                  setState(() {
-                    selectedTab = 4;
-                  });
-                },
                 label: "Add information"),
             ProgressTab(
                 onPressed: () {
                   setState(() {
-                    selectedTab = 5;
+                    selectedTab = 4;
                   });
                 },
                 label: "Review"),
@@ -101,15 +103,15 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
     switch (tab) {
       case 0:
         return SelectImageFragment();
+      // case 1:
+      //   return StatefulSelectItemFragment(1);
       case 1:
-        return StatefulSelectItemFragment(1);
-      case 2:
         return StatefulSelectItemFragment(0);
-      case 3:
+      case 2:
         return DescriptionFragment();
-      case 4:
+      case 3:
         return StatefulInformationFragment();
-      case 5:
+      case 4:
         return ReviewFragment();
       default:
         throw Exception("Invalid tab index");

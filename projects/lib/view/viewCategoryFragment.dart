@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/controller/imageService.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
-import 'package:projects/view/uploadFlow/selectImage.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:provider/provider.dart';
 
