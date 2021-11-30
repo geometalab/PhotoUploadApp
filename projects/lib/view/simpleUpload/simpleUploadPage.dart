@@ -1,29 +1,78 @@
-import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:projects/controller/filenameCheckService.dart';
-import 'package:projects/model/datasets.dart' as data;
 import 'package:projects/model/informationCollector.dart';
+import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/themes.dart';
-import '../../config.dart';
-import '../commonsUploadFragment.dart';
+import 'package:projects/view/uploadFlow/descriptionFragment.dart';
+import 'package:projects/model/datasets.dart' as data;
 
-class DescriptionFragment extends StatefulWidget {
+class SimpleUploadPage extends StatefulWidget {
   @override
-  _DescriptionFragment createState() => _DescriptionFragment();
+  _SimpleUploadPageState createState() => _SimpleUploadPageState();
 }
 
-class _DescriptionFragment extends State<DescriptionFragment> {
-  // TODO maybe the image should be shown at the top here, so user can have a look at it when making description
-  InformationCollector collector = new InformationCollector();
-
+class _SimpleUploadPageState extends State<SimpleUploadPage> {
+  InformationCollector collector = InformationCollector();
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: SingleChildScrollView(
-            child: Column(children: descriptionWidgets())));
+    return Scaffold(
+      appBar: _appBar(context),
+      body: ListView(
+        children: [
+          _previewImage(),
+          MediaTitleWidget(),
+        ],
+      ),
+    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      title: Text("Upload to Wikimedia"),
+    );
+  }
+
+  Widget _previewImage() {
+    if (collector.image != null) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HeroPhotoViewRouteWrapper(
+                  imageProvider: FileImage(File(collector.image!.path)),
+                ),
+              ));
+        },
+        child: Container(
+          child: Hero(
+            tag: "someTag",
+            child: Image.file(
+              File(collector.image!.path),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        alignment: Alignment.center,
+        height: 170,
+        color: CustomColors.NO_IMAGE_COLOR,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.image_not_supported,
+                color: CustomColors.NO_IMAGE_CONTENTS_COLOR, size: 40),
+            Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+            Text(
+              "No file selected",
+              style: TextStyle(color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   List<Widget> descriptionWidgets() {
@@ -152,89 +201,4 @@ class _DescriptionFragment extends State<DescriptionFragment> {
 
     return list;
   }
-}
-
-class MediaTitleWidget extends StatefulWidget {
-  @override
-  _MediaTitleWidget createState() => _MediaTitleWidget();
-}
-
-class _MediaTitleWidget extends State<MediaTitleWidget> {
-  bool _isChecking = false;
-  String? _validationMsg;
-  InformationCollector collector = InformationCollector();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Focus(
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _validate();
-              },
-              child: TextFormField(
-                controller: TextEditingController(
-                  text: collector.fileName,
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) => _validationMsg,
-                onChanged: (value) {
-                  collector.fileName = value;
-                },
-                decoration: InputDecoration(
-                  icon: Icon(Icons.file_copy_outlined),
-                  labelText: 'File Name',
-                  hintText: 'Choose a descriptive name',
-                  suffixIcon: _isChecking
-                      ? Transform.scale(
-                          scale: 0.5, child: CircularProgressIndicator())
-                      : null,
-                ),
-              ),
-            ),
-          ),
-          if (collector.fileType != null)
-            Padding(
-              padding: EdgeInsets.only(right: 8, left: 8, top: 16),
-              child: Text(collector.fileType!,
-                  style: Theme.of(context).textTheme.subtitle1),
-            ),
-        ],
-      ),
-    );
-  }
-
-  _validate() async {
-    String? input = collector.fileName;
-    String? fileExtension = collector.fileType;
-    if (input == null || input.isEmpty) {
-      return null;
-    }
-    if (fileExtension == null || fileExtension.isEmpty) {
-      return "Select an image to upload.";
-    }
-    setState(() {
-      _isChecking = true;
-    });
-    var value = await FilenameCheckService().fileExists(input, fileExtension);
-    if (value) {
-      _validationMsg = "A file with this title already exists.";
-    } else {
-      _validationMsg = null;
-    }
-    setState(() {
-      _isChecking = false;
-    });
-  }
-}
-
-class Description {
-  String language;
-  String content;
-
-  Description({this.language = "en", this.content = ""});
 }

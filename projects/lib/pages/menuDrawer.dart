@@ -8,6 +8,7 @@ import 'package:projects/controller/lifeCycleEventHandler.dart';
 import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/controller/pictureOfTheDayService.dart';
 import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/homeFragment.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/view/settingsFragment.dart';

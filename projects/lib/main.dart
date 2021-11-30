@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
+import 'package:projects/view/simpleUpload/simpleHomePage.dart';
 import 'package:provider/provider.dart';
 import 'controller/connectionStatus.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         theme: customThemes.lightTheme,
         darkTheme: customThemes.darkTheme,
         themeMode: EasyDynamicTheme.of(context).themeMode,
-        home: new HomePage(),
+        home: SimpleHomePage(),
       ),
     );
   }

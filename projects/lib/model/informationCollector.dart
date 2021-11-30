@@ -9,7 +9,7 @@ import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 
 class InformationCollector {
   static final InformationCollector _informationCollector =
-  InformationCollector._internal();
+      InformationCollector._internal();
 
   factory InformationCollector() {
     return _informationCollector;

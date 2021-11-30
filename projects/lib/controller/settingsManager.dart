@@ -2,8 +2,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsManager {
   static late SharedPreferences prefs;
+
+  // Keys for different SharedPreferences settings
   final String backGroundImageKey = "backgroundImage";
   final String cachedCategoriesKey = "cachedCategories";
+  final String simpleModeKey = "easyMode";
 
   SettingsManager() {
     initPrefs();
@@ -49,5 +52,14 @@ class SettingsManager {
       return List.from(
           returnList.reversed); // Reverse so newest entry is displayed first
     }
+  }
+
+  setSimpleMode(bool simpleMode) {
+    prefs.setBool(simpleModeKey, simpleMode);
+  }
+
+  bool isSimpleMode() {
+    bool? simpleMode = prefs.getBool(simpleModeKey);
+    return simpleMode ?? true;
   }
 }

@@ -1,7 +1,10 @@
+import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:projects/controller/imageService.dart';
+import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:provider/provider.dart';
@@ -86,16 +89,47 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: _floatingActionButton(categoryTitle),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _floatingActionButton(String prefillCategory) {
+    if (SettingsManager().isSimpleMode()) {
+      return ButtonNavigationBar(children: [
+        ButtonNavigationItem.expandable(
+            width: 250,
+            icon: Icon(Icons.add),
+            label: "Upload to this Category",
+            children: [
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Row(
+                    children: [
+                      Icon(Icons.photo_camera),
+                      Text("Take a picture"),
+                    ],
+                  )),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Row(
+                    children: [
+                      Icon(Icons.folder),
+                      Text("Select from files"),
+                    ],
+                  )),
+            ])
+      ]);
+    } else {
+      return FloatingActionButton.extended(
         onPressed: () {
-          collector.preFillContent = categoryTitle;
+          collector.preFillContent = prefillCategory;
           Navigator.pop(context);
           Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
         },
         label: Text("Upload to this Category"),
         icon: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+      );
+    }
   }
 }
