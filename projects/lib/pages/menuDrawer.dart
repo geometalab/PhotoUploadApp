@@ -39,11 +39,11 @@ class HomePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new HomePageState();
+    return new _HomePageState();
   }
 }
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   late StreamSubscription _connectionChangeStream;
   ViewSwitcher viewSwitcher = ViewSwitcher();
   bool isOffline = false;
@@ -107,7 +107,7 @@ class HomePageState extends State<HomePage> {
       case 2:
         return new CommonsUploadFragment();
       case 3:
-        return new StatefulMapFragment();
+        return new MapFragment();
       case 5:
         return new UserFragment();
       case 7:

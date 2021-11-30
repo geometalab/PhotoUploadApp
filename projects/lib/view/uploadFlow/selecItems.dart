@@ -9,17 +9,17 @@ import '../commonsUploadFragment.dart';
 // TODO display something in lower half when no category has been added, so it doesnt look emtpty
 // TODO don't allow duplicates
 
-class StatefulSelectItemFragment extends StatefulWidget {
+class SelectItemFragment extends StatefulWidget {
   // If 0, uses categories / if 1, uses depicts
   // yes ik its ugly, feel free to rewrite
   final int useCase;
-  const StatefulSelectItemFragment(this.useCase);
+  const SelectItemFragment(this.useCase);
 
   @override
-  _SelectItemFragment createState() => _SelectItemFragment();
+  _SelectItemFragmentState createState() => _SelectItemFragmentState();
 }
 
-class _SelectItemFragment extends State<StatefulSelectItemFragment> {
+class _SelectItemFragmentState extends State<SelectItemFragment> {
   CategoryService cs = new CategoryService();
   InformationCollector collector = new InformationCollector();
 

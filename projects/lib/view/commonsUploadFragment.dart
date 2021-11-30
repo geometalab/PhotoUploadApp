@@ -106,11 +106,11 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       // case 1:
       //   return StatefulSelectItemFragment(1);
       case 1:
-        return StatefulSelectItemFragment(0);
+        return SelectItemFragment(0);
       case 2:
         return DescriptionFragment();
       case 3:
-        return StatefulInformationFragment();
+        return InformationFragment();
       case 4:
         return ReviewFragment();
       default:

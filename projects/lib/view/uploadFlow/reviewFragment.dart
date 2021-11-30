@@ -14,10 +14,10 @@ import 'package:projects/model/datasets.dart' as data;
 
 class ReviewFragment extends StatefulWidget {
   @override
-  ReviewFragmentState createState() => ReviewFragmentState();
+  _ReviewFragmentState createState() => _ReviewFragmentState();
 }
 
-class ReviewFragmentState extends State<ReviewFragment> {
+class _ReviewFragmentState extends State<ReviewFragment> {
   InformationCollector collector = new InformationCollector();
   List<Widget> infoText = List.empty(growable: true);
   Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, categoryIcon;

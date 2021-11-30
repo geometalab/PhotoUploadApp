@@ -11,10 +11,10 @@ import '../commonsUploadFragment.dart';
 
 class SelectImageFragment extends StatefulWidget {
   @override
-  SelectImageFragmentState createState() => SelectImageFragmentState();
+  _SelectImageFragmentState createState() => _SelectImageFragmentState();
 }
 
-class SelectImageFragmentState extends State<SelectImageFragment> {
+class _SelectImageFragmentState extends State<SelectImageFragment> {
   // TODO? Support Video Files?
   // TODO? Support Audio Files?
   // TODO? Support multiple Files?

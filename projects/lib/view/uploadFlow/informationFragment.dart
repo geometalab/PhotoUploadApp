@@ -6,12 +6,12 @@ import 'package:projects/style/themes.dart';
 
 import '../commonsUploadFragment.dart';
 
-class StatefulInformationFragment extends StatefulWidget {
+class InformationFragment extends StatefulWidget {
   @override
   _InformationFragment createState() => _InformationFragment();
 }
 
-class _InformationFragment extends State<StatefulInformationFragment> {
+class _InformationFragment extends State<InformationFragment> {
   InformationCollector collector = new InformationCollector();
 
   DateTime selectedDate = InformationCollector().date;

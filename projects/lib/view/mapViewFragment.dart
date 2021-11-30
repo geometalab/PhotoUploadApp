@@ -9,12 +9,12 @@ import 'package:projects/controller/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'dart:math' as Math;
 
-class StatefulMapFragment extends StatefulWidget {
+class MapFragment extends StatefulWidget {
   @override
-  _MapFragment createState() => _MapFragment();
+  _MapFragmentState createState() => _MapFragmentState();
 }
 
-class _MapFragment extends State<StatefulMapFragment> {
+class _MapFragmentState extends State<MapFragment> {
   List<Marker> _markerList = List.empty(growable: true);
   LatLng? lastLoadPosition;
   bool tooFarOut = false;

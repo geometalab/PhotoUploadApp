@@ -23,7 +23,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => StatefulViewCategoryFragment(_marker)),
+                builder: (context) => ViewCategoryFragment(_marker)),
           );
         }),
         child: Row(

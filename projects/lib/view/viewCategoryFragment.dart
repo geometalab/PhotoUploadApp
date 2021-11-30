@@ -10,15 +10,15 @@ import 'package:provider/provider.dart';
 // TODO add a View in Web/App function (requires QTag probably)
 // TODO display short description (and maybe more) through QTag -> Wikimedia
 
-class StatefulViewCategoryFragment extends StatefulWidget {
+class ViewCategoryFragment extends StatefulWidget {
   final Marker marker;
-  StatefulViewCategoryFragment(this.marker, {Key? key}) : super(key: key);
+  ViewCategoryFragment(this.marker, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ViewCategoryFragment(marker);
 }
 
-class _ViewCategoryFragment extends State<StatefulViewCategoryFragment> {
+class _ViewCategoryFragment extends State<ViewCategoryFragment> {
   final Marker _marker;
   _ViewCategoryFragment(this._marker);
   InformationCollector collector = new InformationCollector();
