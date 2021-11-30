@@ -5,6 +5,7 @@ import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 import 'package:provider/provider.dart';
 import 'controller/connectionStatus.dart';
+import 'package:flutter/services.dart';
 
 // TODO Improve look & feel
 // TODO create a Logo
@@ -19,6 +20,9 @@ import 'controller/connectionStatus.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations(// Do not allow landscape mode
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   ConnectionStatusListener connectionStatus = ConnectionStatusListener
       .getInstance(); // Initialize the connection listener

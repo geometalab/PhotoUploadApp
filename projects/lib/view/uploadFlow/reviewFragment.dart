@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/controller/filenameCheckService.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
@@ -21,6 +22,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
   List<Widget> infoText = List.empty(growable: true);
   Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, categoryIcon;
   List<Icon?> descriptionIcon = List.empty(growable: true);
+  bool fileNameAlreadyExists = false;
 
   Icon errorIcon(BuildContext context) {
     return Icon(
@@ -173,6 +175,9 @@ class ReviewFragmentState extends State<ReviewFragment> {
       infoText.add(
           warningText(context, "Make sure you file name is unique enough"));
       fileNameIcon = warningIcon(context);
+    }
+    if (fileNameAlreadyExists) {
+      infoText.add(errorText(context, "A file with this name already exists."));
     }
 
     if (collector.source == "" || collector.source == null) {
@@ -367,7 +372,7 @@ class ReviewFragmentState extends State<ReviewFragment> {
       // If no thumbnail available for category
       if (thumbnailJson == null) {
         thumbnail = Container(
-            height: 64,
+            height: 48,
             color: CustomColors.NO_IMAGE_COLOR,
             child: AspectRatio(
               aspectRatio: 3 / 2,
@@ -409,6 +414,13 @@ class ReviewFragmentState extends State<ReviewFragment> {
   submit() async {
     if (!infoCheckError()) {
       showSendingProgressBar();
+      if (await FilenameCheckService()
+          .fileExists(collector.fileName!, collector.fileType!)) {
+        fileNameAlreadyExists = true;
+        hideSendingProgressBar();
+        setState(() {});
+        return;
+      }
       await collector.submitData();
       setState(() {
         collector.clear();
@@ -416,8 +428,15 @@ class ReviewFragmentState extends State<ReviewFragment> {
     }
   }
 
+  UploadProgressBar? _sendingMsgProgressBar;
   void showSendingProgressBar() {
-    UploadProgressBar _sendingMsgProgressBar = UploadProgressBar();
-    _sendingMsgProgressBar.show(context);
+    _sendingMsgProgressBar = UploadProgressBar();
+    _sendingMsgProgressBar!.show(context);
+  }
+
+  void hideSendingProgressBar() {
+    if (_sendingMsgProgressBar != null) {
+      _sendingMsgProgressBar!.hide();
+    }
   }
 }

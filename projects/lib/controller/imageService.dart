@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:crypto/crypto.dart';
+import 'package:projects/config.dart';
 
 class ImageService {
   Future<Image> getCategoryThumbnail(String category) async {
@@ -25,7 +26,7 @@ class ImageService {
 
   Future<List<ImageURL>> _getImageURLs(String category, int width) async {
     String url =
-        "https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&format=json";
+        "${Config.WIKIMEDIA_API}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&format=json";
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

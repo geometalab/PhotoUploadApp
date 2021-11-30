@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:projects/controller/filenameCheckService.dart';
 import 'package:projects/model/datasets.dart' as data;
 import 'package:projects/style/themes.dart';
+import '../../config.dart';
 import '../commonsUploadFragment.dart';
 
 class DescriptionFragment extends StatefulWidget {
@@ -22,7 +27,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
 
   List<Widget> descriptionWidgets() {
     List<Widget> list = new List.empty(growable: true);
-    list.add(mediaTitleWidget());
+    list.add(MediaTitleWidget());
     list.add(Divider(indent: 10, endIndent: 10));
     list.add(Padding(
       padding: EdgeInsets.only(top: 16, left: 8, right: 8),
@@ -146,25 +151,48 @@ class _DescriptionFragment extends State<DescriptionFragment> {
 
     return list;
   }
+}
 
-  Widget mediaTitleWidget() {
+class MediaTitleWidget extends StatefulWidget {
+  @override
+  _MediaTitleWidget createState() => _MediaTitleWidget();
+}
+
+class _MediaTitleWidget extends State<MediaTitleWidget> {
+  bool _isChecking = false;
+  String? _validationMsg;
+  InformationCollector collector = InformationCollector();
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: TextFormField(
-              controller: TextEditingController(
-                text: collector.fileName,
-              ),
-              onChanged: (value) {
-                collector.fileName = value;
+            child: Focus(
+              onFocusChange: (hasFocus) {
+                if (!hasFocus) _validate();
               },
-              decoration: const InputDecoration(
-                icon: Icon(Icons.file_copy_outlined),
-                labelText: 'File Name',
-                hintText: 'Choose a descriptive name',
+              child: TextFormField(
+                controller: TextEditingController(
+                  text: collector.fileName,
+                ),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (val) => _validationMsg,
+                onChanged: (value) {
+                  collector.fileName = value;
+                },
+                decoration: InputDecoration(
+                  icon: Icon(Icons.file_copy_outlined),
+                  labelText: 'File Name',
+                  hintText: 'Choose a descriptive name',
+                  suffixIcon: _isChecking
+                      ? Transform.scale(
+                          scale: 0.5, child: CircularProgressIndicator())
+                      : null,
+                ),
               ),
             ),
           ),
@@ -177,6 +205,29 @@ class _DescriptionFragment extends State<DescriptionFragment> {
         ],
       ),
     );
+  }
+
+  _validate() async {
+    String? input = collector.fileName;
+    String? fileExtension = collector.fileType;
+    if (input == null || input.isEmpty) {
+      return null;
+    }
+    if (fileExtension == null || fileExtension.isEmpty) {
+      return "Select an image to upload.";
+    }
+    setState(() {
+      _isChecking = true;
+    });
+    var value = await FilenameCheckService().fileExists(input, fileExtension);
+    if (value) {
+      _validationMsg = "A file with this title already exists.";
+    } else {
+      _validationMsg = null;
+    }
+    setState(() {
+      _isChecking = false;
+    });
   }
 }
 
