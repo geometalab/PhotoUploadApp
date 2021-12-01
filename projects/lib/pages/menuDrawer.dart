@@ -62,8 +62,9 @@ class _HomePageState extends State<HomePage> {
         connectionStatus.connectionChange.listen(connectionChanged);
 
     // For check on startup
-    connectionStatus.checkConnection().then((value) => connectionChanged(
-        connectionStatus.hasConnection));
+    connectionStatus
+        .checkConnection()
+        .then((value) => connectionChanged(connectionStatus.hasConnection));
 
     // For sharing images coming from outside the app while the app is in the memory
     ReceiveSharingIntent.getMediaStream().listen((List<SharedMediaFile> value) {
@@ -88,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     LoginHandler().checkCredentials();
 
     WidgetsFlutterBinding.ensureInitialized();
-    WidgetsBinding.instance!.addObserver( // setState(){ } on appResumed
+    WidgetsBinding.instance!.addObserver(// setState(){ } on appResumed
         LifecycleEventHandler(resumeCallBack: () async {
       setState(() {});
     }));
@@ -128,8 +129,6 @@ class _HomePageState extends State<HomePage> {
     _selectedDrawerIndex = index;
     Navigator.of(context).pop();
   }
-
-
 
   @override
   Widget build(BuildContext context) {

@@ -159,8 +159,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
     // TODO remove flickers and ugly transitions
     manager.setSimpleMode(value);
     if (manager.isSimpleMode()) {
-      Provider.of<ViewSwitcher>(context, listen: false)
-          .viewIndex = 0;
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 0;
       Navigator.push(
         context,
         PageRouteBuilder(
@@ -168,8 +167,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                 SimpleSettingsPage()), // No transition animation
       );
     } else {
-      Provider.of<ViewSwitcher>(context, listen: false)
-          .viewIndex = 7;
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 7;
       Navigator.pop(context);
     }
   }
