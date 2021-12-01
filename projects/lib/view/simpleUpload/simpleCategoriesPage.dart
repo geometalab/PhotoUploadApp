@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projects/controller/ownWorkFiller.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/uploadFlow/selecItems.dart';
+import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
 
 class SimpleCategoriesPage extends StatefulWidget {
   @override
@@ -18,6 +21,32 @@ class _SimpleCategoriesPageState extends State<SimpleCategoriesPage> {
   AppBar _appBar() {
     return AppBar(
       title: Text("Upload to Wikimedia"),
+      actions: [
+        IconButton(
+            onPressed: () {
+              upload();
+            },
+            icon: Icon(Icons.upload)),
+      ],
     );
+  }
+
+  upload() async {
+    InformationCollector collector = InformationCollector();
+    showSendingProgressBar();
+    await OwnWorkFiller().setOwnWork();
+    collector.submitData();
+  }
+
+  UploadProgressBar? _sendingMsgProgressBar;
+  void showSendingProgressBar() {
+    _sendingMsgProgressBar = UploadProgressBar();
+    _sendingMsgProgressBar!.show(context);
+  }
+
+  void hideSendingProgressBar() {
+    if (_sendingMsgProgressBar != null) {
+      _sendingMsgProgressBar!.hide();
+    }
   }
 }

@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/controller/uploadService.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:provider/provider.dart';
 
 class UploadProgressBar {
+  bool? simpleMode;
   OverlayEntry? _progressOverlayEntry;
   double streamedProgressValue = 0.0;
   bool done = false;
@@ -29,6 +31,7 @@ class UploadProgressBar {
           // TODO transition from ProgressIndicator to Checkmark
           // TODO transition checkmark up when text is displayed
           builder: (BuildContext context) {
+        simpleMode = SettingsManager().isSimpleMode();
         return Stack(
           children: <Widget>[
             Container(
@@ -73,9 +76,18 @@ class UploadProgressBar {
                             ElevatedButton(
                                 onPressed: () {
                                   hide();
-                                  Provider.of<ViewSwitcher>(context,
-                                          listen: false)
-                                      .viewIndex = 0;
+                                  if (simpleMode == null) {
+                                    throw "SimpleMode is null.";
+                                  }
+                                  if (simpleMode!) {
+                                    while (Navigator.canPop(context)) {
+                                      Navigator.pop(context);
+                                    }
+                                  } else {
+                                    Provider.of<ViewSwitcher>(context,
+                                            listen: false)
+                                        .viewIndex = 0;
+                                  }
                                 },
                                 child: Text(
                                     "Back to home")), // TODO better wording

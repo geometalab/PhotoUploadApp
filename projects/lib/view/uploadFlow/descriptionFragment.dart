@@ -24,8 +24,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
   Widget build(BuildContext context) {
     return Container(
         child: SingleChildScrollView(
-          controller: scrollController,
-
+            controller: scrollController,
             child: Column(children: descriptionWidgets())));
   }
 

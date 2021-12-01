@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsManager {
-  static late SharedPreferences prefs;
+  static late SharedPreferences _prefs;
 
   // Keys for different SharedPreferences settings
   final String backGroundImageKey = "backgroundImage";
@@ -13,20 +13,20 @@ class SettingsManager {
   }
 
   initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance();
   }
 
   setBackgroundImage(String path) {
-    prefs.setString(backGroundImageKey, path);
+    _prefs.setString(backGroundImageKey, path);
   }
 
   String? getBackgroundImage() {
-    return prefs.getString(backGroundImageKey);
+    return _prefs.getString(backGroundImageKey);
   }
 
   addToCachedCategories(String category) {
     List<String> list =
-        prefs.getStringList(cachedCategoriesKey) ?? List.empty(growable: true);
+        _prefs.getStringList(cachedCategoriesKey) ?? List.empty(growable: true);
     while (list.length > 4) {
       list.removeLast();
     }
@@ -41,13 +41,13 @@ class SettingsManager {
       list.remove(category);
       list.add(category);
     }
-    prefs.setStringList(cachedCategoriesKey, list);
+    _prefs.setStringList(cachedCategoriesKey, list);
   }
 
   // TODO cached categories do not display an image
   // TODO give option to delete cached categories
   List<String>? getCachedCategories() {
-    List<String>? returnList = prefs.getStringList(cachedCategoriesKey);
+    List<String>? returnList = _prefs.getStringList(cachedCategoriesKey);
     if (returnList != null) {
       return List.from(
           returnList.reversed); // Reverse so newest entry is displayed first
@@ -55,11 +55,12 @@ class SettingsManager {
   }
 
   setSimpleMode(bool simpleMode) {
-    prefs.setBool(simpleModeKey, simpleMode);
+    _prefs.setBool(simpleModeKey, simpleMode);
   }
 
   bool isSimpleMode() {
-    bool? simpleMode = prefs.getBool(simpleModeKey);
-    return simpleMode ?? true;
+    bool? simpleMode = _prefs.getBool(simpleModeKey);
+    return simpleMode ??
+        true; // If simple mode is not set, use a precautionary true
   }
 }

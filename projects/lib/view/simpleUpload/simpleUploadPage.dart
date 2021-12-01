@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/filenameCheckService.dart';
+import 'package:projects/controller/imageDataExtractor.dart';
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
@@ -21,12 +22,23 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          _previewImage(),
-          DescriptionFragment(),
-        ],
+      body: FutureBuilder(
+        future: ImageDataExtractor().futureCollector(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              padding: EdgeInsets.all(16),
+              children: [
+                _previewImage(),
+                DescriptionFragment(),
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+        },
       ),
     );
   }

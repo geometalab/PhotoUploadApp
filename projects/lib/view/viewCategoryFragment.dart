@@ -126,7 +126,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                     onPressed: () async {
                       collector.image =
                           await _picker.pickImage(source: ImageSource.camera);
-                      _openUploadPage();
+                      _openSimpleUploadPage(prefillCategory);
                     },
                     child: Padding(
                         padding:
@@ -147,10 +147,9 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                       ),
                     ),
                     onPressed: () async {
-                      collector.fileName = prefillCategory;
                       collector.image =
                           await _picker.pickImage(source: ImageSource.gallery);
-                      _openUploadPage();
+                      _openSimpleUploadPage(prefillCategory);
                     },
                     child: Padding(
                         padding:
@@ -179,14 +178,15 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
     }
   }
 
-  _openUploadPage() async {
-    await ImageDataExtractor().futureCollector();
-    collector.fileName = prefillCategory;
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => SimpleUploadPage(),
-      ),
-    );
+  _openSimpleUploadPage(String categoryName) async {
+    if (collector.image != null) {
+      collector.preFillContent = categoryName;
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => SimpleUploadPage(),
+        ),
+      );
+    }
   }
 }

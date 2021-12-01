@@ -84,13 +84,14 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
     );
   }
 
-  _openUploadPage() {
-    ImageDataExtractor().futureCollector();
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => SimpleUploadPage(),
-      ),
-    );
+  _openUploadPage() async {
+    if (collector.image != null) {
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => SimpleUploadPage(),
+        ),
+      );
+    }
   }
 }
