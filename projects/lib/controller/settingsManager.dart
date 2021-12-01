@@ -60,7 +60,11 @@ class SettingsManager {
 
   bool isSimpleMode() {
     bool? simpleMode = _prefs.getBool(simpleModeKey);
-    return simpleMode ??
-        true; // If simple mode is not set, use a precautionary true
+    // If simple mode is not set, use a precautionary true
+    if (simpleMode == null) {
+      simpleMode = true;
+      setSimpleMode(true);
+    }
+    return simpleMode;
   }
 }

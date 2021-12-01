@@ -9,3 +9,17 @@ const Map<String, String> languages = {
   'ko': 'Korean',
   'ja': 'Japanese',
 };
+
+List<String> assetImages() {
+  String path = "assets/media/backgrounds/";
+  return [
+    path + "aurora.jpg",
+    path + "frogs.jpg",
+    path + "national_park.jpg",
+    path + "old_town.jpg",
+    path + "roundhouse.jpg",
+    path + "train.jpg",
+    path + "waterfalls.jpg",
+    ""
+  ];
+}

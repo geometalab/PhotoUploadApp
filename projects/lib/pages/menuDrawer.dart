@@ -8,6 +8,7 @@ import 'package:projects/controller/lifeCycleEventHandler.dart';
 import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/controller/pictureOfTheDayService.dart';
 import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/model/datasets.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/homeFragment.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
@@ -215,7 +216,7 @@ class _HomePageState extends State<HomePage> {
           Decoration? decoration;
           String? imagePath = sm.getBackgroundImage();
           if (imagePath == null) {
-            imagePath = SettingsFragment().assetImages()[0];
+            imagePath = assetImages()[0];
             sm.setBackgroundImage(imagePath);
           }
           if (imagePath.isNotEmpty) {
