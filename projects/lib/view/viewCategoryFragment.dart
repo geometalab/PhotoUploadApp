@@ -2,11 +2,14 @@ import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:projects/controller/imageDataExtractor.dart';
 import 'package:projects/controller/imageService.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:provider/provider.dart';
 
 // TODO? tabbed view? for more information (see todos below)
@@ -96,6 +99,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
 
   Widget _floatingActionButton(String prefillCategory, BuildContext context) {
     if (SettingsManager().isSimpleMode()) {
+      final ImagePicker _picker = ImagePicker();
       return ButtonNavigationBar(
           borderRadius: BorderRadius.circular(30),
           children: [
@@ -119,7 +123,11 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                         borderRadius: new BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      collector.image =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      _openUploadPage();
+                    },
                     child: Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -138,7 +146,12 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                         borderRadius: new BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      collector.fileName = prefillCategory;
+                      collector.image =
+                          await _picker.pickImage(source: ImageSource.gallery);
+                      _openUploadPage();
+                    },
                     child: Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -164,5 +177,16 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
         icon: Icon(Icons.add),
       );
     }
+  }
+
+  _openUploadPage() async {
+    await ImageDataExtractor().futureCollector();
+    collector.fileName = prefillCategory;
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => SimpleUploadPage(),
+      ),
+    );
   }
 }
