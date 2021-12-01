@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/model/datasets.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/view/aboutFragment.dart';
 import 'package:projects/view/simpleUpload/simpleHomePage.dart';
@@ -97,23 +98,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                     Switch.adaptive(
                         value: manager.isSimpleMode(),
                         onChanged: (bool value) {
-                          setState(() {
-                            manager.setSimpleMode(value);
-                          });
-                          if (manager.isSimpleMode()) {
-                            Provider.of<ViewSwitcher>(context, listen: false)
-                                .viewIndex = 0;
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                  pageBuilder: (_, __, ___) =>
-                                      SimpleSettingsPage()), // No transition animation
-                            );
-                          } else {
-                            Provider.of<ViewSwitcher>(context, listen: false)
-                                .viewIndex = 7;
-                            Navigator.pop(context);
-                          }
+                          switchEasyMode(value, context);
                         })
                   ]),
             ),
@@ -167,5 +152,25 @@ class _SettingsFragmentState extends State<SettingsFragment> {
         ),
       ),
     );
+  }
+
+  switchEasyMode(bool value, BuildContext context) {
+    InformationCollector().clear();
+    // TODO remove flickers and ugly transitions
+    manager.setSimpleMode(value);
+    if (manager.isSimpleMode()) {
+      Provider.of<ViewSwitcher>(context, listen: false)
+          .viewIndex = 0;
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (_, __, ___) =>
+                SimpleSettingsPage()), // No transition animation
+      );
+    } else {
+      Provider.of<ViewSwitcher>(context, listen: false)
+          .viewIndex = 7;
+      Navigator.pop(context);
+    }
   }
 }

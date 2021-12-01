@@ -2,14 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/foundation.dart' as assertions;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/connectionStatus.dart';
+import 'package:projects/controller/externalIntentHandler.dart';
 import 'package:projects/controller/lifeCycleEventHandler.dart';
 import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/controller/pictureOfTheDayService.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/model/datasets.dart';
-import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/homeFragment.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/view/settingsFragment.dart';
@@ -56,17 +55,20 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    // Listen to a connection change
     ConnectionStatusListener connectionStatus =
         ConnectionStatusListener.getInstance();
     _connectionChangeStream =
         connectionStatus.connectionChange.listen(connectionChanged);
+
+    // For check on startup
     connectionStatus.checkConnection().then((value) => connectionChanged(
-        connectionStatus.hasConnection)); // For check on startup
+        connectionStatus.hasConnection));
 
     // For sharing images coming from outside the app while the app is in the memory
     ReceiveSharingIntent.getMediaStream().listen((List<SharedMediaFile> value) {
       setState(() {
-        processExternalIntent(value);
+        ExternalIntentHandler().processExternalIntent(value, context);
       });
     }, onError: (err) {
       throw ("getIntentDataStream error: $err");
@@ -75,17 +77,18 @@ class _HomePageState extends State<HomePage> {
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
       setState(() {
-        processExternalIntent(value);
+        ExternalIntentHandler().processExternalIntent(value, context);
       });
     });
 
-    PictureOfTheDayService().getPictureOfTheDay(); // Preload POTD
+    // Preload POTD
+    PictureOfTheDayService().getPictureOfTheDay();
 
-    LoginHandler()
-        .checkCredentials(); // Get user info if there is a login on this device
+    // Get user info if there is a login on this device
+    LoginHandler().checkCredentials();
 
     WidgetsFlutterBinding.ensureInitialized();
-    WidgetsBinding.instance!.addObserver(// setState(){ } on appResumed
+    WidgetsBinding.instance!.addObserver( // setState(){ } on appResumed
         LifecycleEventHandler(resumeCallBack: () async {
       setState(() {});
     }));
@@ -126,23 +129,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pop();
   }
 
-  // Gets called when a external intent is received
-  processExternalIntent(List<SharedMediaFile> sharedMediaList) {
-    if (sharedMediaList.isNotEmpty) {
-      // Clear the information collector and add the passed data
-      InformationCollector ic = InformationCollector();
-      ic.clear();
-      ic.image = XFile(sharedMediaList.first.path);
 
-      // Close all routes in case one is open
-      while (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-
-      // Switch to the upload menu
-      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
