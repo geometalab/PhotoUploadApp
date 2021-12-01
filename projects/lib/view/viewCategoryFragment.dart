@@ -89,37 +89,70 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           ],
         ),
       ),
-      floatingActionButton: _floatingActionButton(categoryTitle),
+      floatingActionButton: _floatingActionButton(categoryTitle, context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Widget _floatingActionButton(String prefillCategory) {
+  Widget _floatingActionButton(String prefillCategory, BuildContext context) {
     if (SettingsManager().isSimpleMode()) {
-      return ButtonNavigationBar(children: [
-        ButtonNavigationItem.expandable(
-            width: 250,
-            icon: Icon(Icons.add),
-            label: "Upload to this Category",
-            children: [
-              ElevatedButton(
-                  onPressed: () {},
-                  child: Row(
-                    children: [
-                      Icon(Icons.photo_camera),
-                      Text("Take a picture"),
-                    ],
-                  )),
-              ElevatedButton(
-                  onPressed: () {},
-                  child: Row(
-                    children: [
-                      Icon(Icons.folder),
-                      Text("Select from files"),
-                    ],
-                  )),
-            ])
-      ]);
+      return ButtonNavigationBar(
+          borderRadius: BorderRadius.circular(30),
+          children: [
+            ButtonNavigationItem.expandable(
+                collapseButton: ButtonNavigationItem(
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: Icon(Icons.close),
+                    height: 56,
+                    width: 80,
+                    onPressed: () {}),
+                height: 56,
+                width: 250,
+                verticalOffset: 64,
+                expandableSpacing: 64,
+                icon: Icon(Icons.add),
+                label: "Upload to this Category",
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.photo_camera),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4)),
+                            Text("Take a picture"),
+                          ],
+                        )),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.folder),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4)),
+                            Text("Select from files"),
+                          ],
+                        )),
+                  ),
+                ])
+          ]);
     } else {
       return FloatingActionButton.extended(
         onPressed: () {

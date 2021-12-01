@@ -5,6 +5,8 @@ import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/controller/uploadService.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 
+import 'description.dart';
+
 // Singleton that saves all data from the different upload steps
 
 class InformationCollector {

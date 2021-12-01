@@ -2,6 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:projects/controller/imageDataExtractor.dart';
+import 'package:projects/model/informationCollector.dart';
+import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 
 import '../mapViewFragment.dart';
 
@@ -11,6 +15,9 @@ class SimpleHomePage extends StatefulWidget {
 }
 
 class _SimpleHomePageState extends State<SimpleHomePage> {
+  InformationCollector collector = InformationCollector();
+  final ImagePicker _picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +27,17 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _bigButton(Icons.folder, "Select from gallery", () {}),
-              _bigButton(Icons.photo_camera_outlined, "Take a picture", () {}),
+              _bigButton(Icons.folder, "Select from gallery", () async {
+                collector.image =
+                    await _picker.pickImage(source: ImageSource.gallery);
+                _openUploadPage();
+              }),
+              _bigButton(Icons.photo_camera_outlined, "Take a picture",
+                  () async {
+                collector.image =
+                    await _picker.pickImage(source: ImageSource.camera);
+                _openUploadPage();
+              }),
               _bigButton(Icons.map, "Browse map", () {
                 Navigator.push<void>(
                   context,
@@ -65,6 +81,16 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
               ],
             ),
           )),
+    );
+  }
+
+  _openUploadPage() {
+    ImageDataExtractor().futureCollector();
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => SimpleUploadPage(),
+      ),
     );
   }
 }
