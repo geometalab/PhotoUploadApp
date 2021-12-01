@@ -8,10 +8,9 @@ import 'package:projects/view/singlePage/imageSelector.dart';
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
 
 class SettingsFragment extends StatelessWidget {
-  late final SettingsManager manager;
+  late final SettingsManager manager = SettingsManager();
   @override
   Widget build(BuildContext context) {
-    manager = SettingsManager();
     ThemeMode? themeMode = EasyDynamicTheme.of(context).themeMode;
     String dropdownValue;
     if (themeMode == ThemeMode.light) {

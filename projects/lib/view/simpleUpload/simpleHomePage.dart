@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/imageDataExtractor.dart';
 import 'package:projects/model/informationCollector.dart';
+import 'package:projects/view/settingsFragment.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 
 import '../mapViewFragment.dart';
@@ -54,6 +55,22 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
   AppBar _appBar(BuildContext context) {
     return AppBar(
       title: Text("Upload to Wikimedia"),
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => Scaffold(
+                      appBar: AppBar(
+                        title: Text("Settings"),
+                      ),
+                      body: SettingsFragment()),
+                ),
+              );
+            },
+            icon: Icon(Icons.settings))
+      ],
     );
   }
 
