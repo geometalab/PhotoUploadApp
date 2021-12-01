@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/imageDataExtractor.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/settingsFragment.dart';
+import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 
 import '../mapViewFragment.dart';
@@ -61,11 +62,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => Scaffold(
-                      appBar: AppBar(
-                        title: Text("Settings"),
-                      ),
-                      body: SettingsFragment()),
+                  builder: (BuildContext context) => SimpleSettingsPage(),
                 ),
               );
             },

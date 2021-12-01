@@ -3,8 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/model/datasets.dart';
+import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/view/aboutFragment.dart';
+import 'package:projects/view/simpleUpload/simpleHomePage.dart';
+import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/singlePage/imageSelector.dart';
+import 'package:provider/provider.dart';
 
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
 
@@ -96,6 +100,20 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                           setState(() {
                             manager.setSimpleMode(value);
                           });
+                          if (manager.isSimpleMode()) {
+                            Provider.of<ViewSwitcher>(context, listen: false)
+                                .viewIndex = 0;
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (_, __, ___) =>
+                                      SimpleSettingsPage()), // No transition animation
+                            );
+                          } else {
+                            Provider.of<ViewSwitcher>(context, listen: false)
+                                .viewIndex = 7;
+                            Navigator.pop(context);
+                          }
                         })
                   ]),
             ),

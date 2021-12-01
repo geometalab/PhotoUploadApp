@@ -13,6 +13,7 @@ import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/homeFragment.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/view/settingsFragment.dart';
+import 'package:projects/view/simpleUpload/simpleHomePage.dart';
 import 'package:projects/view/singlePage/noConnection.dart';
 import 'package:projects/view/userFragment.dart';
 import 'package:projects/view/mapViewFragment.dart';
@@ -168,6 +169,8 @@ class _HomePageState extends State<HomePage> {
     if (isOffline) {
       // If no network connection is detected, display this message
       return NoConnection();
+    } else if (SettingsManager().isSimpleMode()) {
+      return SimpleHomePage();
     } else {
       return new Scaffold(
         appBar: new AppBar(

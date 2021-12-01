@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         theme: customThemes.lightTheme,
         darkTheme: customThemes.darkTheme,
         themeMode: EasyDynamicTheme.of(context).themeMode,
-        home: SimpleHomePage(),
+        home: HomePage(),
       ),
     );
   }
