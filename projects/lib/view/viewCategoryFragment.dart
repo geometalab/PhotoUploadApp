@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/imageDataExtractor.dart';
 import 'package:projects/controller/imageService.dart';
+import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
@@ -92,12 +93,25 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           ],
         ),
       ),
-      floatingActionButton: _floatingActionButton(categoryTitle, context),
+      floatingActionButton: FutureBuilder(
+        future: _floatingActionButton(categoryTitle, context),
+        builder: (BuildContext context, AsyncSnapshot<Widget?> snapshot) {
+          if(snapshot.hasData && snapshot.data != null) {
+            return snapshot.data!;
+          } else {
+            return SizedBox.shrink(); // Because FutureBuilder can't return null even though floatingActionButton is nullable :)
+          }
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Widget _floatingActionButton(String prefillCategory, BuildContext context) {
+  Future<Widget?> _floatingActionButton(String prefillCategory, BuildContext context) async {
+    // If user is not logged in, no FAB is displayed
+    if(!await LoginHandler().isLoggedIn()) {
+      return null;
+    }
     if (SettingsManager().isSimpleMode()) {
       final ImagePicker _picker = ImagePicker();
       return ButtonNavigationBar(

@@ -152,6 +152,7 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
+    int viewIndex = Provider.of<ViewSwitcher>(context, listen: true).viewIndex;
     if (isOffline) {
       // If no network connection is detected, display this message
       return NoConnection();
@@ -167,8 +168,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[drawerHeader(), Column(children: drawerOptions)],
           ),
         ),
-        body: _getDrawerItemWidget(
-            Provider.of<ViewSwitcher>(context, listen: true).viewIndex),
+        body: _getDrawerItemWidget(viewIndex),
       );
     }
   }

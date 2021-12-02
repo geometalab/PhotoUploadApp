@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/controller/loginHandler.dart';
-import 'package:projects/controller/ownWorkFiller.dart';
+import 'package:projects/controller/OwnWorkHandler.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
 
@@ -45,7 +45,7 @@ class _InformationFragment extends State<InformationFragment> {
               Checkbox(
                   value: collector.ownWork,
                   onChanged: (bool? value) {
-                    OwnWorkFiller owf = OwnWorkFiller();
+                    OwnWorkHandler owf = OwnWorkHandler();
                     setState(() async {
                       if (value == true) {
                         await owf.setOwnWork();

@@ -4,10 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/imageDataExtractor.dart';
+import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/settingsFragment.dart';
 import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
+import 'package:projects/view/simpleUpload/simpleUserPage.dart';
 
 import '../mapViewFragment.dart';
 
@@ -19,9 +21,13 @@ class SimpleHomePage extends StatefulWidget {
 class _SimpleHomePageState extends State<SimpleHomePage> {
   InformationCollector collector = InformationCollector();
   final ImagePicker _picker = ImagePicker();
+  late bool isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
+    LoginHandler().isLoggedIn().then((value) {
+      isLoggedIn = value;
+    });
     return Scaffold(
         appBar: _appBar(context),
         body: Center(
@@ -62,11 +68,21 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute<void>(
+                  builder: (BuildContext context) => SimpleUsersPage(),
+                ),
+              );
+            },
+            icon: Icon(Icons.account_circle)),
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
                   builder: (BuildContext context) => SimpleSettingsPage(),
                 ),
               );
             },
-            icon: Icon(Icons.settings))
+            icon: Icon(Icons.settings)),
       ],
     );
   }

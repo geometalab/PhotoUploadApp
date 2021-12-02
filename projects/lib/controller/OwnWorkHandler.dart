@@ -2,7 +2,7 @@ import 'package:projects/model/informationCollector.dart';
 
 import 'loginHandler.dart';
 
-class OwnWorkFiller {
+class OwnWorkHandler {
   InformationCollector _collector = InformationCollector();
 
   Future<void> setOwnWork() async {

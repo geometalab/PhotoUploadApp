@@ -167,8 +167,11 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                 SimpleSettingsPage()), // No transition animation
       );
     } else {
+      setState(() {
+        Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 7;
+        Navigator.pop(context);
+      });
       Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 7;
-      Navigator.pop(context);
     }
   }
 }
