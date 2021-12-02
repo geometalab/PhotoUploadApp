@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:projects/controller/settingsManager.dart';
 import 'package:projects/view/mapPopUps/categoryMapPopup.dart';
 import 'package:projects/controller/nearbyCategoriesService.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
@@ -27,6 +28,7 @@ class _MapFragmentState extends State<MapFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _appBar(),
       body: FlutterMap(
           mapController: mapController,
           options: MapOptions(
@@ -82,6 +84,15 @@ class _MapFragmentState extends State<MapFragment> {
       floatingActionButton: infoMenu(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  AppBar? _appBar() {
+    bool isSimpleMode = SettingsManager().isSimpleMode();
+    if (isSimpleMode) {
+      return AppBar(
+        title: Text("Find nearby categories"),
+      );
+    }
   }
 
   Widget? infoMenu() {

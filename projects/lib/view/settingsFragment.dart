@@ -2,12 +2,23 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/model/datasets.dart';
+import 'package:projects/model/informationCollector.dart';
+import 'package:projects/pages/menuDrawer.dart';
 import 'package:projects/view/aboutFragment.dart';
+import 'package:projects/view/simpleUpload/simpleHomePage.dart';
+import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/singlePage/imageSelector.dart';
+import 'package:provider/provider.dart';
 
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
 
-class SettingsFragment extends StatelessWidget {
+class SettingsFragment extends StatefulWidget {
+  @override
+  _SettingsFragmentState createState() => _SettingsFragmentState();
+}
+
+class _SettingsFragmentState extends State<SettingsFragment> {
   late final SettingsManager manager = SettingsManager();
   @override
   Widget build(BuildContext context) {
@@ -76,6 +87,25 @@ class SettingsFragment extends StatelessWidget {
             Divider(
               height: 0,
             ),
+            // Simple mode switch
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Simple Mode"),
+                    Switch.adaptive(
+                        value: manager.isSimpleMode(),
+                        onChanged: (bool value) {
+                          switchEasyMode(value, context);
+                        })
+                  ]),
+            ),
+
+            Divider(
+              height: 0,
+            ),
             // Background image selector
             RawMaterialButton(
                 padding: EdgeInsets.zero,
@@ -124,17 +154,24 @@ class SettingsFragment extends StatelessWidget {
     );
   }
 
-  List<String> assetImages() {
-    String path = "assets/media/backgrounds/";
-    return [
-      path + "aurora.jpg",
-      path + "frogs.jpg",
-      path + "national_park.jpg",
-      path + "old_town.jpg",
-      path + "roundhouse.jpg",
-      path + "train.jpg",
-      path + "waterfalls.jpg",
-      ""
-    ];
+  switchEasyMode(bool value, BuildContext context) {
+    InformationCollector().clear();
+    // TODO remove flickers and ugly transitions
+    manager.setSimpleMode(value);
+    if (manager.isSimpleMode()) {
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 0;
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (_, __, ___) =>
+                SimpleSettingsPage()), // No transition animation
+      );
+    } else {
+      setState(() {
+        Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 7;
+        Navigator.pop(context);
+      });
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 7;
+    }
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/controller/loginHandler.dart';
+import 'package:projects/controller/OwnWorkHandler.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
 
 import '../commonsUploadFragment.dart';
@@ -43,21 +45,13 @@ class _InformationFragment extends State<InformationFragment> {
               Checkbox(
                   value: collector.ownWork,
                   onChanged: (bool? value) {
-                    setState(() {
+                    OwnWorkHandler owf = OwnWorkHandler();
+                    setState(() async {
                       if (value == true) {
-                        collector.source = "Own Work";
-                        LoginHandler()
-                            .getUserInformationFromFile()
-                            .then((value) {
-                          setState(() {
-                            collector.author = value!.username;
-                          });
-                        });
-                        collector.ownWork = true;
+                        await owf.setOwnWork();
+                        setState(() {});
                       } else {
-                        collector.source = "";
-                        collector.author = "";
-                        collector.ownWork = false;
+                        owf.removeOwnWork();
                       }
                     });
                     setState(() {});

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:projects/controller/filenameCheckService.dart';
 import 'package:projects/model/datasets.dart' as data;
+import 'package:projects/model/description.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
 import '../../config.dart';
 import '../commonsUploadFragment.dart';
@@ -16,12 +18,13 @@ class DescriptionFragment extends StatefulWidget {
 
 class _DescriptionFragment extends State<DescriptionFragment> {
   // TODO maybe the image should be shown at the top here, so user can have a look at it when making description
-  InformationCollector collector = new InformationCollector();
-
+  InformationCollector collector = InformationCollector();
+  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Container(
         child: SingleChildScrollView(
+            controller: scrollController,
             child: Column(children: descriptionWidgets())));
   }
 
@@ -229,11 +232,4 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
       _isChecking = false;
     });
   }
-}
-
-class Description {
-  String language;
-  String content;
-
-  Description({this.language = "en", this.content = ""});
 }

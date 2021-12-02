@@ -1,9 +1,16 @@
+import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:projects/controller/imageDataExtractor.dart';
 import 'package:projects/controller/imageService.dart';
+import 'package:projects/controller/loginHandler.dart';
+import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:provider/provider.dart';
 
 // TODO? tabbed view? for more information (see todos below)
@@ -86,16 +93,116 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FutureBuilder(
+        future: _floatingActionButton(categoryTitle, context),
+        builder: (BuildContext context, AsyncSnapshot<Widget?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return snapshot.data!;
+          } else {
+            return SizedBox
+                .shrink(); // Because FutureBuilder can't return null even though floatingActionButton is nullable :)
+          }
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Future<Widget?> _floatingActionButton(
+      String prefillCategory, BuildContext context) async {
+    // If user is not logged in, no FAB is displayed
+    if (!await LoginHandler().isLoggedIn()) {
+      return null;
+    }
+    if (SettingsManager().isSimpleMode()) {
+      final ImagePicker _picker = ImagePicker();
+      return ButtonNavigationBar(
+          borderRadius: BorderRadius.circular(30),
+          children: [
+            ButtonNavigationItem.expandable(
+                collapseButton: ButtonNavigationItem(
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: Icon(Icons.close),
+                    height: 56,
+                    width: 80,
+                    onPressed: () {}),
+                height: 56,
+                width: 250,
+                verticalOffset: 64,
+                expandableSpacing: 64,
+                icon: Icon(Icons.add),
+                label: "Upload to this Category",
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () async {
+                      collector.image =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      _openSimpleUploadPage(prefillCategory);
+                    },
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.photo_camera),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4)),
+                            Text("Take a picture"),
+                          ],
+                        )),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () async {
+                      collector.image =
+                          await _picker.pickImage(source: ImageSource.gallery);
+                      _openSimpleUploadPage(prefillCategory);
+                    },
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.folder),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4)),
+                            Text("Select from files"),
+                          ],
+                        )),
+                  ),
+                ])
+          ]);
+    } else {
+      return FloatingActionButton.extended(
         onPressed: () {
-          collector.preFillContent = categoryTitle;
+          collector.preFillContent = prefillCategory;
           Navigator.pop(context);
           Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
         },
         label: Text("Upload to this Category"),
         icon: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+      );
+    }
+  }
+
+  _openSimpleUploadPage(String categoryName) async {
+    if (collector.image != null) {
+      collector.preFillContent = categoryName;
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => SimpleUploadPage(),
+        ),
+      );
+    }
   }
 }
