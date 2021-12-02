@@ -96,10 +96,11 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
       floatingActionButton: FutureBuilder(
         future: _floatingActionButton(categoryTitle, context),
         builder: (BuildContext context, AsyncSnapshot<Widget?> snapshot) {
-          if(snapshot.hasData && snapshot.data != null) {
+          if (snapshot.hasData && snapshot.data != null) {
             return snapshot.data!;
           } else {
-            return SizedBox.shrink(); // Because FutureBuilder can't return null even though floatingActionButton is nullable :)
+            return SizedBox
+                .shrink(); // Because FutureBuilder can't return null even though floatingActionButton is nullable :)
           }
         },
       ),
@@ -107,9 +108,10 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
     );
   }
 
-  Future<Widget?> _floatingActionButton(String prefillCategory, BuildContext context) async {
+  Future<Widget?> _floatingActionButton(
+      String prefillCategory, BuildContext context) async {
     // If user is not logged in, no FAB is displayed
-    if(!await LoginHandler().isLoggedIn()) {
+    if (!await LoginHandler().isLoggedIn()) {
       return null;
     }
     if (SettingsManager().isSimpleMode()) {

@@ -10,6 +10,7 @@ import 'package:projects/view/settingsFragment.dart';
 import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:projects/view/simpleUpload/simpleUserPage.dart';
+import 'package:projects/view/singlePage/notLoggedIn.dart';
 
 import '../mapViewFragment.dart';
 
@@ -31,20 +32,30 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
     return Scaffold(
         appBar: _appBar(context),
         body: Center(
+            child: Padding(
+          padding: EdgeInsets.all(12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _bigButton(Icons.folder, "Select from gallery", () async {
-                collector.image =
-                    await _picker.pickImage(source: ImageSource.gallery);
-                _openUploadPage();
+                if (isLoggedIn) {
+                  collector.image =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  _openUploadPage();
+                } else {
+                  _openNotLoggedInPage();
+                }
               }),
               _bigButton(Icons.photo_camera_outlined, "Take a picture",
                   () async {
-                collector.image =
-                    await _picker.pickImage(source: ImageSource.camera);
-                _openUploadPage();
+                if (isLoggedIn) {
+                  collector.image =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  _openUploadPage();
+                } else {
+                  _openNotLoggedInPage();
+                }
               }),
               _bigButton(Icons.map, "Browse map", () {
                 Navigator.push<void>(
@@ -56,7 +67,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
               }),
             ],
           ),
-        ));
+        )));
   }
 
   AppBar _appBar(BuildContext context) {
@@ -88,29 +99,30 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
   }
 
   Widget _bigButton(IconData icon, String text, VoidCallback onPressed) {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: OutlinedButton(
-          onPressed: onPressed,
-          child: SizedBox(
-            height: 200,
-            width: 320,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  icon,
-                  size: 50,
-                ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                Text(
-                  text,
-                  style: TextStyle(fontSize: 20),
-                )
-              ],
-            ),
-          )),
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4),
+        child: OutlinedButton(
+            onPressed: onPressed,
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    size: 50,
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                  Text(
+                    text,
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -123,5 +135,21 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
         ),
       );
     }
+  }
+
+  _openNotLoggedInPage() {
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Theme.of(context).colorScheme.onBackground,
+          ),
+          body: NotLoggedIn(),
+        ),
+      ),
+    );
   }
 }

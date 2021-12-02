@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/filenameCheckService.dart';
 import 'package:projects/controller/imageDataExtractor.dart';
+import 'package:projects/controller/loginHandler.dart';
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/themes.dart';
 import 'package:projects/view/simpleUpload/simpleCategoriesPage.dart';
+import 'package:projects/view/singlePage/notLoggedIn.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import 'package:projects/model/datasets.dart' as data;
 
@@ -20,26 +22,42 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   InformationCollector collector = InformationCollector();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(context),
-      body: FutureBuilder(
-        future: ImageDataExtractor().futureCollector(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData) {
-            return ListView(
-              padding: EdgeInsets.all(16),
-              children: [
-                _previewImage(),
-                DescriptionFragment(),
-              ],
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-        },
-      ),
+    return FutureBuilder(
+      future: LoginHandler().isLoggedIn(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.hasData && snapshot.data == false) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              foregroundColor: Theme.of(context).colorScheme.onBackground,
+            ),
+            body: NotLoggedIn(),
+          );
+        } else {
+          return Scaffold(
+            appBar: _appBar(context),
+            body: FutureBuilder(
+              future: ImageDataExtractor().futureCollector(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView(
+                    padding: EdgeInsets.all(16),
+                    children: [
+                      _previewImage(),
+                      DescriptionFragment(),
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                }
+              },
+            ),
+          );
+        }
+      },
     );
   }
 
