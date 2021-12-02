@@ -1,13 +1,28 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:crypto/crypto.dart';
 import 'package:projects/config.dart';
+import 'package:projects/style/themes.dart';
+import '../../style/themes.dart';
 
 class ImageService {
-  Future<Image> getCategoryThumbnail(String category) async {
+  Future<Widget> getCategoryThumbnail(String category) async {
     List<ImageURL> urls = await _getImageURLs(category, 150);
-    return Image.network(urls[0].url);
+    if (urls.isEmpty) {
+      return Container(
+        color: CustomColors.NO_IMAGE_COLOR,
+        child: Center(
+          child: Icon(Icons.image_not_supported,
+              color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
+        ),
+      );
+    }
+    return Image.network(
+      urls[0].url,
+      fit: BoxFit.cover,
+    );
 
     // Resources:
     // https://magnus-toolserver.toolforge.org/commonsapi.php

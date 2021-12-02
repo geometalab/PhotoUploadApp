@@ -39,13 +39,14 @@ class _CategoryPopupState extends State<CategoryPopup> {
                         .toString()
                         .substring(3, _marker.key.toString().length - 3)),
                     builder:
-                        (BuildContext context, AsyncSnapshot<Image> snapshot) {
+                        (BuildContext context, AsyncSnapshot<Widget> snapshot) {
                       Widget thumbnail;
                       if (snapshot.hasData) {
                         thumbnail = snapshot
                             .data!; // TODO Sometimes (maybe because of file type or res), the progress indicator disappears, but it still takes a few seconds for image to appear
                       } else if (snapshot.hasError) {
-                        throw ("Could not display thumbnail");
+                        throw ("Could not display thumbnail: " +
+                            snapshot.error.toString());
                       } else {
                         thumbnail = Padding(
                           padding: EdgeInsets.zero,
@@ -94,7 +95,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
             Text(
-              'Position: N ${_marker.point.latitude.toStringAsFixed(3)}, E ${_marker.point.longitude.toStringAsFixed(3)}',
+              'N ${_marker.point.latitude.toStringAsFixed(3)}, E ${_marker.point.longitude.toStringAsFixed(3)}',
               style: const TextStyle(fontSize: 12.0),
             ),
           ],
