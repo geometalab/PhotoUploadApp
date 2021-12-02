@@ -9,7 +9,7 @@ class CategoryService {
     String request =
         'https://api.wikimedia.org/core/v1/commons/search/title?q=' +
             pattern +
-            '&limit=6';
+            '&limit=20';
     try {
       if (pattern.isEmpty) {
         return Future.value(recentlyUsedCategories());
