@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
-import 'loginHandler.dart';
+import '../wiki/loginHandler.dart';
 
 // Listens to when app is opened with a deeplink (atm only when user logged into wikimedia)
 // Also gets the code for further authentication process

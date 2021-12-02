@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
 
 class CategoryService {
   Future<List<Map<String, dynamic>>> getSuggestions(

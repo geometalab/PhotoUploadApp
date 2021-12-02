@@ -1,10 +1,10 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/datasets.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/pageContainer.dart';
 import 'package:projects/view/aboutFragment.dart';
 import 'package:projects/view/simpleUpload/simpleHomePage.dart';
 import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';

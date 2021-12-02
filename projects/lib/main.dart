@@ -1,11 +1,11 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/controller/settingsManager.dart';
-import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
+import 'package:projects/pageContainer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
 import 'package:projects/view/simpleUpload/simpleHomePage.dart';
 import 'package:provider/provider.dart';
-import 'controller/connectionStatus.dart';
+import 'controller/eventHandler/connectionStatus.dart';
 import 'package:flutter/services.dart';
 
 // TODO Improve look & feel
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         theme: customThemes.lightTheme,
         darkTheme: customThemes.darkTheme,
         themeMode: EasyDynamicTheme.of(context).themeMode,
-        home: HomePage(),
+        home: PageContainer(),
       ),
     );
   }

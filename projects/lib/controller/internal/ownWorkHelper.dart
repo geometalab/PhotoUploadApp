@@ -1,8 +1,8 @@
 import 'package:projects/model/informationCollector.dart';
 
-import 'loginHandler.dart';
+import '../wiki/loginHandler.dart';
 
-class OwnWorkHandler {
+class OwnWorkHelper {
   InformationCollector _collector = InformationCollector();
 
   Future<void> setOwnWork() async {

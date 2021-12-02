@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/controller/deepLinkListener.dart';
-import 'package:projects/controller/loginHandler.dart';
-import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/controller/eventHandler/deepLinkListener.dart';
+import 'package:projects/controller/wiki/loginHandler.dart';
+import 'package:projects/pageContainer.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/userAvatar.dart';

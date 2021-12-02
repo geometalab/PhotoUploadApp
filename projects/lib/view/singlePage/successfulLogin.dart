@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/controller/loginHandler.dart';
+import 'package:projects/controller/wiki/loginHandler.dart';
 
 class SuccessfulLogin extends StatelessWidget {
   final String userCode;

@@ -1,8 +1,8 @@
 import 'dart:io' as io;
 import 'dart:ui';
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/controller/loginHandler.dart';
-import 'package:projects/controller/uploadService.dart';
+import 'package:projects/controller/wiki/loginHandler.dart';
+import 'package:projects/controller/wiki/uploadService.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 
 import 'description.dart';

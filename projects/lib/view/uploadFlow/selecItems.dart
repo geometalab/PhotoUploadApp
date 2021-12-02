@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:projects/controller/categoryService.dart';
-import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/controller/wiki/categoryService.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
 import '../commonsUploadFragment.dart';

@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/controller/loginHandler.dart';
-import 'package:projects/controller/OwnWorkHandler.dart';
+import '../../model/datasets.dart' as data;
+import 'package:projects/controller/internal/ownWorkHelper.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
-
-import '../commonsUploadFragment.dart';
 
 class InformationFragment extends StatefulWidget {
   @override
@@ -45,7 +43,7 @@ class _InformationFragment extends State<InformationFragment> {
               Checkbox(
                   value: collector.ownWork,
                   onChanged: (bool? value) {
-                    OwnWorkHandler owf = OwnWorkHandler();
+                    OwnWorkHelper owf = OwnWorkHelper();
                     setState(() async {
                       if (value == true) {
                         await owf.setOwnWork();
@@ -125,14 +123,9 @@ class _InformationFragment extends State<InformationFragment> {
                   height: 2,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                items: <String>[
-                  // TODO help menu/guide or something for licenses
-                  'CC0',
-                  'Attribution 3.0',
-                  'Attribution-ShareAlike 3.0',
-                  'Attribution 4.0',
-                  'Attribution-ShareAlike 4.0'
-                ].map<DropdownMenuItem<String>>((String value) {
+                // TODO help menu/guide or something for licenses
+                items: data.licences.values
+                    .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),

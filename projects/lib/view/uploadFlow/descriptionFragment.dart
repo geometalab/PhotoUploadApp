@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:projects/controller/filenameCheckService.dart';
+import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/model/datasets.dart' as data;
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';

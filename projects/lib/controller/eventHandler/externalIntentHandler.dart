@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/pageContainer.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';

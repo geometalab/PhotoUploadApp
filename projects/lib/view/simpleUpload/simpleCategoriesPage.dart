@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projects/controller/OwnWorkHandler.dart';
+import 'package:projects/controller/internal/ownWorkHelper.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/uploadFlow/selecItems.dart';
 import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
@@ -34,7 +34,7 @@ class _SimpleCategoriesPageState extends State<SimpleCategoriesPage> {
   upload() async {
     InformationCollector collector = InformationCollector();
     showSendingProgressBar();
-    await OwnWorkHandler().setOwnWork();
+    await OwnWorkHelper().setOwnWork();
     collector.submitData();
   }
 

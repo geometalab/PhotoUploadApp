@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:projects/controller/settingsManager.dart';
-import 'package:projects/controller/uploadService.dart';
-import 'package:projects/pages/menuDrawer.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
+import 'package:projects/controller/wiki/uploadService.dart';
+import 'package:projects/pageContainer.dart';
 import 'package:provider/provider.dart';
 
 class UploadProgressBar {

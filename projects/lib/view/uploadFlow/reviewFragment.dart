@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/controller/filenameCheckService.dart';
+import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';

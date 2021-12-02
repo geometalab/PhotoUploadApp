@@ -3,10 +3,10 @@ import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/controller/loginHandler.dart';
+import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/description.dart';
-import 'package:projects/view/uploadFlow/descriptionFragment.dart';
-import '../config.dart';
+import '../../model/datasets.dart' as data;
+import '../../config.dart';
 
 // TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates (or check if already taken)
 // TODO get response in case of error and extract error message, which then should be thrown to catch for the progress indicator
@@ -217,32 +217,11 @@ class UploadService {
   }
 
   String _convertLicense(String license) {
-    switch (license) {
-      case 'CC0':
-        {
-          return "CC0";
-        }
-      case 'Attribution 3.0':
-        {
-          return "cc-by-3.0";
-        }
-      case 'Attribution-ShareAlike 3.0':
-        {
-          return "cc-by-sa-3.0";
-        }
-      case 'Attribution 4.0':
-        {
-          return "cc-by-4.0";
-        }
-      case 'Attribution-ShareAlike 4.0':
-        {
-          return "cc-by-sa-3.0";
-        }
-      default:
-        {
-          return license;
-        }
+    String? value = data.licences[license];
+    if (value == null) {
+      throw "Could not convert licences.";
     }
+    return value;
   }
 
   Future<String> _getAccessToken() async {

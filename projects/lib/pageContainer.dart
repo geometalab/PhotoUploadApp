@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/foundation.dart' as assertions;
 import 'package:flutter/material.dart';
-import 'package:projects/controller/connectionStatus.dart';
-import 'package:projects/controller/externalIntentHandler.dart';
-import 'package:projects/controller/lifeCycleEventHandler.dart';
-import 'package:projects/controller/loginHandler.dart';
-import 'package:projects/controller/pictureOfTheDayService.dart';
-import 'package:projects/controller/settingsManager.dart';
+import 'package:projects/controller/eventHandler/connectionStatus.dart';
+import 'package:projects/controller/eventHandler/externalIntentHandler.dart';
+import 'package:projects/controller/eventHandler/lifeCycleEventHandler.dart';
+import 'package:projects/controller/wiki/loginHandler.dart';
+import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
+import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/datasets.dart';
 import 'package:projects/view/homeFragment.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
@@ -16,7 +16,7 @@ import 'package:projects/view/simpleUpload/simpleHomePage.dart';
 import 'package:projects/view/singlePage/noConnection.dart';
 import 'package:projects/view/userFragment.dart';
 import 'package:projects/view/mapViewFragment.dart';
-import 'package:projects/style/textStyles.dart';
+import 'package:projects/style/textStyles.dart' as customStyles;
 import 'package:projects/style/userAvatar.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -27,7 +27,7 @@ class DrawerItem {
   DrawerItem(this.title, this.icon);
 }
 
-class HomePage extends StatefulWidget {
+class PageContainer extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Home", Icons.home_filled),
     new DrawerItem("Divider", null),
@@ -40,12 +40,10 @@ class HomePage extends StatefulWidget {
   ];
 
   @override
-  State<StatefulWidget> createState() {
-    return new _HomePageState();
-  }
+  State<StatefulWidget> createState() => _PageContainerState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PageContainerState extends State<PageContainer> {
   late StreamSubscription _connectionChangeStream;
   ViewSwitcher viewSwitcher = ViewSwitcher();
   bool isOffline = false;
@@ -165,7 +163,10 @@ class _HomePageState extends State<HomePage> {
         ),
         drawer: new Drawer(
           child: new Column(
-            children: <Widget>[drawerHeader(), Column(children: drawerOptions)],
+            children: <Widget>[
+              _drawerHeader(),
+              Column(children: drawerOptions)
+            ],
           ),
         ),
         body: _getDrawerItemWidget(viewIndex),
@@ -173,55 +174,41 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget drawerHeader() {
+  Widget _drawerHeader() {
     return FutureBuilder(
       future: LoginHandler().getUserInformationFromFile(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
           return DrawerHeader(
             child: Container(
-              color: Theme.of(context).colorScheme.primary,
               width: double.infinity,
               height: double.infinity,
               child: Stack(
                 children: [
                   Positioned(
-                    left: 16,
-                    bottom: 16,
-                    child: Text(
-                      "Not logged into wikimedia",
-                      style: headerText.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                  )
+                      left: 16,
+                      bottom: 16,
+                      child: Row(
+                        children: [
+                          Icon(Icons.person_off),
+                          Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                          Text(
+                            "Not logged into wikimedia",
+                            style: customStyles.objectDescription.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                        ],
+                      ))
                 ],
               ),
+              decoration: _headerDecorationImage(),
             ),
             padding: EdgeInsets.zero,
           );
         } else {
-          SettingsManager sm = SettingsManager();
           Userdata data = snapshot.data;
-          Decoration? decoration;
-          String? imagePath = sm.getBackgroundImage();
-          if (imagePath == null) {
-            imagePath = assetImages()[0];
-            sm.setBackgroundImage(imagePath);
-          }
-          if (imagePath.isNotEmpty) {
-            decoration = BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
-                image: AssetImage(imagePath),
-              ),
-            );
-          } else {
-            decoration = BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryVariant);
-          }
           return UserAccountsDrawerHeader(
-              decoration: decoration,
+              decoration: _headerDecorationImage(),
               currentAccountPicture: UserAvatar(),
               currentAccountPictureSize: Size.square(48),
               // arrowColor: Theme.of(context).colorScheme.onPrimary,
@@ -231,6 +218,26 @@ class _HomePageState extends State<HomePage> {
         }
       },
     );
+  }
+
+  Decoration _headerDecorationImage() {
+    SettingsManager sm = SettingsManager();
+    String? imagePath = sm.getBackgroundImage();
+    if (imagePath == null) {
+      imagePath = assetImages()[0];
+      sm.setBackgroundImage(imagePath);
+    }
+    if (imagePath.isNotEmpty) {
+      return BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+          image: AssetImage(imagePath),
+        ),
+      );
+    } else {
+      return BoxDecoration(color: Theme.of(context).colorScheme.primaryVariant);
+    }
   }
 
   @override

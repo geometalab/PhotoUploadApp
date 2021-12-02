@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:projects/controller/imageService.dart';
+import 'package:projects/controller/wiki/imageService.dart';
 import 'package:projects/view/viewCategoryFragment.dart';
 
 class CategoryPopup extends StatefulWidget {
