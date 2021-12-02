@@ -46,11 +46,15 @@ class CategoryService {
   }
 
   List<Map<String, dynamic>> recentlyUsedCategories() {
-    List<String> cacheList =
+    List<Map<String, dynamic>> cacheList =
         SettingsManager().getCachedCategories() ?? List.empty();
     List<Map<String, dynamic>> returnList = List.empty(growable: true);
-    for (String category in cacheList) {
-      returnList.add({"title": category, "id": "Recently used"});
+    for (Map<String, dynamic> map in cacheList) {
+      returnList.add({
+        "title": map["category"],
+        "id": "Recently used",
+        "thumbnail": map["thumbnail"],
+      });
     }
     return returnList;
   }
