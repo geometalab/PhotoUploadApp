@@ -86,11 +86,11 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
                 if (useCase == 0) {
                   collector.categories.add(suggestion['title']!);
                   collector.categoriesThumb.add(suggestion['thumbnail']);
-                  SettingsManager().addToCachedCategories(suggestion['title']);
+                  SettingsManager().addToCachedCategories(suggestion);
                 } else {
                   collector.depictions.add(suggestion['title']!);
                   collector.depictionsThumb.add(suggestion['thumbnail']);
-                  SettingsManager().addToCachedCategories(suggestion['title']);
+                  SettingsManager().addToCachedCategories(suggestion);
                 }
               });
             },

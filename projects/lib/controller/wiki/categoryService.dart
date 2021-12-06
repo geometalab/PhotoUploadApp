@@ -51,7 +51,7 @@ class CategoryService {
     List<Map<String, dynamic>> returnList = List.empty(growable: true);
     for (Map<String, dynamic> map in cacheList) {
       returnList.add({
-        "title": map["category"],
+        "title": map["title"],
         "id": "Recently used",
         "thumbnail": map["thumbnail"],
       });

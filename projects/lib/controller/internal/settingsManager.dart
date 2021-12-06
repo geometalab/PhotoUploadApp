@@ -33,7 +33,8 @@ class SettingsManager {
     while (list.length > 4) {
       list.removeLast();
     }
-    if (!list.contains(category)) {
+    if (!list.any(
+        (element) => (json.decode(element))['title'] == category['title'])) {
       // Only add if this isn't already added
       if (list.length > 3) {
         list.removeAt(0);
@@ -41,7 +42,8 @@ class SettingsManager {
       list.add(json.encode(category));
     } else {
       // Else move category to first
-      list.remove(category);
+      list.removeWhere(
+          (element) => (json.decode(element))['title'] == category['title']);
       list.add(json.encode(category));
     }
     _prefs.setStringList(_cachedCategoriesKey, list);
@@ -50,6 +52,7 @@ class SettingsManager {
   // TODO cached categories do not display an image
   // TODO give option to delete cached categories
   List<Map<String, dynamic>>? getCachedCategories() {
+    // _prefs.remove(_cachedCategoriesKey);
     List<String>? tempList = _prefs.getStringList(_cachedCategoriesKey);
     List<Map<String, dynamic>>? returnList = List.empty(growable: true);
     if (tempList == null) {
