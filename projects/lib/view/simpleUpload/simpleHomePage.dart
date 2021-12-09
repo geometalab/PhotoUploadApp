@@ -72,7 +72,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      title: Text("Upload to Wikimedia"),
+      title: Text("Commons Uploader"),
       actions: [
         IconButton(
             onPressed: () {

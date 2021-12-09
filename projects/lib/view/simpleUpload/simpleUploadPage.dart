@@ -159,35 +159,17 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
       collector.description.add(Description(language: "en"));
     }
 
-    if (collector.description.length == 1 &&
-        collector.description[0].content == "") {
-      return "Add at least one description";
-    } else {
-      bool alreadyWarned = false;
+    // If a language appears in more then one desc
+    if (collector.description.any((element) {
+      int numberOfAppearances = 0;
       for (Description description in collector.description) {
-        if (description.content.length < 10) {
-          // Add info text only if not already in place
-          if (!alreadyWarned) {
-            return "A description is very short";
-            alreadyWarned = true;
-          }
-        }
-        if (description.content.isEmpty) {
-          return "A description is empty";
+        if (description.language == element.language) {
+          numberOfAppearances++;
         }
       }
-      // If a language appears in more then one desc
-      if (collector.description.any((element) {
-        int numberOfAppearances = 0;
-        for (Description description in collector.description) {
-          if (description.language == element.language) {
-            numberOfAppearances++;
-          }
-        }
-        return numberOfAppearances > 1;
-      })) {
-        return "Multiple descriptions are in the same language";
-      }
+      return numberOfAppearances > 1;
+    })) {
+      return "Multiple descriptions are in the same language";
     }
     if (collector.fileType == null) {
       throw "Filetype is null.";

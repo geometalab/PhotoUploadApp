@@ -106,19 +106,13 @@ class UploadService {
       String token) async {
     String editSummary =
         'Added file details & description. Edited by Wikimedia Commons Uploader.'; // TODO insert final name once determined
-    String descriptionString = "";
-
-    for (Description description in description) {
-      descriptionString +=
-          '{{${description.language}|1=${description.content}}} ';
-    }
 
     // File Description
     // DO NOT INDENT!
     String informationString = """
 =={{int:filedesc}}== 
 {{Information 
-|description=$descriptionString 
+${_generateDescriptions(description)}
 |date=${date.year}-${date.month}-${date.day} 
 |source=$source 
 |author=$author 
@@ -232,6 +226,21 @@ class UploadService {
       throw ("Could not get access token. Userdata is null");
     }
   }
+}
+
+String _generateDescriptions(List<Description> description) {
+  String descriptionString = "|description=";
+
+  for (Description description in description) {
+    descriptionString +=
+        '{{${description.language}|1=${description.content}}} ';
+  }
+
+  if (description.isEmpty) {
+    descriptionString = "";
+  }
+
+  return descriptionString;
 }
 
 // Updates Listeners over the progress of a image & corresponding description upload

@@ -27,6 +27,18 @@ class HomeFragment extends StatelessWidget {
         description:
             "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
         onTap: ReusingContentFragment()));
+    articleList.add(new Article(
+      title: "Placeholder Text",
+      description:
+          "Quo quia ab unde dolor. Et eaque sapiente quia eum ad deleniti quisquam. Cupiditate cupiditate velit aperiam animi voluptatum ipsa. Minus nemo odio ratione ab fugiat aut. Ipsam sapiente exercitationem deleniti delectus ducimus quod quo at. ",
+    ));
+    articleList.add(new Article(
+      title: "Text Place 2",
+      image: Image.network(
+          "https://upload.wikimedia.org/wikipedia/commons/5/59/SQM_GE_289A_Boxcab_Carmelita_-_Reverso.jpg"),
+      description:
+          "Quo quia ab unde dolor. Et eaque sapiente quia eum ad deleniti quisquam. ",
+    ));
 
     // ------------------------------
 

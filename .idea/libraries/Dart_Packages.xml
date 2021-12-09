@@ -509,7 +509,7 @@
         <entry key="path_provider">
           <value>
             <list>
-              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.7/lib" />
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.8/lib" />
             </list>
           </value>
         </entry>
@@ -649,7 +649,7 @@
         <entry key="shared_preferences">
           <value>
             <list>
-              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.9/lib" />
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.10/lib" />
             </list>
           </value>
         </entry>
@@ -1019,7 +1019,7 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/octo_image-1.0.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.7/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.8/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.9/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.7/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.2/lib" />
@@ -1039,7 +1039,7 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/receive_sharing_intent-1.4.5/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.3/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.9/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.10/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.9/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.0.8/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.0.3/lib" />

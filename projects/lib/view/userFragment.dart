@@ -169,7 +169,7 @@ class _UserFragmentState extends State<UserFragment> {
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
             Text(
-              "Not signed into Wikimedia",
+              "Not logged in",
               style: TextStyle(fontSize: 20),
             ),
             Padding(
