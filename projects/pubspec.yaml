@@ -46,6 +46,7 @@ dependencies:
   exif: ^3.0.1
   receive_sharing_intent: ^1.4.5
   flutter_launcher_icons: ^0.9.2
+  flutter_email_sender: ^5.0.2
 
 
 dev_dependencies:

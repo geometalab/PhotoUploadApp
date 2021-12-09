@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webfeed/webfeed.dart';
@@ -15,15 +16,17 @@ class PictureOfTheDayService {
 
   static final PictureOfTheDayService _pictureOfTheDayService =
       PictureOfTheDayService._internal();
+
   factory PictureOfTheDayService() {
     return _pictureOfTheDayService;
   }
+
   PictureOfTheDayService._internal() {
     getItemFromFeed(0); // On initialisation, get POTD from RSS feed
   }
 
   openPotdWeb() {
-    _openURL(
+    ActionHelper().launchUrl(
         "https://commons.wikimedia.org/wiki/Commons:Picture_of_the_day"); // TODO open the actual page of POTD, not this site
   }
 
@@ -140,7 +143,7 @@ class PictureOfTheDayService {
             style: hyperlink,
             recognizer: new TapGestureRecognizer()
               ..onTap = () {
-                _openURL(href);
+                ActionHelper().launchUrl(href);
               },
           ));
           position = endIndex +
@@ -161,14 +164,6 @@ class PictureOfTheDayService {
       }
     }
     return spans;
-  }
-
-  Future<void> _openURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw "Could not launch $url";
-    }
   }
 }
 

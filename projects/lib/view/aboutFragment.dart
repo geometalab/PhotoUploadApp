@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart';
 
 class AboutFragment extends StatelessWidget {
@@ -22,34 +24,93 @@ class AboutFragment extends StatelessWidget {
         title: Text("About"),
       ),
       body: Center(
-          child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Wikimedia Commons Uploader App", style: fragmentTitle),
-            Padding(padding: EdgeInsets.only(bottom: 8)),
-            Text("Developed by:", style: objectDescription),
-            Padding(padding: EdgeInsets.only(bottom: 4)),
-            Text("• Fabio Zahner"),
-            Text("• Remo Steiner"),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: SizedBox(
-                width: 300,
-                child: ifsLogo,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 120),
+                child: AspectRatio(
+                  aspectRatio: 4 / 3,
+                  child: Image.asset(
+                    "assets/icon/icon.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: SizedBox(
-                width: 220,
-                child: ostLogo,
+              Text(
+                "Wikimedia Commons Uploader",
+                style: fragmentTitle,
+                textAlign: TextAlign.center,
               ),
-            )
-          ],
+              Padding(padding: EdgeInsets.only(bottom: 8)),
+              Text("Developed by ", style: headerText),
+              Padding(padding: EdgeInsets.only(bottom: 4)),
+              Text(
+                "Fabio Zahner & Remo Steiner",
+                style: headerText,
+              ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ifsLogo,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ostLogo,
+                ),
+              ),
+              TextButton(
+                  onPressed: () {
+                    ActionHelper().launchUrl("https://www.ifs.hsr.ch/");
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.public),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                      Text("Visit our website")
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {
+                    ActionHelper().openEmail(["rj-geometalab@ost.ch"]);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.person),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                      Text("Contact us")
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {
+                    ActionHelper().launchUrl(
+                        "https://github.com/geometalab/PhotoUploadApp");
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.code),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                      Text("Code Repository")
+                    ],
+                  )),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

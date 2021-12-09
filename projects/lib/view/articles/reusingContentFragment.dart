@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 import 'package:projects/style/unorderedListWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -70,11 +71,7 @@ class ReusingContentFragment extends StatelessWidget {
             onPressed: () async {
               String url =
                   "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia#How_to_comply_with_a_file's_license_requirements";
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw "Could not launch $url";
-              }
+              ActionHelper().launchUrl(url);
             },
           )
         ],

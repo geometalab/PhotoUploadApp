@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 import 'package:projects/style/unorderedListWidget.dart';
@@ -70,11 +71,7 @@ class UploadGuideFragment extends StatelessWidget {
             onPressed: () async {
               String url =
                   "https://commons.wikimedia.org/wiki/Commons:First_steps/Uploading_files";
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw "Could not launch $url";
-              }
+              ActionHelper().launchUrl(url);
             },
           )
         ],

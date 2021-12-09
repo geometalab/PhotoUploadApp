@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/config.dart';
+import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,6 +15,7 @@ class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
   static const CREDENTIALS_FILE = Config.CREDENTIALS_FILE;
   static const WIKIMEDIA_REST = Config.WIKIMEDIA_REST;
+  ActionHelper _actionHelper = ActionHelper();
 
   // Making class a singleton
   static final LoginHandler _loginHandler = LoginHandler._internal();
@@ -61,20 +63,20 @@ class LoginHandler {
   openWebLogin() {
     String url =
         "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
-    _openURL(url);
+    _actionHelper.launchUrl(url);
   }
 
   openWebSignUp() {
     // TODO Return to app directly if possible https://www.mediawiki.org/wiki/Onboarding_new_Wikipedians/Account_creation_pathways
     String url =
         "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount";
-    _openURL(url);
+    _actionHelper.launchUrl(url);
   }
 
   openMediaAccount(String username) {
     String url =
         "https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/$username";
-    _openURL(url);
+    _actionHelper.launchUrl(url);
   }
 
   Future<Userdata> getTokens(String authCode) async {
@@ -204,14 +206,6 @@ class LoginHandler {
       }
     } else {
       throw (Exception("Access Token is empty"));
-    }
-  }
-
-  Future<void> _openURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw "Could not launch $url";
     }
   }
 
