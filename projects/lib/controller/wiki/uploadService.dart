@@ -105,7 +105,7 @@ class UploadService {
       String filename,
       String token) async {
     String editSummary =
-        'Added file details & description. Edited by Wikimedia Commons Uploader.'; // TODO insert final name once determined
+        'Added file details & description. Edited by Commons Uploader.'; // TODO insert final name once determined
 
     // File Description
     // DO NOT INDENT!

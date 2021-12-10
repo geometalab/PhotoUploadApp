@@ -313,7 +313,7 @@
         <entry key="flutter_typeahead">
           <value>
             <list>
-              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-3.2.3/lib" />
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-3.2.4/lib" />
             </list>
           </value>
         </entry>
@@ -733,7 +733,7 @@
         <entry key="sqflite_common">
           <value>
             <list>
-              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.0.1+1/lib" />
+              <option value="$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -992,7 +992,7 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_map_marker_cluster-0.4.4/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_map_marker_popup-2.0.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-3.2.3/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-3.2.4/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.8/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator-7.7.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_android-2.1.0/lib" />
@@ -1050,7 +1050,7 @@
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.1/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/sprintf-6.0.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.1/lib" />
-      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.0.1+1/lib" />
+      <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.1.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
       <root url="file://$USER_HOME$/Documents/SDKs/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />

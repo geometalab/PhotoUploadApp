@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => ViewSwitcher())],
       child: MaterialApp(
-        title: 'Wikimedia Commons Uploader',
+        title: 'Commons Uploader',
         debugShowCheckedModeBanner: false,
         theme: customThemes.lightTheme,
         darkTheme: customThemes.darkTheme,

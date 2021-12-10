@@ -17,7 +17,7 @@
 
 
    <application
-        android:label="commonsuploader"
+        android:label="Commons uwploader"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

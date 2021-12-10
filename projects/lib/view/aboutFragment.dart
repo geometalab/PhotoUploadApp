@@ -41,7 +41,7 @@ class AboutFragment extends StatelessWidget {
                 ),
               ),
               Text(
-                "Wikimedia Commons Uploader",
+                "Commons Uploader",
                 style: fragmentTitle,
                 textAlign: TextAlign.center,
               ),
