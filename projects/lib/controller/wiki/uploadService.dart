@@ -232,9 +232,9 @@ String _generateDescriptions(List<Description> description) {
   String descriptionString = "|description=";
 
   for (Description description in description) {
-    if(description.content.isNotEmpty) {
+    if (description.content.isNotEmpty) {
       descriptionString +=
-      '{{${description.language}|1=${description.content}}} ';
+          '{{${description.language}|1=${description.content}}} ';
     }
   }
 

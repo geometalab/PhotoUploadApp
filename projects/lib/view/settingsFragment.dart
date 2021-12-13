@@ -2,6 +2,7 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
+import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/datasets.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/pageContainer.dart';
@@ -40,6 +41,10 @@ class _SettingsFragmentState extends State<SettingsFragment> {
               height: 0,
             ),
             _backgroundImageSelector(context),
+            Divider(
+              height: 0,
+            ),
+            _clearPrefsButton(context),
             Divider(
               height: 0,
             ),
@@ -152,6 +157,49 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             children: [
               Text("Select background image"),
               Icon(Icons.chevron_right)
+            ],
+          ),
+        ));
+  }
+
+  _clearPrefsButton(BuildContext context) {
+    return RawMaterialButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: Text("Delete local storage"),
+              content: Text("This will delete login data and local cache."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text("Cancel"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    manager.clearPrefs();
+                    LoginHandler().logOut();
+                    Navigator.of(ctx).pop();
+                    setState(() {
+                      switchEasyMode(true, context);
+                    });
+                  },
+                  child: Text("Delete"),
+                ),
+              ],
+            ),
+          );
+        },
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Delete local storage"),
             ],
           ),
         ));

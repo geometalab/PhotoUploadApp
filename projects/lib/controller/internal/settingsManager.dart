@@ -19,6 +19,14 @@ class SettingsManager {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  clearPrefs() {
+    _prefs.clear().then((value) {
+      if (!value) {
+        throw ("SharedPreferences could not be cleared");
+      }
+    });
+  }
+
   setBackgroundImage(String path) {
     _prefs.setString(_backGroundImageKey, path);
   }
