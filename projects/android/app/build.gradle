@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId "com.example.commonsuploader"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
