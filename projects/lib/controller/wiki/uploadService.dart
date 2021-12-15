@@ -105,7 +105,9 @@ class UploadService {
       String filename,
       String token) async {
     String editSummary =
-        'Added file details & description. Edited by Commons Uploader.'; // TODO insert final name once determined
+        'Added file details & description. Edited by Commons Uploader.';
+    categories.add(
+        "Images uploaded by Commons Uploader for Mobile"); // This category gets added to all uploaded images using this app.
 
     // File Description
     // DO NOT INDENT!
@@ -232,9 +234,9 @@ String _generateDescriptions(List<Description> description) {
   String descriptionString = "|description=";
 
   for (Description description in description) {
-    if(description.content.isNotEmpty) {
+    if (description.content.isNotEmpty) {
       descriptionString +=
-      '{{${description.language}|1=${description.content}}} ';
+          '{{${description.language}|1=${description.content}}} ';
     }
   }
 
