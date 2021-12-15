@@ -1,6 +1,7 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/datasets.dart';
@@ -170,7 +171,8 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             context: context,
             builder: (ctx) => AlertDialog(
               title: Text("Delete local storage"),
-              content: Text("This will delete login data and local cache."),
+              content: Text(
+                  "This will delete login data and local cache and close the app. The introductory slides will be shown again on the next start."),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -186,6 +188,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                     setState(() {
                       switchEasyMode(true, context);
                     });
+                    setState(() {});
                   },
                   child: Text("Delete"),
                 ),

@@ -10,6 +10,7 @@ class SettingsManager {
   final String _backGroundImageKey = "backgroundImage";
   final String _cachedCategoriesKey = "cachedCategories";
   final String _simpleModeKey = "easyMode";
+  final String _firstTimeKey = "firstTime";
 
   SettingsManager() {
     initPrefs();
@@ -85,5 +86,16 @@ class SettingsManager {
       setSimpleMode(true);
     }
     return simpleMode;
+  }
+
+  setFirstTime(bool isFirstTime) {
+    _prefs.setBool(_firstTimeKey, isFirstTime);
+  }
+
+  bool isFirstTime() {
+    if (!_prefs.containsKey(_firstTimeKey)) {
+      setFirstTime(true);
+    }
+    return _prefs.getBool(_firstTimeKey)!;
   }
 }

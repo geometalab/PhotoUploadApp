@@ -13,6 +13,7 @@ import 'package:projects/view/homeFragment.dart';
 import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/view/settingsFragment.dart';
 import 'package:projects/view/simpleUpload/simpleHomePage.dart';
+import 'package:projects/view/singlePage/introductionView.dart';
 import 'package:projects/view/singlePage/noConnection.dart';
 import 'package:projects/view/userFragment.dart';
 import 'package:projects/view/mapViewFragment.dart';
@@ -130,33 +131,36 @@ class _PageContainerState extends State<PageContainer> {
 
   @override
   Widget build(BuildContext context) {
-    _selectedDrawerIndex =
-        Provider.of<ViewSwitcher>(context, listen: false).viewIndex;
-    // TODO "settings" menu tile at bottom
-    List<Widget> drawerOptions = [];
-    for (var i = 0; i < widget.drawerItems.length; i++) {
-      var d = widget.drawerItems[i];
-      if (d.title == "Divider") {
-        drawerOptions.add(new Divider());
-      } else {
-        drawerOptions.add(new ListTile(
-            leading: new Icon(d.icon),
-            title: new Text(d.title),
-            selected: i == _selectedDrawerIndex,
-            onTap: () {
-              Navigator.of(context).pop();
-              Provider.of<ViewSwitcher>(context, listen: false).viewIndex = i;
-            }));
-      }
-    }
-
     int viewIndex = Provider.of<ViewSwitcher>(context, listen: true).viewIndex;
+    SettingsManager settingsManager = SettingsManager();
+
+    introductionView(settingsManager);
     if (isOffline) {
-      // If no network connection is detected, display this message
       return NoConnection();
-    } else if (SettingsManager().isSimpleMode()) {
+    }
+    if (settingsManager.isSimpleMode()) {
       return SimpleHomePage();
     } else {
+      // Create Drawer
+      _selectedDrawerIndex =
+          Provider.of<ViewSwitcher>(context, listen: false).viewIndex;
+      // TODO "settings" menu tile at bottom
+      List<Widget> drawerOptions = [];
+      for (var i = 0; i < widget.drawerItems.length; i++) {
+        var d = widget.drawerItems[i];
+        if (d.title == "Divider") {
+          drawerOptions.add(new Divider());
+        } else {
+          drawerOptions.add(new ListTile(
+              leading: new Icon(d.icon),
+              title: new Text(d.title),
+              selected: i == _selectedDrawerIndex,
+              onTap: () {
+                Navigator.of(context).pop();
+                Provider.of<ViewSwitcher>(context, listen: false).viewIndex = i;
+              }));
+        }
+      }
       return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
@@ -245,6 +249,22 @@ class _PageContainerState extends State<PageContainer> {
     super.debugFillProperties(properties);
     properties.add(assertions.DiagnosticsProperty<StreamSubscription>(
         '_connectionChangeStream', _connectionChangeStream));
+  }
+
+  introductionView(SettingsManager settingsManager) {
+    Future.delayed(Duration(milliseconds: 700), () {
+      if (settingsManager.isFirstTime()) {
+        // Only push the IntroductionView() if current route is home page, else do nothing
+        if (!Navigator.canPop(context)) {
+          Navigator.push<void>(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => IntroductionView(),
+            ),
+          );
+        }
+      }
+    });
   }
 }
 
