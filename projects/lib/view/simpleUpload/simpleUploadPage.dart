@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/controller/internal/imageDataExtractor.dart';
@@ -11,7 +10,6 @@ import 'package:projects/style/themes.dart';
 import 'package:projects/view/simpleUpload/simpleCategoriesPage.dart';
 import 'package:projects/view/singlePage/notLoggedIn.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
-import 'package:projects/model/datasets.dart' as data;
 
 class SimpleUploadPage extends StatefulWidget {
   @override

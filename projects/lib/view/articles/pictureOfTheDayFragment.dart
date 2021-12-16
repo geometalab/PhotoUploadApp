@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';

@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
-import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';
 import 'package:projects/style/themes.dart';
-import '../commonsUploadFragment.dart';
 import 'dart:io';
 import 'package:projects/model/datasets.dart' as data;
 

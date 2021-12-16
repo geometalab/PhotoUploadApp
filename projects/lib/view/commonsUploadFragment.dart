@@ -1,16 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:progress_tab_bar/progress_tab_bar.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
-import 'package:projects/controller/wiki/uploadService.dart';
 import 'package:projects/view/singlePage/notLoggedIn.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import 'package:projects/view/uploadFlow/informationFragment.dart';
 import 'package:projects/view/uploadFlow/reviewFragment.dart';
 import 'package:projects/view/uploadFlow/selecItems.dart';
 import 'package:projects/view/uploadFlow/selectImage.dart';
-import 'dart:io';
 
 class CommonsUploadFragment extends StatefulWidget {
   @override

@@ -1,15 +1,10 @@
-import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/model/datasets.dart' as data;
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
-import '../../config.dart';
-import '../commonsUploadFragment.dart';
 
 class DescriptionFragment extends StatefulWidget {
   @override

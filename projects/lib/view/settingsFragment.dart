@@ -1,5 +1,4 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/datasets.dart';
