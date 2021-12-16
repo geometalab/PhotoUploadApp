@@ -49,6 +49,7 @@ dependencies:
   flutter_email_sender: ^5.0.2
   liquid_swipe: ^2.1.1
   dots_indicator: ^2.0.0
+  flutter_custom_clippers: ^2.0.0
 
 
 

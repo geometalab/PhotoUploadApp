@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 
@@ -52,7 +53,12 @@ class _IntroductionViewState extends State<IntroductionView> {
   }
 
   Widget _welcome(BuildContext context) {
-    return _sampleContainer(color: Colors.brown, children: [Text("welcome")]);
+    return _sampleContainer(color: Colors.white, children: [
+      Text(
+        "welcome",
+        style: TextStyle(color: Colors.black87),
+      )
+    ]);
   }
 
   Widget _wikiCommons(BuildContext context) {
@@ -86,15 +92,33 @@ class _IntroductionViewState extends State<IntroductionView> {
 
   Widget _sampleContainer(
       {required Color color, required List<Widget> children}) {
-    return Container(
-        height: double.infinity,
-        width: double.infinity,
-        color: color,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: children,
-        ));
+    return Stack(
+      children: [
+        Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: color,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            )),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 130,
+            child: ClipPath(
+              clipper: WaveClipperOne(flip: true, reverse: true),
+              child: Container(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget dotsIndicator(int max) {
@@ -112,8 +136,8 @@ class _IntroductionViewState extends State<IntroductionView> {
       decorator: DotsDecorator(
         size: Size.fromRadius(4),
         activeSize: Size.fromRadius(8),
-        color: Theme.of(context).colorScheme.primaryVariant,
-        activeColor: Theme.of(context).colorScheme.primary,
+        color: Colors.white,
+        activeColor: Theme.of(context).colorScheme.secondary,
       ),
       onTap: (double pos) {
         setState(() {
