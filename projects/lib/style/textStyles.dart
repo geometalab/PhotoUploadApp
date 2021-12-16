@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final TextStyle articleTitle =
     new TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
@@ -22,3 +22,5 @@ final TextStyle smallLabel = new TextStyle(
 final TextStyle hyperlink = new TextStyle(
   color: Colors.blue,
 );
+final TextStyle introBigText = GoogleFonts.blackHanSans(fontSize: 48);
+final TextStyle introSmallText = GoogleFonts.blackHanSans(fontSize: 21);

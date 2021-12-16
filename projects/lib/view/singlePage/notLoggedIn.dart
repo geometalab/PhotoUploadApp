@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/style/textStyles.dart';
 
 class NotLoggedIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // TODO route to login screen for both simple and normal mode
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
