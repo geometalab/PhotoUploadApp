@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:http/io_client.dart';
 

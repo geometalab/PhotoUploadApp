@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 import 'package:crypto/crypto.dart';
 import 'package:projects/config.dart';
 import 'package:projects/style/themes.dart';

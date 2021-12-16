@@ -1,12 +1,7 @@
-import 'dart:collection';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/controller/internal/imageDataExtractor.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/view/settingsFragment.dart';
 import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:projects/view/simpleUpload/simpleUserPage.dart';

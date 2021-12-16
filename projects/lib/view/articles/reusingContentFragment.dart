@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 import 'package:projects/style/unorderedListWidget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // From https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia
 

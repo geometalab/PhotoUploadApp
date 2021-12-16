@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/config.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 // TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge

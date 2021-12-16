@@ -1,14 +1,11 @@
 import 'package:button_navigation_bar/button_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:projects/controller/internal/imageDataExtractor.dart';
 import 'package:projects/controller/wiki/imageService.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/view/commonsUploadFragment.dart';
 import 'package:projects/pageContainer.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:provider/provider.dart';
