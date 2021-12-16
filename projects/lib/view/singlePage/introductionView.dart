@@ -113,14 +113,6 @@ class _IntroductionViewState extends State<IntroductionView> {
                   textAlign: TextAlign.end,
                 ),
                 Padding(padding: EdgeInsets.only(bottom: 24)),
-                /*
-
-  "It is a project of the Wikimedia Foundation.",
-  "As of March 2021, the repository contains over 70 million free-to-use media "
-  "files, managed and editable by registered volunteers."
-];
-
-             */
               ],
             )));
   }
