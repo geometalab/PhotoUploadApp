@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
@@ -8,6 +9,11 @@ class IntroductionView extends StatefulWidget {
 }
 
 class _IntroductionViewState extends State<IntroductionView> {
+  LiquidController liquidController = LiquidController();
+  int pagePosition = 0;
+  double slidePosition = 0.0;
+  bool forwardSwipe = true;
+
   @override
   Widget build(BuildContext context) {
     final pages = [
@@ -19,10 +25,29 @@ class _IntroductionViewState extends State<IntroductionView> {
     ];
 
     return Scaffold(
-      body: LiquidSwipe(
-        pages: pages,
-        slideIconWidget: Icon(Icons.arrow_back_ios),
+      body: Listener(
+        // Listener to check if swipe is forward or backward. This is used to animate the dotsIndicator() correctly
+        onPointerMove: (moveEvent) {
+          if (moveEvent.delta.dx > 8) {
+            forwardSwipe = false;
+          } else if (moveEvent.delta.dx < -8) {
+            forwardSwipe = true;
+          }
+        },
+        child: LiquidSwipe(
+          pages: pages,
+          liquidController: liquidController,
+          slideIconWidget: Icon(Icons.arrow_back_ios),
+          onPageChangeCallback: (int page) {
+            positionCallback(page);
+          },
+          slidePercentCallback: (double position, _) {
+            slideCallback(position);
+          },
+        ),
       ),
+      floatingActionButton: dotsIndicator(pages.length),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -70,5 +95,55 @@ class _IntroductionViewState extends State<IntroductionView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: children,
         ));
+  }
+
+  Widget dotsIndicator(int max) {
+    double position = pagePosition + (slidePosition / 100);
+    if (position > max.toDouble()) {
+      position = max.toDouble();
+    }
+    if (position < 0) {
+      position = 0;
+    }
+    return Container(
+        child: DotsIndicator(
+      position: position,
+      dotsCount: max,
+      decorator: DotsDecorator(
+        size: Size.fromRadius(4),
+        activeSize: Size.fromRadius(8),
+        color: Theme.of(context).colorScheme.primaryVariant,
+        activeColor: Theme.of(context).colorScheme.primary,
+      ),
+      onTap: (double pos) {
+        setState(() {
+          positionCallback(pos.toInt());
+          liquidController.animateToPage(page: pagePosition);
+        });
+      },
+    ));
+  }
+
+  slideCallback(double pos) {
+    // Only call if build is completed and position is not initializing to 0.0
+    if (this.mounted) {
+      if (pos > 0.01) {
+        setState(() {
+          if (!forwardSwipe) {
+            pos = pos * -1;
+          }
+          slidePosition = pos;
+        });
+      }
+    }
+  }
+
+  positionCallback(int pos) {
+    if (this.mounted) {
+      setState(() {
+        slidePosition = 0.0;
+        pagePosition = pos;
+      });
+    }
   }
 }
