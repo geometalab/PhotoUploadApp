@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/pageContainer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
+import 'package:projects/view/singlePage/introductionView.dart';
 import 'package:provider/provider.dart';
 import 'controller/eventHandler/connectionStatus.dart';
 import 'package:flutter/services.dart';

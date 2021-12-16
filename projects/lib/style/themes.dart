@@ -18,10 +18,10 @@ final ThemeData darkTheme = new ThemeData.from(
         colorScheme: ColorScheme.dark(
             brightness: Brightness.dark,
             primary: CustomColors.WIKIMEDIA_THEME_BLUE,
-            primaryVariant: Color.fromRGBO(0, 112, 183, 1.0),
+            primaryVariant: Color.fromRGBO(42, 75, 141, 1.0),
             onPrimary: Colors.white,
             secondary: Color.fromRGBO(151, 0, 0, 1.0),
-            secondaryVariant: Color.fromRGBO(191, 24, 24, 1.0),
+            secondaryVariant: Color.fromRGBO(179, 36, 37, 1.0),
             onSecondary: Colors.white,
             background: Color.fromRGBO(28, 34, 39, 1.0),
             onBackground: Colors.white,
@@ -39,6 +39,7 @@ class CustomColors {
   static const NO_IMAGE_COLOR = Colors.grey;
   static const NO_IMAGE_CONTENTS_COLOR = Colors.white70;
   static const WIKIMEDIA_THEME_BLUE = Color.fromRGBO(0, 99, 152, 1.0);
+  static const WIKIMEDIA_LIGHT_BLUE = Color.fromRGBO(234, 243, 255, 1.0);
 
   Color getDefaultIconColor(ThemeData themeData) {
     switch (themeData.brightness) {
