@@ -118,19 +118,22 @@ class _MapFragmentState extends State<MapFragment> {
       if (latLng != null) {
         mapController.move(latLng, 14);
       }
+      checkTooFarOut();
     });
   }
 
   loadNearbyCategories() {
-    ncs
-        .markerBuilder(
-            ncs.getNearbyCategories(mapController.center.latitude,
-                mapController.center.longitude, calculateKmRadius()),
-            context)
-        .then((value) {
-      _markerList = value;
-      setState(() {});
-    });
+    if (!tooFarOut) {
+      ncs
+          .markerBuilder(
+              ncs.getNearbyCategories(mapController.center.latitude,
+                  mapController.center.longitude, calculateKmRadius()),
+              context)
+          .then((value) {
+        _markerList = value;
+        setState(() {});
+      });
+    }
   }
 
   int calculateKmRadius() {
@@ -203,16 +206,7 @@ class _MapFragmentState extends State<MapFragment> {
   onMapMove(MapPosition position, bool hasGesture) {
     // If the onMove doesnt include a (user) gesture, it is the move on user position, in which case we just want to load the markers, as we dont want to trigger a setState during build.
     if (hasGesture) {
-      bool valueBefore = tooFarOut;
-      if (mapController.zoom >= 12) {
-        tooFarOut = false;
-      } else {
-        tooFarOut = true;
-      }
-
-      if (tooFarOut != valueBefore) {
-        setState(() {});
-      }
+      checkTooFarOut();
 
       if (lastLoadPosition == null) {
         lastLoadPosition = position.center;
@@ -243,6 +237,19 @@ class _MapFragmentState extends State<MapFragment> {
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c; // Distance in km
     return d;
+  }
+
+  checkTooFarOut() {
+    bool valueBefore = tooFarOut;
+    if (mapController.zoom >= 12) {
+      tooFarOut = false;
+    } else {
+      tooFarOut = true;
+    }
+
+    if (tooFarOut != valueBefore) {
+      setState(() {});
+    }
   }
 
   double deg2rad(deg) {
