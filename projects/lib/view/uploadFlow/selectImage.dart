@@ -5,7 +5,6 @@ import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/articles/uploadGuideFragment.dart';
 import 'package:projects/style/textStyles.dart';
 
-
 class SelectImageFragment extends StatefulWidget {
   @override
   _SelectImageFragmentState createState() => _SelectImageFragmentState();
