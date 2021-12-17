@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/ownWorkHelper.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/view/uploadFlow/selecItems.dart';
+import 'package:projects/view/uploadFlow/selectItems.dart';
 import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
 
 class SimpleCategoriesPage extends StatefulWidget {
@@ -14,7 +14,10 @@ class _SimpleCategoriesPageState extends State<SimpleCategoriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
-      body: SelectItemFragment(0),
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+        child: SelectItemFragment(0),
+      ),
     );
   }
 

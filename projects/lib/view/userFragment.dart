@@ -149,55 +149,54 @@ class _UserFragmentState extends State<UserFragment> {
   }
 
   Widget loggedOut() {
-    return ListView(
+    return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      children: <Widget>[
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 104),
-            ),
-            Icon(
-              Icons.person_off_outlined,
-              size: 80,
-              color: Theme.of(context).disabledColor,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-            ),
-            Text(
-              "Not logged in",
-              style: TextStyle(fontSize: 20),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-            ),
-            SizedBox(
-              width: 160,
-              height: 40,
-              child: TextButton(
-                onPressed: () {
-                  loginHandler.openWebLogin();
-                },
-                child: new Text("Log in"),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.person_off_outlined,
+                size: 80,
+                color: Theme.of(context).disabledColor,
               ),
-            ),
-            SizedBox(
-              width: 160,
-              height: 40,
-              child: TextButton(
-                onPressed: () {
-                  loginHandler.openWebSignUp();
-                },
-                child: new Text("Create account"),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
               ),
-            ),
-          ],
-        )
-      ],
+              Text(
+                "Not logged in",
+                style: TextStyle(fontSize: 20),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+              ),
+              SizedBox(
+                width: 160,
+                height: 40,
+                child: TextButton(
+                  onPressed: () {
+                    loginHandler.openWebLogin();
+                  },
+                  child: new Text("Log in"),
+                ),
+              ),
+              SizedBox(
+                width: 160,
+                height: 40,
+                child: TextButton(
+                  onPressed: () {
+                    loginHandler.openWebSignUp();
+                  },
+                  child: new Text("Create account"),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

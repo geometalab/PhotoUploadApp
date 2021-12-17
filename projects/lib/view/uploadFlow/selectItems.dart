@@ -6,7 +6,6 @@ import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
 
 // TODO display something in lower half when no category has been added, so it doesnt look emtpty
-// TODO don't allow duplicates
 
 class SelectItemFragment extends StatefulWidget {
   // If 0, uses categories / if 1, uses depicts
@@ -81,14 +80,26 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
             },
             onSuggestionSelected: (Map<String, dynamic> suggestion) {
               setState(() {
-                if (useCase == 0) {
-                  collector.categories.add(suggestion['title']!);
-                  collector.categoriesThumb.add(suggestion['thumbnail']);
-                  SettingsManager().addToCachedCategories(suggestion);
+                bool duplicate = isDuplicate(suggestion['title'], useCase);
+                if (!duplicate) {
+                  if (useCase == 0) {
+                    collector.categories.add(suggestion['title']!);
+                    collector.categoriesThumb.add(suggestion['thumbnail']);
+                    SettingsManager().addToCachedCategories(suggestion);
+                  } else {
+                    collector.depictions.add(suggestion['title']!);
+                    collector.depictionsThumb.add(suggestion['thumbnail']);
+                    SettingsManager().addToCachedCategories(suggestion);
+                  }
                 } else {
-                  collector.depictions.add(suggestion['title']!);
-                  collector.depictionsThumb.add(suggestion['thumbnail']);
-                  SettingsManager().addToCachedCategories(suggestion);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      "This item has already been added",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onError),
+                    ),
+                    backgroundColor: Theme.of(context).errorColor,
+                  ));
                 }
               });
             },
@@ -154,6 +165,14 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
       );
     } else {
       return Image.network(thumbnail['url']);
+    }
+  }
+
+  bool isDuplicate(String title, int useCase) {
+    if (useCase == 0) {
+      return collector.categories.any((element) => element == title);
+    } else {
+      return collector.depictions.any((element) => element == title);
     }
   }
 }

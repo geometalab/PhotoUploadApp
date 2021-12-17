@@ -138,8 +138,13 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   Future<bool> _dataIsValid(BuildContext context) async {
     String? message = await _errorChecker();
     if (message != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Theme.of(context).colorScheme.onError),
+        ),
+        backgroundColor: Theme.of(context).errorColor,
+      ));
       return false;
     } else {
       return true;

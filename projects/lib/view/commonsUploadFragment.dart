@@ -5,7 +5,7 @@ import 'package:projects/view/singlePage/notLoggedIn.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
 import 'package:projects/view/uploadFlow/informationFragment.dart';
 import 'package:projects/view/uploadFlow/reviewFragment.dart';
-import 'package:projects/view/uploadFlow/selecItems.dart';
+import 'package:projects/view/uploadFlow/selectItems.dart';
 import 'package:projects/view/uploadFlow/selectImage.dart';
 
 class CommonsUploadFragment extends StatefulWidget {
