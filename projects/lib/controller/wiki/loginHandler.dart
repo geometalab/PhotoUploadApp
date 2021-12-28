@@ -1,19 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/config.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:path_provider/path_provider.dart';
 
-// TODO Include a PKCE Code challange https://duckduckgo.com/?q=pkce+code+challenge
 // TODO after coming back from branch.io, there is a short, sometimes long wait time
 
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
   static const CREDENTIALS_FILE = Config.CREDENTIALS_FILE;
   static const WIKIMEDIA_REST = Config.WIKIMEDIA_REST;
+  static late String codeVerifier;
+
   ActionHelper _actionHelper = ActionHelper();
 
   // Making class a singleton
@@ -21,7 +24,12 @@ class LoginHandler {
   factory LoginHandler() {
     return _loginHandler;
   }
-  LoginHandler._internal();
+  LoginHandler._internal() {
+    // On init, create a codeVerifier
+    codeVerifier = _generateCodeVerifier();
+    print("Code Challenge: ${_encryptCodeVerifier(codeVerifier)}");
+    print("Code Verifier: $codeVerifier");
+  }
 
   checkCredentials() async {
     try {
@@ -60,8 +68,14 @@ class LoginHandler {
   }
 
   openWebLogin() {
+    String codeChallenge = _encryptCodeVerifier(codeVerifier);
     String url =
-        "$WIKIMEDIA_REST/oauth2/authorize?client_id=$CLIENT_ID&response_type=code";
+        "$WIKIMEDIA_REST/oauth2/authorize"
+        "?client_id=$CLIENT_ID"
+        "&response_type=code"
+        "&code_challenge=$codeChallenge"
+        "&code_challenge_method=S256";
+    print(url);
     _actionHelper.launchUrl(url);
   }
 
@@ -80,7 +94,6 @@ class LoginHandler {
 
   Future<Userdata> getTokens(String authCode) async {
     // Resources: https://api.wikimedia.org/wiki/Documentation/Getting_started/Authentication#User_authentication
-    String clientSecret = await _getClientSecret();
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_REST/oauth2/access_token'),
         headers: <String, String>{
@@ -90,7 +103,7 @@ class LoginHandler {
           'grant_type': 'authorization_code',
           'code': authCode,
           'client_id': CLIENT_ID,
-          'client_secret': clientSecret,
+          'code_verifier': codeVerifier
         });
 
     var responseData = await response;
@@ -107,7 +120,6 @@ class LoginHandler {
 
   Future<Userdata?> refreshAccessToken() async {
     Userdata? userdata = await getUserInformationFromFile();
-    String clientSecret = await _getClientSecret();
     if (userdata == null || userdata.refreshToken == "") {
       throw ("Tried to refresh access token but userdata.refreshToken is null or empty");
     } else {
@@ -120,7 +132,6 @@ class LoginHandler {
             'grant_type': 'refresh_token',
             'refresh_token': userdata.refreshToken,
             'client_id': CLIENT_ID,
-            'client_secret': clientSecret,
           });
       var responseData = await response;
       if (responseData.statusCode == 200) {
@@ -225,6 +236,18 @@ class LoginHandler {
 
   _deleteUserDataInFile() async {
     await _writeToFile(CREDENTIALS_FILE, "");
+  }
+
+  String _generateCodeVerifier () {
+    int length = 50; // Length of the string
+    var random = Random.secure();
+    var values = List<int>.generate(length, (i) =>  random.nextInt(255));
+    return base64UrlEncode(values).replaceAll("=", "");
+  }
+
+  String _encryptCodeVerifier (String codeVerifier) {
+    var hash = sha256.convert(ascii.encode(codeVerifier));
+    return base64Url.encode(hash.bytes).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_").replaceAll("+", "-").replaceAll("/", "-");
   }
 
   Future<String> _getClientSecret() async {
