@@ -8,7 +8,7 @@ import '../../style/themes.dart';
 
 class ImageService {
   Future<Widget> getCategoryThumbnail(String category) async {
-    List<ImageURL> urls = await _getImageURLs(category, 150);
+    List<ImageURL> urls = await _getImageURLs(category, 150, 1);
     if (urls.isEmpty) {
       return Container(
         color: CustomColors.NO_IMAGE_COLOR,
@@ -30,7 +30,7 @@ class ImageService {
 
   Future<List<ImageURL>> getCategoryImages(
       String category, int width, int limit) async {
-    List<ImageURL> urls = await _getImageURLs(category, width);
+    List<ImageURL> urls = await _getImageURLs(category, width, limit);
     List<ImageURL> returnUrls = List.empty(growable: true);
     for (int i = 0; i < urls.length && i < limit; i++) {
       returnUrls.add(urls[i]);
@@ -38,9 +38,10 @@ class ImageService {
     return returnUrls;
   }
 
-  Future<List<ImageURL>> _getImageURLs(String category, int width) async {
+  Future<List<ImageURL>> _getImageURLs(
+      String category, int width, int limit) async {
     String url =
-        "${Config.WIKIMEDIA_API}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&format=json";
+        "${Config.WIKIMEDIA_API}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&cmlimit=$limit&format=json";
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

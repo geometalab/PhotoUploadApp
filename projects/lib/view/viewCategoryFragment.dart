@@ -1,4 +1,5 @@
 import 'package:button_navigation_bar/button_navigation_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,6 +27,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
   final Marker _marker;
   _ViewCategoryFragment(this._marker);
   InformationCollector collector = new InformationCollector();
+  int numberOfImages = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -43,36 +45,50 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             FutureBuilder(
-              future: ImageService().getCategoryImages(categoryTitle, 400,
-                  10), // TODO? at the moment only 10 first pics get shown, maybe someting like "load more" at the end?
+              future: ImageService()
+                  .getCategoryImages(categoryTitle, 400, numberOfImages),
               builder: (BuildContext context,
                   AsyncSnapshot<List<ImageURL>> snapshot) {
-                // TODO Loading Indicator for Images as they might take quite a long time to load
                 if (snapshot.hasData) {
                   List<ImageURL> images = snapshot.data!;
                   cards.clear();
                   for (int i = 0; i < images.length; i++) {
-                    cards.add(new Card(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.network(
-                              images[i].url,
-                              fit: BoxFit.fitWidth,
-                            ), // TODO Implement fullscreen viewer for Images (on image click)
-                            Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: Text(images[i].name,
-                                  style:
-                                      TextStyle(fontStyle: FontStyle.italic)),
-                            ),
-                          ],
+                    if (i == images.length - 1 && i == numberOfImages - 1) {
+                      cards.add(TextButton(
+                        onPressed: () {
+                          setState(() {
+                            numberOfImages += 10;
+                          });
+                        },
+                        child: Text("Load more"),
+                      ));
+                    } else {
+                      cards.add(Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CachedNetworkImage(
+                                imageUrl: images[i].url,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                fit: BoxFit.fitWidth,
+                              ), // TODO Implement fullscreen viewer for Images (on image click)
+                              Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: Text(images[i].name,
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic)),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ));
+                      ));
+                    }
                   }
                   cards.add(Padding(
                     padding: EdgeInsets.symmetric(vertical: 32),
@@ -185,6 +201,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           Navigator.pop(context);
           Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
         },
+        heroTag: "nonSimpleModeFAB",
         label: Text("Upload to this Category"),
         icon: Icon(Icons.add),
       );

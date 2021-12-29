@@ -45,6 +45,7 @@ dependencies:
   dots_indicator: ^2.0.0                # introduction screen dot indicators
   flutter_custom_clippers: ^2.0.0       # introduction screen graphics
   google_fonts: ^2.1.0                  # easier testing of fonts, e.g. in introduction view
+  cached_network_image: ^3.2.0          # caches images for the category views in map
 
 
 
