@@ -17,10 +17,12 @@ class MapFragment extends StatefulWidget {
 class _MapFragmentState extends State<MapFragment> {
   List<Marker> _markerList = List.empty(growable: true);
   LatLng? lastLoadPosition;
-  bool tooFarOut = false;
+  bool isTooFarOut = false;
+  int clusterBtnNumber =
+      0; // As each ClusterBtn needs their own hero tag, this counter serves to determine the name of each one.
 
-  final MapController mapController = new MapController();
-  final NearbyCategoriesService ncs = new NearbyCategoriesService();
+  final MapController _mapController = new MapController();
+  final NearbyCategoriesService _ncs = new NearbyCategoriesService();
   final PopupController _popupLayerController = PopupController();
 
   // TODO Implement a "fix the map button" as recommended by osm (https://operations.osmfoundation.org/policies/tiles/)
@@ -29,17 +31,17 @@ class _MapFragmentState extends State<MapFragment> {
     return Scaffold(
       appBar: _appBar(),
       body: FlutterMap(
-          mapController: mapController,
+          mapController: _mapController,
           options: MapOptions(
               onTap: (tapPosition, latLng) =>
                   _popupLayerController.hideAllPopups(),
-              controller: mapController,
+              controller: _mapController,
               center:
                   LatLng(46.8, 8.22), // Starting pos when gps access is denied
               zoom: 8.0,
               enableMultiFingerGestureRace: true,
               minZoom: 2,
-              maxZoom: 18,
+              maxZoom: 25,
               enableScrollWheel: true,
               onPositionChanged: (MapPosition position, bool hasGesture) {
                 onMapMove(position, hasGesture);
@@ -62,17 +64,18 @@ class _MapFragmentState extends State<MapFragment> {
                 markerRotate: true,
               ),
               builder: (BuildContext context, List<Marker> markers) {
+                clusterBtnNumber++;
                 return FloatingActionButton(
                   child: Text(markers.length.toString()),
                   onPressed: () {
-                    mapController.fitBounds(getMarkerListMiddle(
+                    _mapController.fitBounds(getMarkerListMiddle(
                         markers)); // TODO when in very high zoom, clicking a cluster button doesn't zoom anymore, which it still should
                   },
-                  heroTag: "clusterBtn",
+                  heroTag: "clusterBtn$clusterBtnNumber",
                   backgroundColor: Theme.of(context).primaryColor,
                 );
               },
-              markers: getMarkerList(tooFarOut),
+              markers: getMarkerList(isTooFarOut),
               maxClusterRadius: 120,
               size: Size(40, 40),
               fitBoundsOptions: FitBoundsOptions(
@@ -95,15 +98,15 @@ class _MapFragmentState extends State<MapFragment> {
   }
 
   Widget? infoMenu() {
-    if (tooFarOut) {
+    if (isTooFarOut) {
       return FloatingActionButton.extended(
         label: Text("Zoom in to view categories"),
         icon: Icon(Icons.help),
         heroTag: "helpIcon",
         onPressed: () {
           setState(() {
-            mapController.move(mapController.center, 12.5);
-            tooFarOut = false;
+            _mapController.move(_mapController.center, 12.5);
+            isTooFarOut = false;
           });
         },
       );
@@ -116,18 +119,18 @@ class _MapFragmentState extends State<MapFragment> {
     getStartPosition().then((latLng) {
       // Center on position if available
       if (latLng != null) {
-        mapController.move(latLng, 14);
+        _mapController.move(latLng, 14);
       }
       checkTooFarOut();
     });
   }
 
   loadNearbyCategories() {
-    if (!tooFarOut) {
-      ncs
+    if (!isTooFarOut) {
+      _ncs
           .markerBuilder(
-              ncs.getNearbyCategories(mapController.center.latitude,
-                  mapController.center.longitude, calculateKmRadius()),
+              _ncs.getNearbyCategories(_mapController.center.latitude,
+                  _mapController.center.longitude, calculateKmRadius()),
               context)
           .then((value) {
         _markerList = value;
@@ -147,11 +150,11 @@ class _MapFragmentState extends State<MapFragment> {
     // 15 | 3.4 km
     // 17 | 0.766 km
 
-    if (mapController.zoom > 17.0) {
+    if (_mapController.zoom > 17.0) {
       return 1;
-    } else if (mapController.zoom > 15.0) {
+    } else if (_mapController.zoom > 15.0) {
       return 3;
-    } else if (mapController.zoom > 13) {
+    } else if (_mapController.zoom > 13) {
       return 5;
     } else {
       return 8;
@@ -240,14 +243,14 @@ class _MapFragmentState extends State<MapFragment> {
   }
 
   checkTooFarOut() {
-    bool valueBefore = tooFarOut;
-    if (mapController.zoom >= 12) {
-      tooFarOut = false;
+    bool valueBefore = isTooFarOut;
+    if (_mapController.zoom >= 12) {
+      isTooFarOut = false;
     } else {
-      tooFarOut = true;
+      isTooFarOut = true;
     }
 
-    if (tooFarOut != valueBefore) {
+    if (isTooFarOut != valueBefore) {
       setState(() {});
     }
   }

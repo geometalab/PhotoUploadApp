@@ -105,6 +105,13 @@ class AboutFragment extends StatelessWidget {
                       Text("Code Repository")
                     ],
                   )),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  child: Text(
+                    "Commons Uploader is in no way affiliated with the Wikimedia Group.",
+                    style: TextStyle(fontSize: 11),
+                    textAlign: TextAlign.center,
+                  ))
             ],
           ),
         ),
