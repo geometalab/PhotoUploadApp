@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
+import 'package:projects/style/heroPhotoViewRouteWrapper.dart';
 import 'package:projects/view/uploadFlow/uploadProgressBar.dart';
 import 'package:projects/style/keyValueField.dart';
 import 'package:projects/style/textStyles.dart';

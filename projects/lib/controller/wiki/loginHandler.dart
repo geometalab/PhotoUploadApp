@@ -64,8 +64,6 @@ class LoginHandler {
 
   openWebLogin() {
     codeVerifier = _generateCodeVerifier();
-    print("Code Challenge: ${_encryptCodeVerifier(codeVerifier)}");
-    print("Code Verifier: $codeVerifier");
     String codeChallenge = _encryptCodeVerifier(codeVerifier);
     String url = "$WIKIMEDIA_REST/oauth2/authorize"
         "?client_id=$CLIENT_ID"

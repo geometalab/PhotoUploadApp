@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
-import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
+import 'package:projects/style/heroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/textStyles.dart';
 
 class PictureOfTheDayFragment extends StatelessWidget {

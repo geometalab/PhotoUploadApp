@@ -5,7 +5,7 @@ import 'package:projects/controller/internal/imageDataExtractor.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/style/HeroPhotoViewRouteWrapper.dart';
+import 'package:projects/style/heroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/themes.dart';
 import 'package:projects/view/simpleUpload/simpleCategoriesPage.dart';
 import 'package:projects/view/singlePage/notLoggedIn.dart';
