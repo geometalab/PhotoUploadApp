@@ -23,6 +23,7 @@ class NotLoggedIn extends StatelessWidget {
           Padding(padding: EdgeInsets.symmetric(vertical: 8)),
           Text(
             "Log into your wikimedia account to begin uploading.",
+            textAlign: TextAlign.center,
           ),
         ],
       ),

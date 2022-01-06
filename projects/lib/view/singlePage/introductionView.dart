@@ -330,7 +330,7 @@ class _IntroductionViewState extends State<IntroductionView> {
           ),
           if (showSkipButton)
             Positioned(
-              bottom: 6,
+              bottom: 8,
               left: 8,
               child: TextButton(
                 child: Text("Skip introduction",

@@ -41,16 +41,14 @@ class _InformationFragment extends State<InformationFragment> {
             children: [
               Checkbox(
                   value: collector.ownWork,
-                  onChanged: (bool? value) {
-                    OwnWorkHelper owf = OwnWorkHelper();
-                    setState(() async {
-                      if (value == true) {
-                        await owf.setOwnWork();
-                        setState(() {});
-                      } else {
-                        owf.removeOwnWork();
-                      }
-                    });
+                  onChanged: (bool? value) async {
+                    OwnWorkHelper owh = OwnWorkHelper();
+                    if (value == true) {
+                      await owh.setOwnWork();
+                      setState(() {});
+                    } else {
+                      owh.removeOwnWork();
+                    }
                     setState(() {});
                   }),
               Text("This file is my own work"),
