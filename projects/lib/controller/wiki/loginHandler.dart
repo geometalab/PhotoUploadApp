@@ -24,12 +24,7 @@ class LoginHandler {
   factory LoginHandler() {
     return _loginHandler;
   }
-  LoginHandler._internal() {
-    // On init, create a codeVerifier
-    codeVerifier = _generateCodeVerifier();
-    print("Code Challenge: ${_encryptCodeVerifier(codeVerifier)}");
-    print("Code Verifier: $codeVerifier");
-  }
+  LoginHandler._internal();
 
   checkCredentials() async {
     try {
@@ -68,9 +63,11 @@ class LoginHandler {
   }
 
   openWebLogin() {
+    codeVerifier = _generateCodeVerifier();
+    print("Code Challenge: ${_encryptCodeVerifier(codeVerifier)}");
+    print("Code Verifier: $codeVerifier");
     String codeChallenge = _encryptCodeVerifier(codeVerifier);
-    String url =
-        "$WIKIMEDIA_REST/oauth2/authorize"
+    String url = "$WIKIMEDIA_REST/oauth2/authorize"
         "?client_id=$CLIENT_ID"
         "&response_type=code"
         "&code_challenge=$codeChallenge"
@@ -103,6 +100,7 @@ class LoginHandler {
           'grant_type': 'authorization_code',
           'code': authCode,
           'client_id': CLIENT_ID,
+          'client_secret': await _getClientSecret(),
           'code_verifier': codeVerifier
         });
 
@@ -132,6 +130,7 @@ class LoginHandler {
             'grant_type': 'refresh_token',
             'refresh_token': userdata.refreshToken,
             'client_id': CLIENT_ID,
+            'client_secret': await _getClientSecret()
           });
       var responseData = await response;
       if (responseData.statusCode == 200) {
@@ -238,16 +237,22 @@ class LoginHandler {
     await _writeToFile(CREDENTIALS_FILE, "");
   }
 
-  String _generateCodeVerifier () {
-    int length = 50; // Length of the string
+  String _generateCodeVerifier() {
+    int length = 70; // Length of the string
     var random = Random.secure();
-    var values = List<int>.generate(length, (i) =>  random.nextInt(255));
+    var values = List<int>.generate(length, (i) => random.nextInt(255));
     return base64UrlEncode(values).replaceAll("=", "");
   }
 
-  String _encryptCodeVerifier (String codeVerifier) {
+  String _encryptCodeVerifier(String codeVerifier) {
     var hash = sha256.convert(ascii.encode(codeVerifier));
-    return base64Url.encode(hash.bytes).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_").replaceAll("+", "-").replaceAll("/", "-");
+    return base64Url
+        .encode(hash.bytes)
+        .replaceAll("=", "")
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("+", "-")
+        .replaceAll("/", "-");
   }
 
   Future<String> _getClientSecret() async {
