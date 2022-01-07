@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' as assertions;
 import 'package:flutter/material.dart';
 import 'package:projects/controller/eventHandler/connectionStatus.dart';
+import 'package:projects/controller/eventHandler/deepLinkListener.dart';
 import 'package:projects/controller/eventHandler/externalIntentHandler.dart';
 import 'package:projects/controller/eventHandler/lifeCycleEventHandler.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
@@ -72,6 +73,9 @@ class _PageContainerState extends State<PageContainer> {
     }, onError: (err) {
       throw ("getIntentDataStream error: $err");
     });
+
+    // Begin listening to deeplink redirects
+    DeepLinkListener().listenDeepLinkData(context);
 
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {

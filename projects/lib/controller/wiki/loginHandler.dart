@@ -9,8 +9,6 @@ import 'package:projects/config.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:path_provider/path_provider.dart';
 
-// TODO after coming back from branch.io, there is a short, sometimes long wait time
-
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
   static const CREDENTIALS_FILE = Config.CREDENTIALS_FILE;
@@ -44,6 +42,13 @@ class LoginHandler {
       throw ("Could not check Credentials successfully. Error: " +
           e.toString());
     }
+  }
+
+  processAuthCode(String authCode) async {
+    Userdata userData = await getTokens(authCode);
+    userData = await getUserInformationFromAPI(userData);
+    userData.lastCheck = DateTime.now();
+    await saveUserDataToFile(userData);
   }
 
   Future<bool> isLoggedIn() async {
