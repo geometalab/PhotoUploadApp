@@ -213,12 +213,12 @@ class _PageContainerState extends State<PageContainer> {
                       bottom: 16,
                       child: Row(
                         children: [
-                          Icon(Icons.person_off),
+                          Icon(Icons.person_off, color: Colors.white,),
                           Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                           Text(
                             "Not logged into wikimedia",
                             style: customStyles.objectDescription.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary),
+                                color: Colors.white),
                           ),
                         ],
                       ))

@@ -45,7 +45,6 @@ class AboutFragment extends StatelessWidget {
                 style: fragmentTitle,
                 textAlign: TextAlign.center,
               ),
-              Padding(padding: EdgeInsets.only(bottom: 8)),
               FutureBuilder(
                 future: PackageInfo.fromPlatform(),
                 builder: (context, snapshot) {
