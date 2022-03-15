@@ -62,8 +62,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                   alignment: Alignment.center,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child:
-                        image(), // TODO Implement fullscreen view of image on click
+                    child: image(),
                   ),
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -170,9 +169,8 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       fileNameIcon = errorIcon(context);
       isError = true;
     } else if (collector.fileName!.length < 15) {
-      // TODO find other cases of unspecific file names
-      infoText.add(
-          warningText(context, "Make sure you file name is unique enough"));
+      infoText.add(warningText(
+          context, "Your file title needs to be at least 15 characters."));
       fileNameIcon = warningIcon(context);
     }
     if (fileNameAlreadyExists) {

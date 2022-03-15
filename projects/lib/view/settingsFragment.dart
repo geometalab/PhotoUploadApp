@@ -1,6 +1,5 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/datasets.dart';
@@ -11,6 +10,7 @@ import 'package:projects/view/aboutFragment.dart';
 import 'package:projects/model/texts.dart' as texts;
 import 'package:projects/view/simpleUpload/simpleSettingsPage.dart';
 import 'package:projects/view/singlePage/imageSelector.dart';
+import 'package:projects/view/singlePage/introductionView.dart';
 import 'package:provider/provider.dart';
 
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
@@ -21,6 +21,8 @@ class SettingsFragment extends StatefulWidget {
 }
 
 class _SettingsFragmentState extends State<SettingsFragment> {
+  static const dividerHeight = 0.0;
+
   late final SettingsManager manager = SettingsManager();
   @override
   Widget build(BuildContext context) {
@@ -34,19 +36,23 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             _appThemeSwitch(context),
             Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             Divider(
-              height: 0,
+              height: dividerHeight,
             ),
             _simpleModeSwitch(context),
             Divider(
-              height: 0,
+              height: dividerHeight,
             ),
             _backgroundImageSelector(context),
             Divider(
-              height: 0,
+              height: dividerHeight,
+            ),
+            _rewatchIntroButton(context),
+            Divider(
+              height: dividerHeight,
             ),
             _clearPrefsButton(context),
             Divider(
-              height: 0,
+              height: dividerHeight,
             ),
             Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             // About button
@@ -157,6 +163,25 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             children: [
               Text("Select background image"),
               Icon(Icons.chevron_right)
+            ],
+          ),
+        ));
+  }
+
+  _rewatchIntroButton(BuildContext context) {
+    return RawMaterialButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => IntroductionView()));
+        },
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Show first-time Introduction"),
             ],
           ),
         ));

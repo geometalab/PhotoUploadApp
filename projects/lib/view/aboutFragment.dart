@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart';
 
@@ -17,6 +18,7 @@ class AboutFragment extends StatelessWidget {
       ifsLogo = Image.asset("assets/media/logos/IFS.png");
       ostLogo = Image.asset("assets/media/logos/OST.png");
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("About"),
@@ -42,6 +44,18 @@ class AboutFragment extends StatelessWidget {
                 "Commons Uploader",
                 style: fragmentTitle,
                 textAlign: TextAlign.center,
+              ),
+              FutureBuilder(
+                future: PackageInfo.fromPlatform(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    PackageInfo packageInfo = snapshot.data as PackageInfo;
+                    return Text(
+                        "${packageInfo.version}+${packageInfo.buildNumber}");
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
               ),
               Padding(padding: EdgeInsets.only(bottom: 8)),
               Text("Developed by ", style: headerText),
@@ -108,7 +122,7 @@ class AboutFragment extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                   child: Text(
-                    "Commons Uploader is in no way affiliated with the Wikimedia Group.",
+                    "Commons Uploader is not affiliated with the Wikimedia Foundation.",
                     style: TextStyle(fontSize: 11),
                     textAlign: TextAlign.center,
                   ))

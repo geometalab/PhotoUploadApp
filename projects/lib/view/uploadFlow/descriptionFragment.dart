@@ -11,7 +11,6 @@ class DescriptionFragment extends StatefulWidget {
 }
 
 class _DescriptionFragment extends State<DescriptionFragment> {
-  // TODO maybe the image should be shown at the top here, so user can have a look at it when making description
   InformationCollector collector = InformationCollector();
   ScrollController scrollController = ScrollController();
   @override
@@ -61,7 +60,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
       list.add(Padding(
           padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: SizedBox(
-              height: 100,
+              height: 140,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -90,11 +89,39 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                     children: [
                       if (i != 0)
                         IconButton(
-                          // TODO if text is entered, "are you sure" prompt before deleting
                           onPressed: () {
-                            setState(() {
-                              collector.description.removeAt(i);
-                            });
+                            if (collector.description[i].content != "") {
+                              showDialog(
+                                  // "Are you sure" dialog
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                        title: Text("Delete Description"),
+                                        content: Text(
+                                            "Are you sure you want to delete this ${data.languages[collector.description[i].language]!.toLowerCase()} description? It contains text."),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: Text("No"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                collector.description
+                                                    .removeAt(i);
+                                              });
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: Text("Yes"),
+                                          ),
+                                        ],
+                                      ));
+                            } else {
+                              setState(() {
+                                collector.description.removeAt(i);
+                              });
+                            }
                           },
                           icon: Icon(Icons.close),
                           color: CustomColors()
@@ -114,7 +141,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                         iconSize: 24,
                         elevation: 16,
                         isDense:
-                            true, // TODO when i remove dropdown isnt aligned with textfield, but better looking
+                            true, // TODO when i remove this, dropdown isnt aligned with textfield, but better looking
                         underline: Container(
                           height: 2,
                           color: Theme.of(context).colorScheme.secondary,

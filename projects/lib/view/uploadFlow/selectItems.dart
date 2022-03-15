@@ -4,8 +4,7 @@ import 'package:projects/controller/wiki/categoryService.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
-
-// TODO display something in lower half when no category has been added, so it doesnt look emtpty
+import 'package:projects/style/textStyles.dart' as customStyles;
 
 class SelectItemFragment extends StatefulWidget {
   // If 0, uses categories / if 1, uses depicts
@@ -20,15 +19,19 @@ class SelectItemFragment extends StatefulWidget {
 class _SelectItemFragmentState extends State<SelectItemFragment> {
   CategoryService cs = new CategoryService();
   InformationCollector collector = new InformationCollector();
+  List<String>? titles;
+  List<Map<String, dynamic>?>? thumbs;
+  int? useCase;
+  TextEditingController? _typeAheadController;
 
   @override
   Widget build(BuildContext context) {
-    final useCase = widget.useCase;
+    useCase = widget.useCase;
+
     if (useCase != 0 && useCase != 1) {
       throw ("Incorrect useCase param on StatefulSelectCategoryFragment");
     }
-    List<String> titles;
-    List<Map<String, dynamic>?> thumbs;
+
     if (useCase == 0) {
       titles = collector.categories;
       thumbs = collector.categoriesThumb;
@@ -44,9 +47,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
     } else {
       prefillContent = "";
     }
-    final TextEditingController _typeAheadController =
-        TextEditingController(text: prefillContent);
-    // TODO atm the prefilled content gets only suggested, but not actually prefilled in the text field
+    _typeAheadController = TextEditingController(text: prefillContent);
     collector.preFillContent =
         null; // Empty prefill content or it will appear again after selection
 
@@ -66,10 +67,10 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
                     fontSize: 20,
                     color: Theme.of(context).textTheme.bodyText1!.color),
                 decoration: InputDecoration(
-                    labelText: labelText(useCase),
+                    labelText: labelText(useCase!),
                     border: OutlineInputBorder())),
             suggestionsCallback: (pattern) async {
-              return await cs.getSuggestions(pattern, useCase);
+              return await cs.getSuggestions(pattern, useCase!);
             },
             itemBuilder: (context, Map<String, dynamic> suggestion) {
               return ListTile(
@@ -80,7 +81,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
             },
             onSuggestionSelected: (Map<String, dynamic> suggestion) {
               setState(() {
-                bool duplicate = isDuplicate(suggestion['title'], useCase);
+                bool duplicate = isDuplicate(suggestion['title'], useCase!);
                 if (!duplicate) {
                   if (useCase == 0) {
                     collector.categories.add(suggestion['title']!);
@@ -104,44 +105,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
               });
             },
           )),
-      Expanded(
-        child: ListView.builder(
-          itemCount: titles.length,
-          shrinkWrap: true,
-          padding: EdgeInsets.all(4),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int i) {
-            return Card(
-              child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                leading: Padding(
-                  padding: EdgeInsets.only(top: 6, bottom: 6),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: thumbnail(thumbs[i]),
-                  ),
-                ),
-                title: Text(titles[i]), // TODO Text all on same vertical line
-                trailing: IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    setState(() {
-                      _typeAheadController.clear();
-                      if (useCase == 0) {
-                        collector.categories.removeAt(i);
-                        collector.categoriesThumb.removeAt(i);
-                      } else {
-                        collector.depictions.removeAt(i);
-                        collector.depictionsThumb.removeAt(i);
-                      }
-                    });
-                  },
-                ),
-              ),
-            );
-          },
-        ),
-      )
+      list()
     ]);
   }
 
@@ -165,6 +129,71 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
       );
     } else {
       return Image.network(thumbnail['url']);
+    }
+  }
+
+  Widget list() {
+    if (titles!.isEmpty) {
+      return Expanded(
+        child: Center(
+          child: Padding(
+              padding: EdgeInsets.fromLTRB(40, 0, 40, 40),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.list,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                  Text(
+                    "Add a category to describe your uploaded image.",
+                    textAlign: TextAlign.center,
+                    style: customStyles.hintText,
+                  )
+                ],
+              )),
+        ),
+      );
+    } else {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: titles?.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(4),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (BuildContext context, int i) {
+            return Card(
+              child: ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                leading: Padding(
+                  padding: EdgeInsets.only(top: 6, bottom: 6),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: thumbnail(thumbs![i]),
+                  ),
+                ),
+                title: Text(titles![i]), // TODO Text all on same vertical line
+                trailing: IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () {
+                    setState(() {
+                      _typeAheadController?.clear();
+                      if (useCase == 0) {
+                        collector.categories.removeAt(i);
+                        collector.categoriesThumb.removeAt(i);
+                      } else {
+                        collector.depictions.removeAt(i);
+                        collector.depictionsThumb.removeAt(i);
+                      }
+                    });
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      );
     }
   }
 

@@ -8,7 +8,6 @@ import 'package:projects/model/description.dart';
 import '../../model/datasets.dart' as data;
 import '../../config.dart';
 
-// TODO investigate file names on wiki commons and maybe autogenerate to avoid duplicates (or check if already taken)
 // TODO get response in case of error and extract error message, which then should be thrown to catch for the progress indicator
 
 class UploadService {

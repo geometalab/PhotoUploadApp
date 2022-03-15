@@ -41,7 +41,7 @@ class _MapFragmentState extends State<MapFragment> {
               zoom: 8.0,
               enableMultiFingerGestureRace: true,
               minZoom: 2,
-              maxZoom: 25,
+              maxZoom: 18.48,
               enableScrollWheel: true,
               onPositionChanged: (MapPosition position, bool hasGesture) {
                 onMapMove(position, hasGesture);
@@ -68,8 +68,7 @@ class _MapFragmentState extends State<MapFragment> {
                 return FloatingActionButton(
                   child: Text(markers.length.toString()),
                   onPressed: () {
-                    _mapController.fitBounds(getMarkerListMiddle(
-                        markers)); // TODO when in very high zoom, clicking a cluster button doesn't zoom anymore, which it still should
+                    _mapController.fitBounds(getMarkerListMiddle(markers));
                   },
                   heroTag: "clusterBtn$clusterBtnNumber",
                   backgroundColor: Theme.of(context).primaryColor,
@@ -210,7 +209,6 @@ class _MapFragmentState extends State<MapFragment> {
     // If the onMove doesnt include a (user) gesture, it is the move on user position, in which case we just want to load the markers, as we dont want to trigger a setState during build.
     if (hasGesture) {
       checkTooFarOut();
-
       if (lastLoadPosition == null) {
         lastLoadPosition = position.center;
         loadNearbyCategories();

@@ -3,15 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/pageContainer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
-import 'package:projects/view/singlePage/introductionView.dart';
 import 'package:provider/provider.dart';
 import 'controller/eventHandler/connectionStatus.dart';
 import 'package:flutter/services.dart';
 
-// TODO Image caching and maybe other network traffic optimisations
-// TODO Responsive design for tablets (and landscape mode?)
-// TODO Licensing
-// TODO images don't load in browser
 // TODO make branch reroute page more beautiful (e.g. "Return to App" button & "Login successful" text)
 // TODO add editing of your own media
 // TODO add "featured images" article on homepage

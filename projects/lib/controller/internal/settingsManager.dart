@@ -56,7 +56,6 @@ class SettingsManager {
     _prefs.setStringList(_cachedCategoriesKey, list);
   }
 
-  // TODO cached categories do not display an image
   // TODO give option to delete cached categories
   List<Map<String, dynamic>>? getCachedCategories() {
     // _prefs.remove(_cachedCategoriesKey);

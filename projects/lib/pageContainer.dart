@@ -132,6 +132,17 @@ class _PageContainerState extends State<PageContainer> {
     Navigator.of(context).pop();
   }
 
+  bool willPop(BuildContext context) {
+    // Pops (closes the app) only if we are in home
+    if (Provider.of<ViewSwitcher>(context, listen: false).viewIndex == 0) {
+      return true;
+    } else {
+      // else returns user to home
+      Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 0;
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     int viewIndex = Provider.of<ViewSwitcher>(context, listen: true).viewIndex;
@@ -164,19 +175,24 @@ class _PageContainerState extends State<PageContainer> {
               }));
         }
       }
-      return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
-        ),
-        drawer: new Drawer(
-          child: new Column(
-            children: <Widget>[
-              _drawerHeader(),
-              Column(children: drawerOptions)
-            ],
+      return WillPopScope(
+        onWillPop: () async {
+          return willPop(context);
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.drawerItems[_selectedDrawerIndex].title),
           ),
+          drawer: Drawer(
+            child: Column(
+              children: <Widget>[
+                _drawerHeader(),
+                Column(children: drawerOptions)
+              ],
+            ),
+          ),
+          body: _getDrawerItemWidget(viewIndex),
         ),
-        body: _getDrawerItemWidget(viewIndex),
       );
     }
   }
@@ -197,12 +213,15 @@ class _PageContainerState extends State<PageContainer> {
                       bottom: 16,
                       child: Row(
                         children: [
-                          Icon(Icons.person_off),
+                          Icon(
+                            Icons.person_off,
+                            color: Colors.white,
+                          ),
                           Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                           Text(
                             "Not logged into wikimedia",
-                            style: customStyles.objectDescription.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary),
+                            style: customStyles.objectDescription
+                                .copyWith(color: Colors.white),
                           ),
                         ],
                       ))

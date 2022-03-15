@@ -90,7 +90,7 @@ class UploadProgressBar {
                                   }
                                 },
                                 child: Text(
-                                    "Back to home")), // TODO better wording
+                                    "Back to home")), // TODO View in web button
                           ],
                         );
                       } else if (snapshot.data!.error) {
