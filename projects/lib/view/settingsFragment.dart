@@ -172,11 +172,8 @@ class _SettingsFragmentState extends State<SettingsFragment> {
     return RawMaterialButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => IntroductionView()
-              ));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => IntroductionView()));
         },
         child: SizedBox(
           height: 64,

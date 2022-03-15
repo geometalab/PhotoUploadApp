@@ -8,6 +8,7 @@ import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/pageContainer.dart';
+import 'package:projects/style/heroPhotoViewRouteWrapper.dart';
 import 'package:projects/view/simpleUpload/simpleUploadPage.dart';
 import 'package:provider/provider.dart';
 
@@ -70,14 +71,26 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: images[i].url,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                                fit: BoxFit.fitWidth,
-                              ), // TODO Implement fullscreen viewer for Images (on image click)
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HeroPhotoViewRouteWrapper(
+                                                    imageProvider:
+                                                        CachedNetworkImageProvider(
+                                                  images[i].url,
+                                                ))));
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: images[i].url,
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                    fit: BoxFit.fitWidth,
+                                  )),
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: Text(images[i].name,

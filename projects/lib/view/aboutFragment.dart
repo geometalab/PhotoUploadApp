@@ -48,9 +48,10 @@ class AboutFragment extends StatelessWidget {
               FutureBuilder(
                 future: PackageInfo.fromPlatform(),
                 builder: (context, snapshot) {
-                  if(snapshot.hasData) {
+                  if (snapshot.hasData) {
                     PackageInfo packageInfo = snapshot.data as PackageInfo;
-                    return Text("${packageInfo.version}+${packageInfo.buildNumber}");
+                    return Text(
+                        "${packageInfo.version}+${packageInfo.buildNumber}");
                   } else {
                     return CircularProgressIndicator();
                   }
