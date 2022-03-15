@@ -46,7 +46,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             Divider(
               height: dividerHeight,
             ),
-            _reWatchIntroButton(context),
+            _rewatchIntroButton(context),
             Divider(
               height: dividerHeight,
             ),
@@ -168,7 +168,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
         ));
   }
 
-  _reWatchIntroButton(BuildContext context) {
+  _rewatchIntroButton(BuildContext context) {
     return RawMaterialButton(
         padding: EdgeInsets.zero,
         onPressed: () {
@@ -181,7 +181,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Re-watch Intro"),
+              Text("Show first-time Introduction"),
             ],
           ),
         ));
