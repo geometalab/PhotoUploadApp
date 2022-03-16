@@ -35,8 +35,11 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
             children: [
               _bigButton(Icons.folder, "Select from gallery", () async {
                 if (isLoggedIn) {
-                  collector.image =
+                  XFile? image =
                       await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    collector.images = List<XFile>.generate(1, (_) => image);
+                  }
                   _openUploadPage();
                 } else {
                   _openNotLoggedInPage();
@@ -45,8 +48,11 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
               _bigButton(Icons.photo_camera_outlined, "Take a picture",
                   () async {
                 if (isLoggedIn) {
-                  collector.image =
+                  XFile? image =
                       await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    collector.images = List<XFile>.generate(1, (_) => image);
+                  }
                   _openUploadPage();
                 } else {
                   _openNotLoggedInPage();
@@ -122,7 +128,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
   }
 
   _openUploadPage() async {
-    if (collector.image != null) {
+    if (collector.images != null) {
       Navigator.push<void>(
         context,
         MaterialPageRoute<void>(

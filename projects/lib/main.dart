@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 // TODO add "featured images" article on homepage
 // TODO allow custom categories, but are you sure prompt
 // TODO add gps coordinates from exif header if available
+// TODO Guide to licences article
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

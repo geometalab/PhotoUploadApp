@@ -141,7 +141,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
     descriptionIcon.clear();
 
     // The fields which need to be filled out
-    if (collector.image == null ||
+    if (collector.images == null ||
         collector.fileName == "" ||
         collector.fileName == null ||
         collector.source == "" ||
@@ -152,7 +152,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       isError = true;
     }
 
-    if (collector.image == null) {
+    if (collector.images == null) {
       infoText.add(errorText(context, "Select the image you want to upload"));
     }
     final validFileNameChars = RegExp(r'^[a-zA-Z0-9_\- ]+$');
@@ -244,14 +244,14 @@ class _ReviewFragmentState extends State<ReviewFragment> {
 
   // Supplies the image or a placeholder if no image is in the collector
   Widget image() {
-    if (collector.image != null) {
+    if (collector.images.isNotEmpty) {
       return GestureDetector(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => HeroPhotoViewRouteWrapper(
-                  imageProvider: FileImage(File(collector.image!.path)),
+                  imageProvider: FileImage(File(collector.images[0].path)),
                 ),
               ));
         },
@@ -259,7 +259,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
           child: Hero(
             tag: "someTag",
             child: Image.file(
-              File(collector.image!.path),
+              File(collector.images[0].path),
             ),
           ),
         ),

@@ -15,7 +15,7 @@ class ExternalIntentHandler {
       // Clear the information collector and add the passed data
       InformationCollector ic = InformationCollector();
       ic.clear();
-      ic.image = XFile(sharedMediaList.first.path);
+      ic.images = sharedMediaList.map((e) => XFile(e.path)).toList();
 
       // Close all routes in case one is open
       while (Navigator.canPop(context)) {

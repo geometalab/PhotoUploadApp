@@ -84,14 +84,14 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Widget _previewImageProvider() {
-    if (collector.image != null) {
+    if (collector.images != null) {
       return GestureDetector(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => HeroPhotoViewRouteWrapper(
-                  imageProvider: FileImage(File(collector.image!.path)),
+                  imageProvider: FileImage(File(collector.images[0].path)),
                 ),
               ));
         },
@@ -99,7 +99,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
           child: Hero(
             tag: "someTag",
             child: Image.file(
-              File(collector.image!.path),
+              File(collector.images[0].path),
             ),
           ),
         ),
@@ -152,7 +152,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Future<String?> _errorChecker() async {
-    if (collector.image == null) {
+    if (collector.images == null) {
       return "Please go back and select an image.";
     } else if (collector.fileName == null || collector.fileName!.isEmpty) {
       return "Enter a file name";

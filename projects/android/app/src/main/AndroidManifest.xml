@@ -49,6 +49,12 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+
             <!-- Branch URI Scheme -->
             <intent-filter>
                 <data android:scheme="commonsuploader" android:host="open" />

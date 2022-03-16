@@ -4,6 +4,7 @@ import 'package:projects/model/datasets.dart' as data;
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/style/themes.dart';
+import 'package:projects/style/textStyles.dart' as customStyles;
 
 class DescriptionFragment extends StatefulWidget {
   @override
@@ -189,49 +190,109 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Focus(
-              onFocusChange: (hasFocus) {
-                if (!hasFocus) _validate();
-              },
-              child: TextFormField(
-                controller: TextEditingController(
-                  text: collector.fileName,
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) => _validationMsg,
-                onChanged: (value) {
-                  collector.fileName = value;
+    if (collector.images.length > 1) {
+      // If this is a batch upload
+      return Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Focus(
+                  onFocusChange: (hasFocus) {
+                    if (!hasFocus) _validateBatch();
+                  },
+                  child: TextFormField(
+                      controller: TextEditingController(
+                        text: collector.fileName,
+                      ),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (val) => _validationMsg,
+                      onChanged: (value) {
+                        collector.fileName = value;
+                      },
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.file_copy_outlined),
+                        labelText: 'File Name Schema',
+                        hintText: 'Choose a descriptive name',
+                        suffixIcon: _isChecking
+                            ? Transform.scale(
+                                scale: 0.5, child: CircularProgressIndicator())
+                            : null,
+                      ))),
+              if (collector.fileName != null && collector.fileName!.isNotEmpty)
+                Card(
+                    margin: EdgeInsets.all(16),
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text("Generated File Names:",
+                                  style: customStyles.objectDescription),
+                              Column(
+                                children: List<Widget>.generate(
+                                    collector.images.length, (index) {
+                                  return Text(
+                                    collector.fileName! +
+                                        "_" +
+                                        (index + 1).toString() +
+                                        collector.fileType!,
+                                    style: customStyles.hintText,
+                                  );
+                                }),
+                              )
+                            ],
+                          ),
+                        )))
+            ],
+          ));
+    } else {
+      return Padding(
+        padding: EdgeInsets.all(8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Focus(
+                onFocusChange: (hasFocus) {
+                  if (!hasFocus) _validateSingleName();
                 },
-                decoration: InputDecoration(
-                  icon: Icon(Icons.file_copy_outlined),
-                  labelText: 'File Name',
-                  hintText: 'Choose a descriptive name',
-                  suffixIcon: _isChecking
-                      ? Transform.scale(
-                          scale: 0.5, child: CircularProgressIndicator())
-                      : null,
+                child: TextFormField(
+                  controller: TextEditingController(
+                    text: collector.fileName,
+                  ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (val) => _validationMsg,
+                  onChanged: (value) {
+                    collector.fileName = value;
+                  },
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.file_copy_outlined),
+                    labelText: 'File Name',
+                    hintText: 'Choose a descriptive name',
+                    suffixIcon: _isChecking
+                        ? Transform.scale(
+                            scale: 0.5, child: CircularProgressIndicator())
+                        : null,
+                  ),
                 ),
               ),
             ),
-          ),
-          if (collector.fileType != null)
-            Padding(
-              padding: EdgeInsets.only(right: 8, left: 8, top: 16),
-              child: Text(collector.fileType!,
-                  style: Theme.of(context).textTheme.subtitle1),
-            ),
-        ],
-      ),
-    );
+            if (collector.fileType != null)
+              Padding(
+                padding: EdgeInsets.only(right: 8, left: 8, top: 16),
+                child: Text(collector.fileType!,
+                    style: Theme.of(context).textTheme.subtitle1),
+              ),
+          ],
+        ),
+      );
+    }
   }
 
-  _validate() async {
+  _validateSingleName() async {
     String? input = collector.fileName;
     String? fileExtension = collector.fileType;
     if (input == null || input.isEmpty) {
@@ -246,6 +307,33 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
     var value = await FilenameCheckService().fileExists(input, fileExtension);
     if (value) {
       _validationMsg = "A file with this title already exists.";
+    } else {
+      _validationMsg = null;
+    }
+    setState(() {
+      _isChecking = false;
+    });
+  }
+
+  _validateBatch() async {
+    String? input = collector.fileName;
+    String fileExtension = collector.fileType!;
+    int numberOfImages = collector.images.length;
+    bool alreadyExists = false;
+
+    if (input == null || input.isEmpty) {
+      return null;
+    }
+    setState(() {
+      _isChecking = true;
+    });
+    for (int i = 0; i < numberOfImages; i++) {
+      var value = await FilenameCheckService()
+          .fileExists(input + "_" + (i + 1).toString(), fileExtension);
+      if (value) alreadyExists = true;
+    }
+    if (alreadyExists) {
+      _validationMsg = "One of the generated file names already exist.";
     } else {
       _validationMsg = null;
     }
