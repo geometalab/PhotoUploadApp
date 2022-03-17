@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/controller/wiki/filenameCheckService.dart';
@@ -22,6 +23,8 @@ class _ReviewFragmentState extends State<ReviewFragment> {
   Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, categoryIcon;
   List<Icon?> descriptionIcon = List.empty(growable: true);
   bool fileNameAlreadyExists = false;
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
 
   Icon errorIcon(BuildContext context) {
     return Icon(
@@ -54,25 +57,18 @@ class _ReviewFragmentState extends State<ReviewFragment> {
     infoCheckError();
     return Container(
         child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Column(
               children: [
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: image(),
-                  ),
-                ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                media(),
                 Card(
-                    margin: EdgeInsets.zero,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (collector.images.length == 1) // If no batch upload
                           ValueLabelField(
                             (collector.fileName ?? "") +
                                 (collector.fileType ?? ""),
@@ -80,40 +76,43 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                             icon: fileNameIcon,
                             replaceEmpty: true,
                           ),
+                        if (collector.images.length > 1) // If batch upload
                           ValueLabelField(
-                            collector.source,
-                            "source",
-                            icon: titleIcon,
+                            (collector.fileName ?? ""),
+                            "file name schema",
+                            icon: fileNameIcon,
                             replaceEmpty: true,
                           ),
-                          Column(
-                            children: descriptionsBuilder(),
-                          ),
-                          ValueLabelField(
-                            collector.author,
-                            "author",
-                            icon: authorIcon,
-                            replaceEmpty: true,
-                          ),
-                          ValueLabelField(
-                            collector.license,
-                            "license",
-                            icon: licenseIcon,
-                            replaceEmpty: true,
-                          ),
-                          ValueLabelField(
-                              DateFormat.yMd().format(collector.date),
-                              "date of creation"), // TODO local format instead of yMd
-                        ],
-                      ),
-                    )),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                        ValueLabelField(
+                          collector.source,
+                          "source",
+                          icon: titleIcon,
+                          replaceEmpty: true,
+                        ),
+                        Column(
+                          children: descriptionsBuilder(),
+                        ),
+                        ValueLabelField(
+                          collector.author,
+                          "author",
+                          icon: authorIcon,
+                          replaceEmpty: true,
+                        ),
+                        ValueLabelField(
+                          collector.license,
+                          "license",
+                          icon: licenseIcon,
+                          replaceEmpty: true,
+                        ),
+                        ValueLabelField(DateFormat.yMd().format(collector.date),
+                            "date of creation"), // TODO local format instead of yMd
+                      ],
+                    ),
+                  ),
                 ),
                 listWidgetBuilder(0),
-                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 // listWidgetBuilder(1),
-                // Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Column(
                   children: infoText,
                 ),
@@ -242,8 +241,65 @@ class _ReviewFragmentState extends State<ReviewFragment> {
     return isError;
   }
 
+  Widget media() {
+    if (collector.images.length > 1) {
+      final imgList = List<Widget>.generate(collector.images.length, (index) {
+        return ClipRRect(
+            borderRadius: BorderRadius.circular(4), child: image(index));
+      });
+
+      return Column(
+        children: [
+          CarouselSlider(
+              carouselController: _controller,
+              options: CarouselOptions(
+                autoPlay: false,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.75,
+                enlargeCenterPage: true,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
+              ),
+              items: imgList),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imgList.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () => _controller.animateToPage(entry.key, curve: Curves.ease, duration: Duration(milliseconds: 500)),
+                  child: Container(
+                    width: 12.0,
+                    height: 12.0,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black)
+                            .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                  ),
+                );
+              }).toList())
+        ],
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        width: double.infinity,
+        alignment: Alignment.center,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: image(0),
+        ),
+      );
+    }
+  }
+
   // Supplies the image or a placeholder if no image is in the collector
-  Widget image() {
+  Widget image(int image) {
     if (collector.images.isNotEmpty) {
       return GestureDetector(
         onTap: () {
@@ -251,15 +307,15 @@ class _ReviewFragmentState extends State<ReviewFragment> {
               context,
               MaterialPageRoute(
                 builder: (context) => HeroPhotoViewRouteWrapper(
-                  imageProvider: FileImage(File(collector.images[0].path)),
+                  imageProvider: FileImage(File(collector.images[image].path)),
                 ),
               ));
         },
         child: Container(
           child: Hero(
-            tag: "someTag",
+            tag: "image" + image.toString(),
             child: Image.file(
-              File(collector.images[0].path),
+              File(collector.images[image].path),
             ),
           ),
         ),
@@ -310,7 +366,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       title = "Depicts";
     }
     return Card(
-      margin: EdgeInsets.zero,
+      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),

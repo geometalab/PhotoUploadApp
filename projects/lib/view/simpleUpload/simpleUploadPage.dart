@@ -20,6 +20,27 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   InformationCollector collector = InformationCollector();
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (collector.images.length > 1) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                    title: Text("Batch uploads not possible"),
+                    content: Text(
+                        "Uploading multiple images at once is disabled in simple mode. To enable this functionality, turn off simple mode in the settings."),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          while (Navigator.canPop(context)) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: Text("Got it"),
+                      ),
+                    ]));
+      }
+    });
+
     return FutureBuilder(
       future: LoginHandler().isLoggedIn(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
