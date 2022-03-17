@@ -41,7 +41,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
 
   Widget contentContainer(Widget? child) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Card(
         elevation: 0,
         color: Colors.transparent,
@@ -85,7 +85,9 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                 children: imageInfos +
                     [
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            _openImagePicker();
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
@@ -109,10 +111,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             padding: EdgeInsets.all(2),
             child: TextButton(
                 onPressed: () async {
-                  setState(() async {
-                    collector.images
-                        .addAll(await _picker.pickMultiImage() ?? List.empty());
-                  });
+                  _openImagePicker();
                 },
                 child: SizedBox(
                   width: 200,
@@ -147,7 +146,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     XFile? image =
                         await _picker.pickImage(source: ImageSource.camera);
                     if (image != null) {
-                      collector.images = List<XFile>.generate(1, (_) => image);
+                      collector.images = [image];
                     }
                     setState(() {});
                   },
@@ -215,7 +214,9 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     collector.images.removeWhere((element) =>
                         File(element.name).toString().substring(6) ==
                         imageInfo['fileName']);
-                    collector.fileType = null;
+                    if (collector.images.isEmpty) {
+                      collector.fileType = null;
+                    }
                   });
                 },
                 icon: Icon(Icons.delete)),
@@ -262,5 +263,12 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         ),
       ],
     );
+  }
+
+  _openImagePicker() async {
+    setState(() async {
+      collector.images.addAll(await _picker.pickMultiImage() ?? List.empty());
+      collector.images.removeRange(10, 99999);
+    });
   }
 }

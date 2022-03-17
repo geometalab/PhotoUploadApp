@@ -16,6 +16,7 @@ class UploadService {
   uploadImage(
       List<XFile> images,
       String fileName,
+      String fileType,
       String source,
       List<Description> description,
       String author,
@@ -39,9 +40,9 @@ class UploadService {
 
         map = await _getCsrfToken();
         token = map["tokens"]["csrftoken"];
-        String batchFileName = fileName;
+        String batchFileName = fileName + fileType;
         if (images.length != 1) {
-          batchFileName = fileName + "_" + i.toString();
+          batchFileName = fileName + "_" + (i + 1).toString() + fileType;
         }
         await _sendImage(image, batchFileName, token);
         progressStream.progress(progressNumber);
@@ -49,7 +50,7 @@ class UploadService {
         map = await _getCsrfToken();
         token = map["tokens"]["csrftoken"];
         await _editDetails(author, description, license, source, date,
-            categories, fileName, token);
+            categories, batchFileName, token);
         progressStream.progress(progressNumber);
 
         // map = await _getCsrfToken();

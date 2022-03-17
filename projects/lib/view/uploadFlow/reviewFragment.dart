@@ -68,15 +68,15 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (collector.images.length == 1) // If no batch upload
+                        if (collector.images.length <= 1) // If no batch upload
                           ValueLabelField(
                             (collector.fileName ?? "") +
                                 (collector.fileType ?? ""),
                             "file name",
                             icon: fileNameIcon,
                             replaceEmpty: true,
-                          ),
-                        if (collector.images.length > 1) // If batch upload
+                          )
+                        else // If batch upload
                           ValueLabelField(
                             (collector.fileName ?? ""),
                             "file name schema",
@@ -188,9 +188,8 @@ class _ReviewFragmentState extends State<ReviewFragment> {
 
     if (collector.description.length == 1 &&
         collector.description[0].content == "") {
-      infoText.add(errorText(context, "Add at least one description"));
-      descriptionIcon.insert(0, errorIcon(context));
-      isError = true;
+      infoText.add(warningText(context, "No description has been added"));
+      descriptionIcon.insert(0, warningIcon(context));
     } else {
       bool alreadyWarned = false;
       for (Description description in collector.description) {
