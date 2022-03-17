@@ -41,7 +41,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
 
   Widget contentContainer(Widget? child) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
       child: Card(
         elevation: 0,
         color: Colors.transparent,
@@ -54,7 +54,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         child: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: child,
           ),
         ),
@@ -82,7 +82,19 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                 }
               }
               return Column(
-                children: imageInfos,
+                children: imageInfos +
+                    [
+                      TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add),
+                              Text("Add more images")
+                            ],
+                          ))
+                    ],
               );
             } else {
               return LinearProgressIndicator();
@@ -97,9 +109,10 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             padding: EdgeInsets.all(2),
             child: TextButton(
                 onPressed: () async {
-                  collector.images =
-                      await _picker.pickMultiImage() ?? List.empty();
-                  setState(() {});
+                  setState(() async {
+                    collector.images
+                        .addAll(await _picker.pickMultiImage() ?? List.empty());
+                  });
                 },
                 child: SizedBox(
                   width: 200,
@@ -164,9 +177,12 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             Expanded(
                 child: Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: imageInfo['image'],
+                SizedBox(
+                  height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: imageInfo['image'],
+                  ),
                 ),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
                 Expanded(
@@ -212,29 +228,31 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
     double paragraphSpacing = 2.0;
     return Column(
       children: [
-        Text(
-          "Before you start...",
-          style: articleTitle,
+        Padding(
+          padding: EdgeInsets.only(top: 16),
         ),
+        Text("Before you start...",
+            style: articleTitle, textAlign: TextAlign.center),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
         Text(
           "Make sure that you are aware of what content can and should be "
           "uploaded to Wikimedia Commons. ",
           style: objectDescription,
+          textAlign: TextAlign.center,
         ),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
         Text(
-          "Once uploaded, you cannot delete any content you submitted to "
-          "Commons. You may only upload works that are created entirely by you, "
-          "with a few exceptions. ",
-          style: objectDescription,
-        ),
+            "Once uploaded, you cannot delete any content you submitted to "
+            "Commons. You may only upload works that are created entirely by you, "
+            "with a few exceptions. ",
+            style: objectDescription,
+            textAlign: TextAlign.center),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
         Text(
-          "If you are not familiar with the Upload "
-          "guidelines, you can learn more through the upload guide.",
-          style: objectDescription,
-        ),
+            "If you are not familiar with the Upload "
+            "guidelines, you can learn more through the upload guide.",
+            style: objectDescription,
+            textAlign: TextAlign.center),
         TextButton(
           onPressed: () {
             Navigator.push(context,

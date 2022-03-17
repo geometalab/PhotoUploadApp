@@ -13,7 +13,8 @@ class ImageDataExtractor {
     try {
       for (XFile image in collector.images) {
         Map<String, dynamic> infoMap = new Map();
-        infoMap['image'] = Image.file(File(image.path), height: 100);
+        infoMap['image'] = Image.file(File(image.path),
+            scale: 0.5, filterQuality: FilterQuality.medium, fit: BoxFit.cover);
         final imageBytes = await image.readAsBytes();
         final decodedImage = await decodeImageFromList(imageBytes);
         final exifData = await readExifFromBytes(imageBytes);
