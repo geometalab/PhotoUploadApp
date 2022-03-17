@@ -128,7 +128,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
   }
 
   _openUploadPage() async {
-    if (collector.images != null) {
+    if (collector.images.isNotEmpty) {
       Navigator.push<void>(
         context,
         MaterialPageRoute<void>(

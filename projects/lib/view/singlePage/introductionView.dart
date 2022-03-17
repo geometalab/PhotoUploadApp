@@ -1,11 +1,9 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
-import 'package:projects/model/texts.dart' as texts;
 import 'package:projects/style/themes.dart';
 import 'package:provider/provider.dart';
 

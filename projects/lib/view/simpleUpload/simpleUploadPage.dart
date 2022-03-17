@@ -105,7 +105,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Widget _previewImageProvider() {
-    if (collector.images != null) {
+    if (collector.images.isNotEmpty) {
       return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -173,7 +173,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Future<String?> _errorChecker() async {
-    if (collector.images == null) {
+    if (collector.images.isNotEmpty) {
       return "Please go back and select an image.";
     } else if (collector.fileName == null || collector.fileName!.isEmpty) {
       return "Enter a file name";
