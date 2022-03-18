@@ -3,6 +3,7 @@ import 'package:projects/controller/wiki/filenameCheckService.dart';
 import 'package:projects/model/datasets.dart' as data;
 import 'package:projects/model/description.dart';
 import 'package:projects/model/informationCollector.dart';
+import 'package:projects/style/infoPopUp.dart';
 import 'package:projects/style/themes.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
@@ -221,31 +222,38 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
                       ))),
               if (collector.fileName != null && collector.fileName!.isNotEmpty)
                 Card(
-                    margin: EdgeInsets.all(16),
+                    margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: SizedBox(
                         width: double.infinity,
                         child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text("Generated File Names:",
-                                  style: customStyles.objectDescription),
-                              Column(
-                                children: List<Widget>.generate(
-                                    collector.images.length, (index) {
-                                  return Text(
-                                    collector.fileName! +
-                                        "_" +
-                                        (index + 1).toString() +
-                                        collector.fileType!,
-                                    style: customStyles.hintText,
-                                  );
-                                }),
-                              )
-                            ],
-                          ),
-                        )))
+                            padding: EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text("Generated File Names:",
+                                        style: customStyles.objectDescription),
+                                    Column(
+                                      children: List<Widget>.generate(
+                                          collector.images.length, (index) {
+                                        return Text(
+                                          collector.fileName! +
+                                              "_" +
+                                              (index + 1).toString() +
+                                              collector.fileType!,
+                                          style: customStyles.hintText,
+                                        );
+                                      }),
+                                    )
+                                  ],
+                                ),
+                                InfoPopUp(
+                                    "As you are uploading multiple files, multiple file names need to be generated. Descriptions, Categories and Licences will be applied to all images uploaded.")
+                              ],
+                            ))))
             ],
           ));
     } else {

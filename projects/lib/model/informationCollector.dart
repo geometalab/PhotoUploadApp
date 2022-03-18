@@ -43,7 +43,7 @@ class InformationCollector {
       _source = "Own Work";
     }
     try {
-      await UploadService().uploadImage(images, fileName! + fileType!, _source,
+      await UploadService().uploadImage(images, fileName!, fileType!, _source,
           description, _author, license!, date, categories, depictions);
     } catch (e) {
       throw (e);

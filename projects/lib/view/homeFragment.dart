@@ -1,9 +1,10 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
-import 'package:projects/view/articles/pictureOfTheDayFragment.dart';
-import 'package:projects/view/articles/reusingContentFragment.dart';
-import 'package:projects/view/articles/uploadGuideFragment.dart';
+import 'package:projects/view/articles/licenseGuide.dart';
+import 'package:projects/view/articles/pictureOfTheDay.dart';
+import 'package:projects/view/articles/reusingContent.dart';
+import 'package:projects/view/articles/uploadGuide.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 class HomeFragment extends StatelessWidget {
@@ -25,17 +26,12 @@ class HomeFragment extends StatelessWidget {
             "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
         onTap: ReusingContentFragment()));
     articleList.add(new Article(
-      title: "Placeholder Text",
-      description:
-          "Quo quia ab unde dolor. Et eaque sapiente quia eum ad deleniti quisquam. Cupiditate cupiditate velit aperiam animi voluptatum ipsa. Minus nemo odio ratione ab fugiat aut. Ipsam sapiente exercitationem deleniti delectus ducimus quod quo at. ",
-    ));
-    articleList.add(new Article(
-      title: "Text Place 2",
-      image: Image.network(
-          "https://upload.wikimedia.org/wikipedia/commons/5/59/SQM_GE_289A_Boxcab_Carmelita_-_Reverso.jpg"),
-      description:
-          "Quo quia ab unde dolor. Et eaque sapiente quia eum ad deleniti quisquam. ",
-    ));
+        title: "License Guide",
+        image: Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/CC-BY-SA_icon.svg/640px-CC-BY-SA_icon.svg.png"),
+        description:
+            "This page gives non-lawyers an overview of complicated copyright laws.",
+        onTap: LicenseGuide()));
 
     // ------------------------------
 

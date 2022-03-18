@@ -23,6 +23,6 @@ final TextStyle hyperlink = new TextStyle(
   color: Colors.blue,
 );
 final TextStyle hintText = new TextStyle(
-    fontWeight: FontWeight.w300, fontSize: 15, color: Colors.grey.shade800);
+    fontWeight: FontWeight.w300, fontSize: 15, color: Colors.grey);
 final TextStyle introBigText = GoogleFonts.blackHanSans(fontSize: 48);
 final TextStyle introSmallText = GoogleFonts.blackHanSans(fontSize: 21);

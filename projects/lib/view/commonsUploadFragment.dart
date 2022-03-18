@@ -87,7 +87,13 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                 label: "Review"),
           ],
         ),
-        Divider(),
+        Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: Divider(
+            height: 1,
+            thickness: 1,
+          ),
+        ),
         Expanded(
           child: _content(selectedTab),
         ),

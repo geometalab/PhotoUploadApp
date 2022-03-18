@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/internal/imageDataExtractor.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/view/articles/uploadGuideFragment.dart';
+import 'package:projects/view/articles/uploadGuide.dart';
 import 'package:projects/style/textStyles.dart';
 
 // TODO check if same file type, if not disallow upload and display message
@@ -54,7 +54,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         child: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: child,
           ),
         ),
@@ -70,7 +70,13 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             // TODO image still loads delayed even with future builder
             if (snapshot.hasData) {
               if (snapshot.data == null) {
+                collector.clear();
+                showImagesLoadErrorPopup(context);
                 throw ("Image infos are null");
+              }
+              if (snapshot.data!.isEmpty) {
+                collector.clear();
+                showImagesLoadErrorPopup(context);
               }
               List<Widget> imageInfos = List.empty(growable: true);
               for (int i = 0; i < snapshot.data!.length; i++) {
@@ -82,7 +88,21 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                 }
               }
               return Column(
-                children: imageInfos,
+                children: imageInfos +
+                    [
+                      TextButton(
+                          onPressed: () async {
+                            _openImagePicker();
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add),
+                              Text("Add more images")
+                            ],
+                          ))
+                    ],
               );
             } else {
               return LinearProgressIndicator();
@@ -97,9 +117,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             padding: EdgeInsets.all(2),
             child: TextButton(
                 onPressed: () async {
-                  collector.images =
-                      await _picker.pickMultiImage() ?? List.empty();
-                  setState(() {});
+                  _openImagePicker();
                 },
                 child: SizedBox(
                   width: 200,
@@ -134,7 +152,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     XFile? image =
                         await _picker.pickImage(source: ImageSource.camera);
                     if (image != null) {
-                      collector.images = List<XFile>.generate(1, (_) => image);
+                      collector.images = [image];
                     }
                     setState(() {});
                   },
@@ -164,9 +182,12 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             Expanded(
                 child: Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: imageInfo['image'],
+                SizedBox(
+                  height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: imageInfo['image'],
+                  ),
                 ),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
                 Expanded(
@@ -199,7 +220,9 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     collector.images.removeWhere((element) =>
                         File(element.name).toString().substring(6) ==
                         imageInfo['fileName']);
-                    collector.fileType = null;
+                    if (collector.images.isEmpty) {
+                      collector.fileType = null;
+                    }
                   });
                 },
                 icon: Icon(Icons.delete)),
@@ -212,29 +235,31 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
     double paragraphSpacing = 2.0;
     return Column(
       children: [
-        Text(
-          "Before you start...",
-          style: articleTitle,
+        Padding(
+          padding: EdgeInsets.only(top: 16),
         ),
+        Text("Before you start...",
+            style: articleTitle, textAlign: TextAlign.center),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
         Text(
           "Make sure that you are aware of what content can and should be "
           "uploaded to Wikimedia Commons. ",
           style: objectDescription,
+          textAlign: TextAlign.center,
         ),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
         Text(
-          "Once uploaded, you cannot delete any content you submitted to "
-          "Commons. You may only upload works that are created entirely by you, "
-          "with a few exceptions. ",
-          style: objectDescription,
-        ),
+            "Once uploaded, you cannot delete any content you submitted to "
+            "Commons. You may only upload works that are created entirely by you, "
+            "with a few exceptions. ",
+            style: objectDescription,
+            textAlign: TextAlign.center),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
         Text(
-          "If you are not familiar with the Upload "
-          "guidelines, you can learn more through the upload guide.",
-          style: objectDescription,
-        ),
+            "If you are not familiar with the Upload "
+            "guidelines, you can learn more through the upload guide.",
+            style: objectDescription,
+            textAlign: TextAlign.center),
         TextButton(
           onPressed: () {
             Navigator.push(context,
@@ -244,5 +269,31 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         ),
       ],
     );
+  }
+
+  _openImagePicker() async {
+    setState(() async {
+      collector.images.addAll(await _picker.pickMultiImage() ?? List.empty());
+      collector.images.removeRange(10, 99999);
+    });
+  }
+
+  showImagesLoadErrorPopup(BuildContext context) {
+    // TODO test if this even works lol
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Can't load images"),
+            content: Text("Make sure all your images are the same file type."),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Okay"))
+            ],
+          );
+        });
   }
 }

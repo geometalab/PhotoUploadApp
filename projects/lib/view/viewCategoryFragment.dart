@@ -230,7 +230,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
   }
 
   _openSimpleUploadPage(String categoryName) async {
-    if (collector.images != null) {
+    if (collector.images.isNotEmpty) {
       collector.preFillContent = categoryName;
       Navigator.push<void>(
         context,

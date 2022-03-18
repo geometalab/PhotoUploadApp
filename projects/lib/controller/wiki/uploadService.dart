@@ -16,6 +16,7 @@ class UploadService {
   uploadImage(
       List<XFile> images,
       String fileName,
+      String fileType,
       String source,
       List<Description> description,
       String author,
@@ -37,19 +38,19 @@ class UploadService {
         XFile image = images[i];
         progressStream.progress(progressNumber);
 
-        map = await _getCsrfToken();
+        map = await getCsrfToken();
         token = map["tokens"]["csrftoken"];
-        String batchFileName = fileName;
+        String batchFileName = fileName + fileType;
         if (images.length != 1) {
-          batchFileName = fileName + "_" + i.toString();
+          batchFileName = fileName + "_" + (i + 1).toString() + fileType;
         }
         await _sendImage(image, batchFileName, token);
         progressStream.progress(progressNumber);
 
-        map = await _getCsrfToken();
+        map = await getCsrfToken();
         token = map["tokens"]["csrftoken"];
         await _editDetails(author, description, license, source, date,
-            categories, fileName, token);
+            categories, batchFileName, token);
         progressStream.progress(progressNumber);
 
         // map = await _getCsrfToken();
@@ -94,7 +95,7 @@ class UploadService {
         Uri.parse("$WIKIMEDIA_API?format=json" +
             "&action=upload" +
             "&filename=$fileName"));
-    request.headers['Authorization'] = "Bearer " + await _getAccessToken();
+    request.headers['Authorization'] = "Bearer " + await getAccessToken();
     request.fields['token'] = csrfToken;
     request.files.add(await _convertToMultiPartFile(image, fileName));
 
@@ -142,7 +143,7 @@ ${_generateDescriptions(description)}
         Uri.parse('$WIKIMEDIA_API?action=edit&format=json'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded ',
-          'Authorization': 'Bearer ${await _getAccessToken()}',
+          'Authorization': 'Bearer ${await getAccessToken()}',
         },
         body: <String, String>{
           'title': 'File:' + filename,
@@ -166,12 +167,12 @@ ${_generateDescriptions(description)}
   }
 
   // For debug purposes
-  _checkCsrfToken(String token) async {
+  checkCsrfToken(String token) async {
     Future<http.Response> response = http.post(
         Uri.parse('$WIKIMEDIA_API?action=checktoken&type=csrf&format=json'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded ',
-          'Authorization': 'Bearer ${await _getAccessToken()}',
+          'Authorization': 'Bearer ${await getAccessToken()}',
         },
         body: <String, String>{
           'token': token,
@@ -184,12 +185,12 @@ ${_generateDescriptions(description)}
     }
   }
 
-  Future<Map> _getCsrfToken() async {
+  Future<Map> getCsrfToken() async {
     // Get a CSRF Token (https://www.mediawiki.org/wiki/API:Tokens)
     Future<http.Response> response = http.get(
       Uri.parse('$WIKIMEDIA_API?action=query&meta=tokens&format=json'),
       headers: <String, String>{
-        'Authorization': 'Bearer ${await _getAccessToken()}',
+        'Authorization': 'Bearer ${await getAccessToken()}',
       },
     );
     var responseJson = await response;
@@ -227,7 +228,7 @@ ${_generateDescriptions(description)}
     return value;
   }
 
-  Future<String> _getAccessToken() async {
+  Future<String> getAccessToken() async {
     Userdata? data = await LoginHandler().getUserInformationFromFile();
     if (data != null) {
       return data.accessToken;

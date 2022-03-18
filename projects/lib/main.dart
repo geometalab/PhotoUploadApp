@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 // TODO allow custom categories, but are you sure prompt
 // TODO add gps coordinates from exif header if available
 // TODO Guide to licences article
+// TODO Handle Main activity destruction (https://pub.dev/packages/image_picker#handling-mainactivity-destruction-on-android)
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

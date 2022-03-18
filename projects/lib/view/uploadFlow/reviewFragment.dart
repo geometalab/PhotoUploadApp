@@ -68,15 +68,15 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (collector.images.length == 1) // If no batch upload
+                        if (collector.images.length <= 1) // If no batch upload
                           ValueLabelField(
                             (collector.fileName ?? "") +
                                 (collector.fileType ?? ""),
                             "file name",
                             icon: fileNameIcon,
                             replaceEmpty: true,
-                          ),
-                        if (collector.images.length > 1) // If batch upload
+                          )
+                        else // If batch upload
                           ValueLabelField(
                             (collector.fileName ?? ""),
                             "file name schema",
@@ -140,7 +140,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
     descriptionIcon.clear();
 
     // The fields which need to be filled out
-    if (collector.images == null ||
+    if (collector.images.isEmpty ||
         collector.fileName == "" ||
         collector.fileName == null ||
         collector.source == "" ||
@@ -151,7 +151,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       isError = true;
     }
 
-    if (collector.images == null) {
+    if (collector.images.isEmpty) {
       infoText.add(errorText(context, "Select the image you want to upload"));
     }
     final validFileNameChars = RegExp(r'^[a-zA-Z0-9_\- ]+$');
@@ -164,12 +164,13 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       fileNameIcon = errorIcon(context);
       isError = true;
     } else if (collector.fileName!.length < 7) {
-      infoText.add(errorText(context, "File name is too short"));
+      infoText.add(
+          errorText(context, "File needs to be at least 7 characters long."));
       fileNameIcon = errorIcon(context);
       isError = true;
     } else if (collector.fileName!.length < 15) {
-      infoText.add(warningText(
-          context, "Your file title needs to be at least 15 characters."));
+      infoText.add(
+          warningText(context, "Make sure your file name is unique enough."));
       fileNameIcon = warningIcon(context);
     }
     if (fileNameAlreadyExists) {
@@ -187,9 +188,8 @@ class _ReviewFragmentState extends State<ReviewFragment> {
 
     if (collector.description.length == 1 &&
         collector.description[0].content == "") {
-      infoText.add(errorText(context, "Add at least one description"));
-      descriptionIcon.insert(0, errorIcon(context));
-      isError = true;
+      infoText.add(warningText(context, "No description has been added"));
+      descriptionIcon.insert(0, warningIcon(context));
     } else {
       bool alreadyWarned = false;
       for (Description description in collector.description) {
@@ -268,10 +268,12 @@ class _ReviewFragmentState extends State<ReviewFragment> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: imgList.asMap().entries.map((entry) {
                 return GestureDetector(
-                  onTap: () => _controller.animateToPage(entry.key, curve: Curves.ease, duration: Duration(milliseconds: 500)),
+                  onTap: () => _controller.animateToPage(entry.key,
+                      curve: Curves.ease,
+                      duration: Duration(milliseconds: 500)),
                   child: Container(
-                    width: 12.0,
-                    height: 12.0,
+                    width: 8.0,
+                    height: 8.0,
                     margin:
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                     decoration: BoxDecoration(
@@ -279,7 +281,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                         color: (Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
-                            .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                            .withOpacity(_current == entry.key ? 0.8 : 0.3)),
                   ),
                 );
               }).toList())
@@ -475,9 +477,8 @@ class _ReviewFragmentState extends State<ReviewFragment> {
         return;
       }
       await collector.submitData();
-      setState(() {
-        collector.clear();
-      });
+      collector
+          .clear(); // TODO for next test upload: When is the clear visible? Should be only after successful upload
     }
   }
 
