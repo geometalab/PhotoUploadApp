@@ -15,7 +15,7 @@ class InformationCollector {
   }
   InformationCollector._internal();
 
-  XFile? image;
+  List<XFile> images = List.empty(growable: true);
   String? fileName;
   String? fileType;
   List<String> categories = List.empty(growable: true);
@@ -43,7 +43,7 @@ class InformationCollector {
       _source = "Own Work";
     }
     try {
-      await UploadService().uploadImage(image!, fileName! + fileType!, _source,
+      await UploadService().uploadImage(images, fileName! + fileType!, _source,
           description, _author, license!, date, categories, depictions);
     } catch (e) {
       throw (e);
@@ -51,7 +51,7 @@ class InformationCollector {
   }
 
   clear() {
-    image = null;
+    images.clear();
     fileName = null;
     fileType = null;
     description.clear();

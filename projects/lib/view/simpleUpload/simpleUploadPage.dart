@@ -20,6 +20,27 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   InformationCollector collector = InformationCollector();
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (collector.images.length > 1) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                    title: Text("Batch uploads not possible"),
+                    content: Text(
+                        "Uploading multiple images at once is disabled in simple mode. To enable this functionality, turn off simple mode in the settings."),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          while (Navigator.canPop(context)) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: Text("Got it"),
+                      ),
+                    ]));
+      }
+    });
+
     return FutureBuilder(
       future: LoginHandler().isLoggedIn(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -84,14 +105,14 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Widget _previewImageProvider() {
-    if (collector.image != null) {
+    if (collector.images != null) {
       return GestureDetector(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => HeroPhotoViewRouteWrapper(
-                  imageProvider: FileImage(File(collector.image!.path)),
+                  imageProvider: FileImage(File(collector.images[0].path)),
                 ),
               ));
         },
@@ -99,7 +120,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
           child: Hero(
             tag: "someTag",
             child: Image.file(
-              File(collector.image!.path),
+              File(collector.images[0].path),
             ),
           ),
         ),
@@ -152,7 +173,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Future<String?> _errorChecker() async {
-    if (collector.image == null) {
+    if (collector.images == null) {
       return "Please go back and select an image.";
     } else if (collector.fileName == null || collector.fileName!.isEmpty) {
       return "Enter a file name";

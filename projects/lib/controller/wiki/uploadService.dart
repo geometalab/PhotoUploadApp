@@ -14,7 +14,7 @@ class UploadService {
   static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
 
   uploadImage(
-      XFile image,
+      List<XFile> images,
       String fileName,
       String source,
       List<Description> description,
@@ -24,31 +24,39 @@ class UploadService {
       List<String> categories,
       List<String> depictions) async {
     UploadProgressStream progressStream = UploadProgressStream();
-    int progressNumber = 3; // represents times progress() is called
+    int progressNumber =
+        3 * images.length; // represents times progress() is called
     var map;
     String token;
 
     progressStream.reset();
     await (Future.delayed(Duration(milliseconds: 500)));
-    progressStream.progress(progressNumber);
 
     try {
-      map = await _getCsrfToken();
-      token = map["tokens"]["csrftoken"];
-      await _sendImage(image, fileName, token);
-      progressStream.progress(progressNumber);
+      for (int i = 0; i < images.length; i++) {
+        XFile image = images[i];
+        progressStream.progress(progressNumber);
 
-      map = await _getCsrfToken();
-      token = map["tokens"]["csrftoken"];
-      await _editDetails(author, description, license, source, date, categories,
-          fileName, token);
-      progressStream.progress(progressNumber);
+        map = await _getCsrfToken();
+        token = map["tokens"]["csrftoken"];
+        String batchFileName = fileName;
+        if (images.length != 1) {
+          batchFileName = fileName + "_" + i.toString();
+        }
+        await _sendImage(image, batchFileName, token);
+        progressStream.progress(progressNumber);
 
-      // map = await _getCsrfToken();
-      // token = map["tokens"]["csrftoken"];
-      // _editDepictions(depictions, token);
-      await (Future.delayed(Duration(milliseconds: 200)));
+        map = await _getCsrfToken();
+        token = map["tokens"]["csrftoken"];
+        await _editDetails(author, description, license, source, date,
+            categories, fileName, token);
+        progressStream.progress(progressNumber);
 
+        // map = await _getCsrfToken();
+        // token = map["tokens"]["csrftoken"];
+        // _editDepictions(depictions, token);
+        await (Future.delayed(Duration(milliseconds: 200)));
+      }
       progressStream.doneUploading();
     } catch (e) {
       progressStream.error(e.toString());

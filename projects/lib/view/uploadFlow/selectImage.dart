@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/internal/imageDataExtractor.dart';
 import 'package:projects/model/informationCollector.dart';
 import 'package:projects/view/articles/uploadGuideFragment.dart';
 import 'package:projects/style/textStyles.dart';
+
+// TODO check if same file type, if not disallow upload and display message
+// TODO handle batch uploads when opened as an external intent in simple mode (just say no)
 
 class SelectImageFragment extends StatefulWidget {
   @override
@@ -13,7 +18,6 @@ class SelectImageFragment extends StatefulWidget {
 class _SelectImageFragmentState extends State<SelectImageFragment> {
   // TODO? Support Video Files?
   // TODO? Support Audio Files?
-  // TODO? Support multiple Files?
 
   final ImagePicker _picker = ImagePicker();
   final InformationCollector collector = new InformationCollector();
@@ -59,56 +63,26 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
   }
 
   Widget imageSelectWidget() {
-    if (collector.image != null) {
+    if (collector.images.isNotEmpty) {
       return FutureBuilder(
           future: ImageDataExtractor().futureCollector(),
-          builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<Map>> snapshot) {
             // TODO image still loads delayed even with future builder
             if (snapshot.hasData) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: snapshot.data!['image'],
-                      ),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Dimensions: ${snapshot.data!['width']} x ${snapshot.data!['height']}',
-                              style: smallLabel,
-                              softWrap: false,
-                            ),
-                            Text(
-                              'File name: ${snapshot.data!['fileName']}',
-                              style: smallLabel,
-                              softWrap: false,
-                            ),
-                            Text(
-                              'File type: ${snapshot.data!['fileType']}',
-                              style: smallLabel,
-                              softWrap: false,
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          collector.image = null;
-                          collector.fileType = null;
-                        });
-                      },
-                      icon: Icon(Icons.delete)),
-                ],
+              if (snapshot.data == null) {
+                throw ("Image infos are null");
+              }
+              List<Widget> imageInfos = List.empty(growable: true);
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                imageInfos.add(imageInfoWidget(snapshot.data![i]));
+                if (i + 1 > snapshot.data!.length) {
+                  imageInfos.add(Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                  ));
+                }
+              }
+              return Column(
+                children: imageInfos,
               );
             } else {
               return LinearProgressIndicator();
@@ -123,8 +97,8 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             padding: EdgeInsets.all(2),
             child: TextButton(
                 onPressed: () async {
-                  collector.image =
-                      await _picker.pickImage(source: ImageSource.gallery);
+                  collector.images =
+                      await _picker.pickMultiImage() ?? List.empty();
                   setState(() {});
                 },
                 child: SizedBox(
@@ -157,8 +131,11 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
               padding: EdgeInsets.all(2),
               child: TextButton(
                   onPressed: () async {
-                    collector.image =
+                    XFile? image =
                         await _picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      collector.images = List<XFile>.generate(1, (_) => image);
+                    }
                     setState(() {});
                   },
                   child: SizedBox(
@@ -176,6 +153,58 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         ],
       );
     }
+  }
+
+  Widget imageInfoWidget(Map imageInfo) {
+    return Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: imageInfo['image'],
+                ),
+                Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Dimensions: ${imageInfo['width']} x ${imageInfo['height']}',
+                        style: smallLabel,
+                        softWrap: false,
+                      ),
+                      Text(
+                        'File name: ${imageInfo['fileName']}',
+                        style: smallLabel,
+                        softWrap: false,
+                      ),
+                      Text(
+                        'File type: ${imageInfo['fileType']}',
+                        style: smallLabel,
+                        softWrap: false,
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    collector.images.removeWhere((element) =>
+                        File(element.name).toString().substring(6) ==
+                        imageInfo['fileName']);
+                    collector.fileType = null;
+                  });
+                },
+                icon: Icon(Icons.delete)),
+          ],
+        ));
   }
 
   Widget introText() {
