@@ -1,9 +1,9 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
-import 'package:projects/view/articles/pictureOfTheDayFragment.dart';
-import 'package:projects/view/articles/reusingContentFragment.dart';
-import 'package:projects/view/articles/uploadGuideFragment.dart';
+import 'package:projects/view/articles/pictureOfTheDay.dart';
+import 'package:projects/view/articles/reusingContent.dart';
+import 'package:projects/view/articles/uploadGuide.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 
 class HomeFragment extends StatelessWidget {

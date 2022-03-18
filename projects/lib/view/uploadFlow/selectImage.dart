@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/internal/imageDataExtractor.dart';
 import 'package:projects/model/informationCollector.dart';
-import 'package:projects/view/articles/uploadGuideFragment.dart';
+import 'package:projects/view/articles/uploadGuide.dart';
 import 'package:projects/style/textStyles.dart';
 
 // TODO check if same file type, if not disallow upload and display message
