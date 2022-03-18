@@ -10,7 +10,6 @@ import 'package:projects/style/themes.dart';
 import 'package:projects/view/simpleUpload/simpleCategoriesPage.dart';
 import 'package:projects/view/singlePage/notLoggedIn.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
-import 'package:projects/view/uploadFlow/selectImage.dart';
 
 class SimpleUploadPage extends StatefulWidget {
   @override
