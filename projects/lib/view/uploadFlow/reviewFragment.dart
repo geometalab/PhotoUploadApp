@@ -477,9 +477,8 @@ class _ReviewFragmentState extends State<ReviewFragment> {
         return;
       }
       await collector.submitData();
-      setState(() {
-        collector.clear();
-      });
+      collector
+          .clear(); // TODO for next test upload: When is the clear visible? Should be only after successful upload
     }
   }
 

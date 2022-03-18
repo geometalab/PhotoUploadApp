@@ -70,7 +70,13 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             // TODO image still loads delayed even with future builder
             if (snapshot.hasData) {
               if (snapshot.data == null) {
+                collector.clear();
+                showImagesLoadErrorPopup(context);
                 throw ("Image infos are null");
+              }
+              if (snapshot.data!.isEmpty) {
+                collector.clear();
+                showImagesLoadErrorPopup(context);
               }
               List<Widget> imageInfos = List.empty(growable: true);
               for (int i = 0; i < snapshot.data!.length; i++) {
@@ -270,5 +276,24 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
       collector.images.addAll(await _picker.pickMultiImage() ?? List.empty());
       collector.images.removeRange(10, 99999);
     });
+  }
+
+  showImagesLoadErrorPopup(BuildContext context) {
+    // TODO test if this even works lol
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Can't load images"),
+            content: Text("Make sure all your images are the same file type."),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Okay"))
+            ],
+          );
+        });
   }
 }

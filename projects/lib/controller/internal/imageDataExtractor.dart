@@ -9,6 +9,7 @@ class ImageDataExtractor {
 
   Future<List<Map>> futureCollector() async {
     // TODO check if metadata tags are same on other devices
+    // Returns an empty list when something goes wrong
     List<Map> maps = List.empty(growable: true);
     try {
       for (XFile image in collector.images) {
@@ -52,13 +53,32 @@ class ImageDataExtractor {
         String fileName = infoMap['fileName'].toString().split(".")[1];
         infoMap['fileType'] = "." + fileName.substring(0, fileName.length - 1);
         collector.fileType = infoMap['fileType'];
+
         maps.add(infoMap);
       }
+      if (!_assureSameFiletype(maps)) return List.empty();
       return maps;
     } catch (e) {
       // Somehow, thrown errors don't get printed to console, so I print them as well.
       print("Error while processing image: $e");
       throw ("Error while processing image: $e");
     }
+  }
+
+  bool _assureSameFiletype(List<Map> maps) {
+    // Makes sure all selected files have the same filetype
+    String? fileType1;
+    String? fileType2;
+    for (Map map in maps) {
+      fileType1 = map['fileType'];
+      if (fileType2 != null) {
+        if (fileType1 != fileType2) {
+          // If different file types have been found
+          return false;
+        }
+      }
+      fileType2 = fileType1;
+    }
+    return true;
   }
 }

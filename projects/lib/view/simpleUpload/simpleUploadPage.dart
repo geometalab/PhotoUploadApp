@@ -10,6 +10,7 @@ import 'package:projects/style/themes.dart';
 import 'package:projects/view/simpleUpload/simpleCategoriesPage.dart';
 import 'package:projects/view/singlePage/notLoggedIn.dart';
 import 'package:projects/view/uploadFlow/descriptionFragment.dart';
+import 'package:projects/view/uploadFlow/selectImage.dart';
 
 class SimpleUploadPage extends StatefulWidget {
   @override
@@ -173,7 +174,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
   }
 
   Future<String?> _errorChecker() async {
-    if (collector.images.isNotEmpty) {
+    if (collector.images.isEmpty) {
       return "Please go back and select an image.";
     } else if (collector.fileName == null || collector.fileName!.isEmpty) {
       return "Enter a file name";
