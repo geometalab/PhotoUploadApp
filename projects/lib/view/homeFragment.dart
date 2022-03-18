@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
+import 'package:projects/view/articles/licenseGuide.dart';
 import 'package:projects/view/articles/pictureOfTheDay.dart';
 import 'package:projects/view/articles/reusingContent.dart';
 import 'package:projects/view/articles/uploadGuide.dart';
@@ -25,9 +26,10 @@ class HomeFragment extends StatelessWidget {
             "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
         onTap: ReusingContentFragment()));
     articleList.add(new Article(
-      title: "Placeholder Text",
+      title: "License Guide",
       description:
-          "Quo quia ab unde dolor. Et eaque sapiente quia eum ad deleniti quisquam. Cupiditate cupiditate velit aperiam animi voluptatum ipsa. Minus nemo odio ratione ab fugiat aut. Ipsam sapiente exercitationem deleniti delectus ducimus quod quo at. ",
+          "This page gives non-lawyers an overview of complicated copyright laws.",
+      onTap: LicenseGuide()
     ));
     articleList.add(new Article(
       title: "Text Place 2",
