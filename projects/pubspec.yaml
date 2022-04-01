@@ -34,7 +34,6 @@ dependencies:
   photo_view: ^0.12.0                   # for all fullscreen photo views
   button_navigation_bar: ^0.1.1         # simple mode: upload to this category when viewing a category
   flutter_dotenv: ^5.0.2                # for reading the .env file
-  connectivity: ^3.0.6                  # detect changes in network connection status for offline message
   progress_tab_bar: ^0.1.3              # normal mode: upload flow
   intl: ^0.17.0                         # for using the DateFormat() class
   webfeed: any                          # read Feed for Picture of the Day
@@ -44,10 +43,11 @@ dependencies:
   liquid_swipe: ^2.1.1                  # introduction screen transitions
   dots_indicator: ^2.0.0                # introduction screen dot indicators
   flutter_custom_clippers: ^2.0.0       # introduction screen graphics
-  google_fonts: ^2.1.0                  # easier testing of fonts, e.g. in introduction view
+  google_fonts: 2.1.0                   # easier testing of fonts, e.g. in introduction view
   cached_network_image: ^3.2.0          # caches images for the category views in map
   package_info_plus: ^1.3.0             # getting version and build number from pubspec file to display
   carousel_slider: ^4.0.0               # for displaying images when in a batch upload
+  connectivity_plus: ^2.2.1             # detect changes in network connection status for offline message
 
 
 

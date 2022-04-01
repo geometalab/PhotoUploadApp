@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 // Checks if an internet connection can be established.
 // Pings commons.wikimedia.org to check internet.
