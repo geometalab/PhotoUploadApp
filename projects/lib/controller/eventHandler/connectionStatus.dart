@@ -13,8 +13,7 @@ class ConnectionStatusListener {
 
   bool hasConnection = false;
 
-  StreamController connectionChangeController =
-      new StreamController.broadcast();
+  StreamController connectionChangeController = StreamController.broadcast();
 
   final Connectivity _connectivity = Connectivity();
 

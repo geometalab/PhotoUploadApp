@@ -51,12 +51,13 @@ class _PageContainerState extends State<PageContainer> {
   int _selectedDrawerIndex = 0;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
 
     // Listen to a connection change
     ConnectionStatusListener connectionStatus =
         ConnectionStatusListener.getInstance();
+    connectionStatus.initialize();
     _connectionChangeStream =
         connectionStatus.connectionChange.listen(connectionChanged);
 
@@ -146,55 +147,64 @@ class _PageContainerState extends State<PageContainer> {
   @override
   Widget build(BuildContext context) {
     int viewIndex = Provider.of<ViewSwitcher>(context, listen: true).viewIndex;
-    SettingsManager settingsManager = SettingsManager();
-
-    introductionView(settingsManager);
-    if (isOffline) {
-      return NoConnection();
-    }
-    if (settingsManager.isSimpleMode()) {
-      return SimpleHomePage();
-    } else {
-      // Create Drawer
-      _selectedDrawerIndex =
-          Provider.of<ViewSwitcher>(context, listen: false).viewIndex;
-      // TODO "settings" menu tile at bottom
-      List<Widget> drawerOptions = [];
-      for (var i = 0; i < widget.drawerItems.length; i++) {
-        var d = widget.drawerItems[i];
-        if (d.title == "Divider") {
-          drawerOptions.add(new Divider());
-        } else {
-          drawerOptions.add(new ListTile(
-              leading: new Icon(d.icon),
-              title: new Text(d.title),
-              selected: i == _selectedDrawerIndex,
-              onTap: () {
-                Navigator.of(context).pop();
-                Provider.of<ViewSwitcher>(context, listen: false).viewIndex = i;
-              }));
+    return FutureBuilder(
+        future: SettingsManager().initPrefs(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.hasData) {
+            SettingsManager settingsManager = snapshot.data;
+            introductionView(settingsManager);
+            if (isOffline) {
+              return NoConnection();
+            }
+            if (settingsManager.isSimpleMode()) {
+              return SimpleHomePage();
+            } else {
+              // Create Drawer
+              _selectedDrawerIndex =
+                  Provider.of<ViewSwitcher>(context, listen: false).viewIndex;
+              // TODO "settings" menu tile at bottom
+              List<Widget> drawerOptions = [];
+              for (var i = 0; i < widget.drawerItems.length; i++) {
+                var d = widget.drawerItems[i];
+                if (d.title == "Divider") {
+                  drawerOptions.add(new Divider());
+                } else {
+                  drawerOptions.add(new ListTile(
+                      leading: new Icon(d.icon),
+                      title: new Text(d.title),
+                      selected: i == _selectedDrawerIndex,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Provider.of<ViewSwitcher>(context, listen: false).viewIndex = i;
+                      }));
+                }
+              }
+              return WillPopScope(
+                onWillPop: () async {
+                  return willPop(context);
+                },
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: Text(widget.drawerItems[_selectedDrawerIndex].title),
+                  ),
+                  drawer: Drawer(
+                    child: Column(
+                      children: <Widget>[
+                        _drawerHeader(),
+                        Column(children: drawerOptions)
+                      ],
+                    ),
+                  ),
+                  body: _getDrawerItemWidget(viewIndex),
+                ),
+              );
+            }
+          } else {
+            return CircularProgressIndicator.adaptive();
+          }
         }
-      }
-      return WillPopScope(
-        onWillPop: () async {
-          return willPop(context);
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.drawerItems[_selectedDrawerIndex].title),
-          ),
-          drawer: Drawer(
-            child: Column(
-              children: <Widget>[
-                _drawerHeader(),
-                Column(children: drawerOptions)
-              ],
-            ),
-          ),
-          body: _getDrawerItemWidget(viewIndex),
-        ),
-      );
-    }
+    );
+
   }
 
   Widget _drawerHeader() {
