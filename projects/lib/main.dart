@@ -18,8 +18,14 @@ import 'package:flutter/services.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations( // Do not allow landscape mode
+  SystemChrome.setPreferredOrientations(// Do not allow landscape mode
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  ConnectionStatusListener connectionStatus = ConnectionStatusListener
+      .getInstance(); // Initialize the connection listener
+  connectionStatus.initialize();
+
+  SettingsManager(); // Initialize shared preferences
 
   runApp(
     EasyDynamicThemeWidget(

@@ -16,7 +16,6 @@ class SettingsManager {
 
   initPrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    return _prefs;
   }
 
   clearPrefs() {
