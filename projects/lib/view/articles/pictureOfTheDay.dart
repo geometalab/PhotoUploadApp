@@ -46,15 +46,7 @@ class PictureOfTheDayFragment extends StatelessWidget {
                             ),
                           )),
                       Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
-                      RichText(
-                        text: TextSpan(
-                            children: snapshot.data!.richDescription,
-                            style: articleText.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color)),
-                      ),
+                      snapshot.data!.description,
                       TextButton(
                         onPressed: () {
                           potd.openPotdWeb();

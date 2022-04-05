@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class HeroPhotoViewRouteWrapper extends StatelessWidget {
@@ -16,16 +16,30 @@ class HeroPhotoViewRouteWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints.expand(
-        height: MediaQuery.of(context).size.height,
-      ),
-      child: PhotoView(
-        imageProvider: imageProvider,
-        backgroundDecoration: backgroundDecoration,
-        minScale: minScale,
-        maxScale: maxScale,
-        heroAttributes: const PhotoViewHeroAttributes(tag: "someTag"),
+    return Scaffold(
+      body: Container(
+          constraints: BoxConstraints.expand(
+            height: MediaQuery.of(context).size.height,
+          ),
+          child: Stack(
+            children: [
+              PhotoView(
+                imageProvider: imageProvider,
+                backgroundDecoration: backgroundDecoration,
+                minScale: minScale,
+                maxScale: maxScale,
+                heroAttributes: const PhotoViewHeroAttributes(tag: "photoView"),
+              ),
+              SafeArea(
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+              ),
+            ],
+          )
       ),
     );
   }
