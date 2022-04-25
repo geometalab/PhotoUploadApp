@@ -70,8 +70,6 @@ class _PageContainerState extends State<PageContainer> {
       setState(() {
         ExternalIntentHandler().processExternalIntent(value, context);
       });
-    }, onError: (err) {
-      throw ("getIntentDataStream error: $err");
     });
 
     // Begin listening to deeplink redirects

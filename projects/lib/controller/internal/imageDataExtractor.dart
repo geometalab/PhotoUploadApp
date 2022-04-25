@@ -61,7 +61,7 @@ class ImageDataExtractor {
     } catch (e) {
       // Somehow, thrown errors don't get printed to console, so I print them as well.
       print("Error while processing image: $e");
-      throw ("Error while processing image: $e");
+      throw (e);
     }
   }
 

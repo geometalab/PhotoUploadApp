@@ -1,5 +1,6 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/datasets.dart';
@@ -90,7 +91,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             } else if (newValue == 'Use System Theme') {
               EasyDynamicTheme.of(context).changeTheme(dynamic: true);
             } else {
-              throw ("Theme string could not be read");
+              throw ("Theme string could not be read. NewValue: $newValue");
             }
             dropdownValue = newValue!;
           },

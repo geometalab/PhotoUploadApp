@@ -39,8 +39,7 @@ class HeroPhotoViewRouteWrapper extends StatelessWidget {
                 ),
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 }

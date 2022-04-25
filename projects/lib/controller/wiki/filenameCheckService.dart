@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:projects/config.dart';
+import 'package:projects/model/exceptions/requestException.dart';
 
 class FilenameCheckService {
   Future<bool> fileExists(String filename, String fileType) async {
@@ -24,8 +26,8 @@ class FilenameCheckService {
       return !(missing &&
           !known); // If both known and missing are false or true, or only known is true, a file with this name already exists.
     } else {
-      throw ("Query request in fileExists() returned " +
-          response.statusCode.toString());
+      throw RequestException(
+          "Error while checking if file name exists", response);
     }
   }
 }

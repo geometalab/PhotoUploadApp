@@ -9,6 +9,8 @@ import 'package:projects/config.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../model/exceptions/requestException.dart';
+
 class LoginHandler {
   static const CLIENT_ID = Config.CLIENT_ID;
   static const CREDENTIALS_FILE = Config.CREDENTIALS_FILE;
@@ -25,22 +27,17 @@ class LoginHandler {
   LoginHandler._internal();
 
   checkCredentials() async {
-    try {
-      Userdata? data = await getUserInformationFromFile();
+    Userdata? data = await getUserInformationFromFile();
+    if (data != null) {
+      data = await refreshAccessToken();
       if (data != null) {
-        data = await refreshAccessToken();
-        if (data != null) {
-          data = await getUserInformationFromAPI(data);
-          data.lastCheck = DateTime.now();
-          saveUserDataToFile(data);
-        } else {
-          // When 401 is returned to refreshAccessToken
-          _deleteUserDataInFile();
-        }
+        data = await getUserInformationFromAPI(data);
+        data.lastCheck = DateTime.now();
+        saveUserDataToFile(data);
+      } else {
+        // When 401 is returned to refreshAccessToken
+        _deleteUserDataInFile();
       }
-    } catch (e) {
-      throw ("Could not check Credentials successfully. Error: " +
-          e.toString());
     }
   }
 
@@ -103,7 +100,7 @@ class LoginHandler {
           'grant_type': 'authorization_code',
           'code': authCode,
           'client_id': CLIENT_ID,
-          'client_secret': await _getClientSecret(),
+          'client_secret': await ActionHelper().getClientSecret(),
           'code_verifier': codeVerifier
         });
 
@@ -115,14 +112,14 @@ class LoginHandler {
           accessToken: responseJson['access_token']);
       return data;
     } else {
-      throw ("Could not get tokens. Response Code ${responseData.bodyBytes}");
+      throw RequestException("Error while getting Auth Token.", responseData);
     }
   }
 
   Future<Userdata?> refreshAccessToken() async {
     Userdata? userdata = await getUserInformationFromFile();
     if (userdata == null || userdata.refreshToken == "") {
-      throw ("Tried to refresh access token but userdata.refreshToken is null or empty");
+      throw ("Tried to refresh access token but userdata.refreshToken is null or empty.");
     } else {
       Future<http.Response> response = http.post(
           Uri.parse('$WIKIMEDIA_REST/oauth2/access_token'),
@@ -133,7 +130,7 @@ class LoginHandler {
             'grant_type': 'refresh_token',
             'refresh_token': userdata.refreshToken,
             'client_id': CLIENT_ID,
-            'client_secret': await _getClientSecret()
+            'client_secret': await ActionHelper().getClientSecret()
           });
       var responseData = await response;
       if (responseData.statusCode == 200) {
@@ -146,7 +143,8 @@ class LoginHandler {
         // When refresh token is revoked
         return null;
       } else {
-        throw ("Could not refresh access token. Status code ${responseData.statusCode}");
+        throw RequestException(
+            "Error while refreshing Access Token.", responseData);
       }
     }
   }
@@ -213,8 +211,8 @@ class LoginHandler {
         );
         return tokenData;
       } else {
-        throw (Exception(
-            "No 200 Status on API response. Status Code ${responseJson.statusCode} has been returned instead."));
+        throw RequestException(
+            "Error while getting User Info from API.", responseData);
       }
     } else {
       throw (Exception("Access Token is empty"));
@@ -256,16 +254,6 @@ class LoginHandler {
         .replaceAll("/", "_")
         .replaceAll("+", "-")
         .replaceAll("/", "-");
-  }
-
-  Future<String> _getClientSecret() async {
-    await dotenv.load(fileName: ".env");
-    String? clientSecret = dotenv
-        .env['SECRET_TOKEN']; // Get the secret token from the local .env file
-    if (clientSecret == null) {
-      throw ("Secret token is not provided in .env");
-    }
-    return clientSecret;
   }
 }
 

@@ -49,6 +49,8 @@ dependencies:
   carousel_slider: ^4.0.0               # for displaying images when in a batch upload
   connectivity_plus: ^2.2.1             # detect changes in network connection status for offline message
   flutter_html: ^2.2.1                  # for displaying POTD desc from the RSS Feed
+  catcher: ^0.6.9                       # notifying users of errors and allowing them to send reports
+  sentry_flutter: ^6.5.1
 
 
 

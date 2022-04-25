@@ -37,17 +37,13 @@ class InformationCollector {
     if (ownWork) {
       Userdata? userdata = await LoginHandler().getUserInformationFromFile();
       if (userdata == null) {
-        throw ("Userdata is null.");
+        throw ("Could not submit data. Userdata is null.");
       }
       _author = '[[User:${userdata.username}|${userdata.username}]]';
       _source = "Own Work";
     }
-    try {
-      await UploadService().uploadImage(images, fileName!, fileType!, _source,
-          description, _author, license!, date, categories, depictions);
-    } catch (e) {
-      throw (e);
-    }
+    await UploadService().uploadImage(images, fileName!, fileType!, _source,
+        description, _author, license!, date, categories, depictions);
   }
 
   clear() {

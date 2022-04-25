@@ -5,6 +5,8 @@ import 'package:http/http.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:xml/xml.dart';
 
+import '../../model/exceptions/requestException.dart';
+
 class NearbyCategoriesService {
   List<CategoryLocation> cacheList = List.empty(growable: true);
 
@@ -50,8 +52,7 @@ class NearbyCategoriesService {
       cacheMerge(resultList);
       return cacheList;
     } else {
-      throw "Couldn't get nearest Items from Wikimedia Query. Status Code " +
-          response.statusCode.toString();
+      throw RequestException("Error while getting nearest Items.", response);
     }
   }
 
