@@ -272,9 +272,11 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
   }
 
   _openImagePicker() async {
-    setState(() async {
-      collector.images.addAll(await _picker.pickMultiImage() ?? List.empty());
-      collector.images.removeRange(10, 99999);
+    collector.images.addAll(await _picker.pickMultiImage() ?? List.empty());
+    setState(()  {
+      if(collector.images.length >= 10) {
+        collector.images.removeRange(10, 99999);
+      }
     });
   }
 

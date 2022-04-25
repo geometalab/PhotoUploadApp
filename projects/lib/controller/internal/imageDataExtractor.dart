@@ -22,6 +22,8 @@ class ImageDataExtractor {
 
         if (exifData.containsKey('Image DateTime')) {
           infoMap['dateTime'] = exifData['Image DateTime']!.printable;
+          collector.date =
+              DateTime.parse(infoMap['dateTime'].toString().replaceAll(":", ""));
         }
         if (exifData.containsKey('GPS GPSLatitudeRef') &&
             exifData.containsKey('GPS GPSLatitude') &&
@@ -33,8 +35,6 @@ class ImageDataExtractor {
           infoMap['gpsLngRef'] = exifData['GPS GPSLongitudeRef']!.printable;
           infoMap['gpsLng'] = exifData['GPS GPSLongitude']!.printable;
         }
-        collector.date =
-            DateTime.parse(infoMap['dateTime'].toString().replaceAll(":", ""));
 
         infoMap['width'] = decodedImage.width;
         infoMap['height'] = decodedImage.height;
