@@ -3,7 +3,7 @@ import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
 import 'package:projects/style/heroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/textStyles.dart';
 
-class PictureOfTheDayFragment extends StatelessWidget {
+class PictureOfTheDayArticle extends StatelessWidget {
   final PictureOfTheDayService potd = PictureOfTheDayService();
   @override
   Widget build(BuildContext context) {

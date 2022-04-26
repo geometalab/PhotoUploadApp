@@ -3,7 +3,7 @@ import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:projects/style/textStyles.dart' as customStyles;
 import 'package:projects/style/unorderedListWidget.dart';
 
-class LicenseGuide extends StatelessWidget {
+class LicenseGuideArticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

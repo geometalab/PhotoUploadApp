@@ -5,7 +5,6 @@ import 'package:catcher/mode/dialog_report_mode.dart';
 import 'package:catcher/model/catcher_options.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/pageContainer.dart';
 import 'package:projects/style/themes.dart' as customThemes;
@@ -40,7 +39,7 @@ Future<void> main() async {
   String sentryDsn = await ActionHelper().getSentryDns();
   var sentryOptions = (SentryFlutterOptions options) {
     options.dsn = sentryDsn;
-    options.tracesSampleRate = 1.0;
+    options.tracesSampleRate = 0.2;
   };
   await SentryFlutter.init(sentryOptions);
 

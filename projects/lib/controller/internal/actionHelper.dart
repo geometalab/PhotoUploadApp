@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 class ActionHelper {
   launchUrl(String url) async {
     if (await canLaunchUrlString(url)) {
-      await launchUrl(url);
+      await launchUrlString(url);
     } else {
       throw "Could not launch $url";
     }

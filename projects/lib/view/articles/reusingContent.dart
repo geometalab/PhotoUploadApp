@@ -5,7 +5,7 @@ import 'package:projects/style/unorderedListWidget.dart';
 
 // From https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia
 
-class ReusingContentFragment extends StatelessWidget {
+class ReusingContentArticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

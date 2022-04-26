@@ -19,19 +19,19 @@ class HomeFragment extends StatelessWidget {
         title: "Upload Guide",
         description:
             "This short guide gives an overview over what you can upload to Wikimedia Commons.",
-        onTap: UploadGuideFragment()));
+        onTap: UploadGuideArticle()));
     articleList.add(new Article(
         title: "Reusing Wikimedia content",
         description:
             "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
-        onTap: ReusingContentFragment()));
+        onTap: ReusingContentArticle()));
     articleList.add(new Article(
         title: "License Guide",
         image: Image.network(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/CC-BY-SA_icon.svg/640px-CC-BY-SA_icon.svg.png"),
         description:
             "This page gives non-lawyers an overview of complicated copyright laws.",
-        onTap: LicenseGuide()));
+        onTap: LicenseGuideArticle()));
 
     // ------------------------------
 
@@ -43,7 +43,7 @@ class HomeFragment extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PictureOfTheDayFragment()),
+                    builder: (context) => PictureOfTheDayArticle()),
               );
             },
             child: FutureBuilder(

@@ -7,7 +7,7 @@ import 'package:projects/style/unorderedListWidget.dart';
 // From https://commons.wikimedia.org/wiki/Commons:First_steps/Uploading_files
 // and https://commons.wikimedia.org/wiki/File:Licensing_tutorial_en.svg
 
-class UploadGuideFragment extends StatelessWidget {
+class UploadGuideArticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
