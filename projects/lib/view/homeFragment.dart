@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
 import 'package:projects/view/articles/licenseGuide.dart';
+import 'package:projects/view/articles/otherWikimediaProjects.dart';
 import 'package:projects/view/articles/pictureOfTheDay.dart';
 import 'package:projects/view/articles/reusingContent.dart';
 import 'package:projects/view/articles/uploadGuide.dart';
@@ -10,28 +11,32 @@ import 'package:projects/style/textStyles.dart' as customStyles;
 class HomeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var articleList = new ArticleList();
-    articleList.clear();
-
     // ----- Add Articles below -----
-
-    articleList.add(new Article(
-        title: "Upload Guide",
-        description:
-            "This short guide gives an overview over what you can upload to Wikimedia Commons.",
-        onTap: UploadGuideArticle()));
-    articleList.add(new Article(
-        title: "Reusing Wikimedia content",
-        description:
-            "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
-        onTap: ReusingContentArticle()));
-    articleList.add(new Article(
-        title: "License Guide",
-        image: Image.network(
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/CC-BY-SA_icon.svg/640px-CC-BY-SA_icon.svg.png"),
-        description:
-            "This page gives non-lawyers an overview of complicated copyright laws.",
-        onTap: LicenseGuideArticle()));
+    ArticleList articleList = ArticleList();
+    articleList.setArticles([
+      Article(
+          title: "Upload Guide",
+          description:
+              "This short guide gives an overview over what you can upload to Wikimedia Commons.",
+          onTap: UploadGuideArticle()),
+      Article(
+          title: "Reusing Wikimedia content",
+          description:
+              "If you wish to reuse content from Wikimedia Commons - on your own website, in print, or otherwise - check out this article.",
+          onTap: ReusingContentArticle()),
+      Article(
+          title: "License Guide",
+          image: Image.network(
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/CC-BY-SA_icon.svg/640px-CC-BY-SA_icon.svg.png"),
+          description:
+              "This page gives non-lawyers an overview of complicated copyright laws.",
+          onTap: LicenseGuideArticle()),
+      Article(
+          title: "Other Wikimedia Projects",
+          description:
+              "Wikimedia Commons is part of the non-profit, multilingual, free-content Wikimedia family.",
+          onTap: OtherWikimediaProjectsArticle()),
+    ]);
 
     // ------------------------------
 
@@ -124,6 +129,10 @@ class HomeFragment extends StatelessWidget {
 
 class ArticleList {
   static List<Article> articles = new List.empty(growable: true);
+
+  setArticles(List<Article> newArticles) {
+    articles = newArticles;
+  }
 
   add(Article article) {
     articles.add(article);
