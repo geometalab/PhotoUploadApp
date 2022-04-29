@@ -7,14 +7,13 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class ConnectionStatusListener {
   // Make Singleton
   static final ConnectionStatusListener _singleton =
-      new ConnectionStatusListener._internal();
+      ConnectionStatusListener._internal();
   ConnectionStatusListener._internal();
   static ConnectionStatusListener getInstance() => _singleton;
 
   bool hasConnection = false;
 
-  StreamController connectionChangeController =
-      new StreamController.broadcast();
+  StreamController connectionChangeController = StreamController.broadcast();
 
   final Connectivity _connectivity = Connectivity();
 

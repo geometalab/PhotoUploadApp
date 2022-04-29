@@ -42,7 +42,7 @@ class ImageService {
   Future<List<ImageURL>> _getImageURLs(
       String category, int width, int limit) async {
     String url =
-        "${Config.WIKIMEDIA_API}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&cmlimit=$limit&format=json";
+        "${Config.wikimediaApi}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&cmlimit=$limit&format=json";
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

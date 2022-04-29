@@ -25,7 +25,7 @@ class DeepLinkListener extends ChangeNotifier {
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );
             },

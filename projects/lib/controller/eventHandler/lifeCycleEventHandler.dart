@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as lifecycle_event_handler;
 import 'package:flutter/foundation.dart';
 
-class LifecycleEventHandler extends WidgetsBindingObserver {
+class LifecycleEventHandler
+    extends lifecycle_event_handler.WidgetsBindingObserver {
   final AsyncCallback? resumeCallBack;
   final AsyncCallback? suspendingCallBack;
 
@@ -11,16 +12,17 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
   });
 
   @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future<void> didChangeAppLifecycleState(
+      lifecycle_event_handler.AppLifecycleState state) async {
     switch (state) {
-      case AppLifecycleState.resumed:
+      case lifecycle_event_handler.AppLifecycleState.resumed:
         if (resumeCallBack != null) {
           await resumeCallBack!();
         }
         break;
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.paused:
-      case AppLifecycleState.detached:
+      case lifecycle_event_handler.AppLifecycleState.inactive:
+      case lifecycle_event_handler.AppLifecycleState.paused:
+      case lifecycle_event_handler.AppLifecycleState.detached:
         if (suspendingCallBack != null) {
           await suspendingCallBack!();
         }

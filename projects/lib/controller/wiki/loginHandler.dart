@@ -12,9 +12,9 @@ import 'package:path_provider/path_provider.dart';
 import '../../model/exceptions/requestException.dart';
 
 class LoginHandler {
-  static const CLIENT_ID = Config.CLIENT_ID;
-  static const CREDENTIALS_FILE = Config.CREDENTIALS_FILE;
-  static const WIKIMEDIA_REST = Config.WIKIMEDIA_REST;
+  static const CLIENT_ID = Config.clientID;
+  static const CREDENTIALS_FILE = Config.credentialsFile;
+  static const WIKIMEDIA_REST = Config.wikimediaRest;
   static late String codeVerifier;
 
   ActionHelper _actionHelper = ActionHelper();

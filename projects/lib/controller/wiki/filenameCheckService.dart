@@ -9,7 +9,7 @@ class FilenameCheckService {
     bool missing = false;
     bool known = false;
     String url =
-        "${Config.WIKIMEDIA_API}?action=query&titles=File:$filename$fileType&format=json";
+        "${Config.wikimediaApi}?action=query&titles=File:$filename$fileType&format=json";
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

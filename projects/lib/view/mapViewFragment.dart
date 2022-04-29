@@ -21,8 +21,8 @@ class _MapFragmentState extends State<MapFragment> {
   int clusterBtnNumber =
       0; // As each ClusterBtn needs their own hero tag, this counter serves to determine the name of each one.
 
-  final MapController _mapController = new MapController();
-  final NearbyCategoriesService _ncs = new NearbyCategoriesService();
+  final MapController _mapController = MapController();
+  final NearbyCategoriesService _ncs = NearbyCategoriesService();
   final PopupController _popupLayerController = PopupController();
 
   // TODO Implement a "fix the map button" as recommended by osm (https://operations.osmfoundation.org/policies/tiles/)
@@ -47,7 +47,7 @@ class _MapFragmentState extends State<MapFragment> {
                 onMapMove(position, hasGesture);
               },
               plugins: <MapPlugin>[
-                LocationMarkerPlugin(),
+                const LocationMarkerPlugin(),
                 MarkerClusterPlugin()
               ]),
           layers: [
@@ -76,8 +76,8 @@ class _MapFragmentState extends State<MapFragment> {
               },
               markers: getMarkerList(isTooFarOut),
               maxClusterRadius: 120,
-              size: Size(40, 40),
-              fitBoundsOptions: FitBoundsOptions(
+              size: const Size(40, 40),
+              fitBoundsOptions: const FitBoundsOptions(
                 padding: EdgeInsets.all(50),
               ),
             ),
@@ -91,7 +91,7 @@ class _MapFragmentState extends State<MapFragment> {
     bool isSimpleMode = SettingsManager().isSimpleMode();
     if (isSimpleMode) {
       return AppBar(
-        title: Text("Find nearby categories"),
+        title: const Text("Find nearby categories"),
       );
     }
   }
@@ -99,8 +99,8 @@ class _MapFragmentState extends State<MapFragment> {
   Widget? infoMenu() {
     if (isTooFarOut) {
       return FloatingActionButton.extended(
-        label: Text("Zoom in to view categories"),
-        icon: Icon(Icons.help),
+        label: const Text("Zoom in to view categories"),
+        icon: const Icon(Icons.help),
         heroTag: "helpIcon",
         onPressed: () {
           setState(() {
@@ -110,6 +110,7 @@ class _MapFragmentState extends State<MapFragment> {
         },
       );
     }
+    return null;
   }
 
   @override

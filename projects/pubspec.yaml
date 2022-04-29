@@ -21,7 +21,7 @@ dependencies:
   cupertino_icons: ^1.0.2               # icons
   provider: ^6.0.0                      # providers, e.g. for the ViewSwitcher()
   flutter_typeahead: ^3.2.0             # auto suggestions field for categories
-  flutter_branch_sdk: ^3.4.0            # detecting reroutes to app through deep_links:
+  flutter_branch_sdk: ^5.0.0            # detecting reroutes to app through deep_links:
   uni_links: ^0.5.1                     # package is for supporting deeplinking, idk if its used but i really dont want to break deeplinking again :)
   shared_preferences: any               # store settings keys locally
   flutter_map: ^0.14.0                  # map for nearby categories
@@ -50,7 +50,7 @@ dependencies:
   connectivity_plus: ^2.2.1             # detect changes in network connection status for offline message
   flutter_html: ^2.2.1                  # for displaying POTD desc from the RSS Feed
   catcher: ^0.6.9                       # notifying users of errors and allowing them to send reports
-  sentry_flutter: ^6.5.1
+  sentry_flutter: ^6.5.1                # error logging
 
 
 

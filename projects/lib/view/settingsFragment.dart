@@ -1,6 +1,5 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/datasets.dart';
@@ -17,6 +16,8 @@ import 'package:provider/provider.dart';
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
 
 class SettingsFragment extends StatefulWidget {
+  const SettingsFragment({Key? key}) : super(key: key);
+
   @override
   _SettingsFragmentState createState() => _SettingsFragmentState();
 }
@@ -27,35 +28,35 @@ class _SettingsFragmentState extends State<SettingsFragment> {
   late final SettingsManager manager = SettingsManager();
   @override
   Widget build(BuildContext context) {
-    return new Center(
+    return Center(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _appThemeSwitch(context),
-            Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            Divider(
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            const Divider(
               height: dividerHeight,
             ),
             _simpleModeSwitch(context),
-            Divider(
+            const Divider(
               height: dividerHeight,
             ),
             _backgroundImageSelector(context),
-            Divider(
+            const Divider(
               height: dividerHeight,
             ),
             _rewatchIntroButton(context),
-            Divider(
+            const Divider(
               height: dividerHeight,
             ),
             _clearPrefsButton(context),
-            Divider(
+            const Divider(
               height: dividerHeight,
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             // About button
             _aboutButton(context),
           ],
@@ -80,7 +81,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("App Theme"),
+        const Text("App Theme"),
         DropdownButton<String>(
           value: dropdownValue,
           onChanged: (String? newValue) {
@@ -116,15 +117,16 @@ class _SettingsFragmentState extends State<SettingsFragment> {
 
   Widget _simpleModeSwitch(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Text("Simple Mode"),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+                  const Text("Simple Mode"),
+                  const Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4)),
                   InfoPopUp(texts.simpleModeInfo),
                 ],
               ),
@@ -162,8 +164,8 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Select background image"),
-              Icon(Icons.chevron_right)
+              const Text("Select background image"),
+              const Icon(Icons.chevron_right)
             ],
           ),
         ));
@@ -182,7 +184,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Show first-time Introduction"),
+              const Text("Show first-time Introduction"),
             ],
           ),
         ));
@@ -195,15 +197,15 @@ class _SettingsFragmentState extends State<SettingsFragment> {
           showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
-              title: Text("Delete local storage"),
-              content: Text(
+              title: const Text("Delete local storage"),
+              content: const Text(
                   "This will delete login data and local cache and close the app. The introductory slides will be shown again on the next start."),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                 ),
                 TextButton(
                   onPressed: () {
@@ -215,7 +217,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
                     });
                     setState(() {});
                   },
-                  child: Text("Delete"),
+                  child: const Text("Delete"),
                 ),
               ],
             ),
@@ -227,7 +229,7 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Delete local storage"),
+              const Text("Delete local storage"),
             ],
           ),
         ));
@@ -241,8 +243,8 @@ class _SettingsFragmentState extends State<SettingsFragment> {
           MaterialPageRoute(builder: (context) => AboutFragment()),
         );
       },
-      label: Text("About"),
-      icon: Icon(Icons.info_outline),
+      label: const Text("About"),
+      icon: const Icon(Icons.info_outline),
     );
   }
 

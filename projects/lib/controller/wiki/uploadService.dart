@@ -12,7 +12,7 @@ import '../../model/exceptions/requestException.dart';
 // TODO get response in case of error and extract error message, which then should be thrown to catch for the progress indicator
 
 class UploadService {
-  static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
+  static const WIKIMEDIA_API = Config.wikimediaApi;
 
   uploadImage(
       List<XFile> images,
