@@ -3,7 +3,7 @@ import 'package:projects/controller/wiki/pictureOfTheDayService.dart';
 import 'package:projects/style/heroPhotoViewRouteWrapper.dart';
 import 'package:projects/style/textStyles.dart';
 
-class PictureOfTheDayFragment extends StatelessWidget {
+class PictureOfTheDayArticle extends StatelessWidget {
   final PictureOfTheDayService potd = PictureOfTheDayService();
   @override
   Widget build(BuildContext context) {
@@ -46,15 +46,7 @@ class PictureOfTheDayFragment extends StatelessWidget {
                             ),
                           )),
                       Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
-                      RichText(
-                        text: TextSpan(
-                            children: snapshot.data!.richDescription,
-                            style: articleText.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color)),
-                      ),
+                      snapshot.data!.description,
                       TextButton(
                         onPressed: () {
                           potd.openPotdWeb();

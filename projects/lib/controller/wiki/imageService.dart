@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:projects/config.dart';
 import 'package:projects/style/themes.dart';
+import '../../model/exceptions/requestException.dart';
 import '../../style/themes.dart';
 
 class ImageService {
@@ -41,7 +42,7 @@ class ImageService {
   Future<List<ImageURL>> _getImageURLs(
       String category, int width, int limit) async {
     String url =
-        "${Config.WIKIMEDIA_API}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&cmlimit=$limit&format=json";
+        "${Config.wikimediaApi}?action=query&list=categorymembers&cmtype=file&cmtitle=Category:$category&cmlimit=$limit&format=json";
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -74,8 +75,8 @@ class ImageService {
       }
       return urlList;
     } else {
-      throw ("Image URLs could not be accessed through API. Status code: " +
-          response.statusCode.toString());
+      throw RequestException(
+          "Error while getting the thumbnail image urls.", response);
     }
   }
 }

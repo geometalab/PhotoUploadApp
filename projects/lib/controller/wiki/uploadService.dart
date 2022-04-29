@@ -7,11 +7,12 @@ import 'package:projects/controller/wiki/loginHandler.dart';
 import 'package:projects/model/description.dart';
 import '../../model/datasets.dart' as data;
 import '../../config.dart';
+import '../../model/exceptions/requestException.dart';
 
 // TODO get response in case of error and extract error message, which then should be thrown to catch for the progress indicator
 
 class UploadService {
-  static const WIKIMEDIA_API = Config.WIKIMEDIA_API;
+  static const WIKIMEDIA_API = Config.wikimediaApi;
 
   uploadImage(
       List<XFile> images,
@@ -155,7 +156,8 @@ ${_generateDescriptions(description)}
     if (responseData.statusCode == 200) {
       return response;
     } else {
-      throw ("Could edit description. Response Code ${responseData.bodyBytes}");
+      throw RequestException(
+          "Error while checking editing details of $filename.", responseData);
     }
   }
 
@@ -181,7 +183,7 @@ ${_generateDescriptions(description)}
     if (responseData.statusCode == 200) {
       return;
     } else {
-      throw ("Could not check token. Response Code ${responseData.bodyBytes}");
+      throw RequestException("Error while checking CSRF Token.", responseData);
     }
   }
 
@@ -202,8 +204,7 @@ ${_generateDescriptions(description)}
         throw ("Could not get CSRF Token: response does not contain \"query\".");
       }
     } else {
-      throw ("Could not get CSRF Token: Bad Response. Status Code: " +
-          responseJson.statusCode.toString());
+      throw RequestException("Error while getting Csrf Token.", responseJson);
     }
   }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' as assertions;
 import 'package:flutter/material.dart';
 import 'package:projects/controller/eventHandler/connectionStatus.dart';
-import 'package:projects/controller/eventHandler/deepLinkListener.dart';
+import 'package:projects/controller/eventHandler/deeplinkListener.dart';
 import 'package:projects/controller/eventHandler/externalIntentHandler.dart';
 import 'package:projects/controller/eventHandler/lifeCycleEventHandler.dart';
 import 'package:projects/controller/wiki/loginHandler.dart';
@@ -70,8 +70,6 @@ class _PageContainerState extends State<PageContainer> {
       setState(() {
         ExternalIntentHandler().processExternalIntent(value, context);
       });
-    }, onError: (err) {
-      throw ("getIntentDataStream error: $err");
     });
 
     // Begin listening to deeplink redirects

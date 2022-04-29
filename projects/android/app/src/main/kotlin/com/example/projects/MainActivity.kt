@@ -1,4 +1,4 @@
-package com.example.commonsuploader
+package ch.ifs.commonsuploader
 
 import io.flutter.embedding.android.FlutterActivity
 import io.branch.indexing.BranchUniversalObject

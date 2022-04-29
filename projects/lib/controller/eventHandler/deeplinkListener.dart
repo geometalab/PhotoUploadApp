@@ -25,7 +25,7 @@ class DeepLinkListener extends ChangeNotifier {
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );
             },
@@ -52,8 +52,7 @@ class DeepLinkListener extends ChangeNotifier {
         }
       }
     }, onError: (error) {
-      PlatformException platformException = error as PlatformException;
-      throw ('${platformException.code} - ${platformException.message}');
+      throw error as PlatformException;
     });
   }
 }

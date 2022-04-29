@@ -24,7 +24,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>ch.ifs.commonsUploader</string>
+			<string>ch.ifs.commonsuploader</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>commonsUploader</string>

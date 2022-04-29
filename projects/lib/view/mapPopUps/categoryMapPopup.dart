@@ -45,8 +45,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
                         thumbnail = snapshot
                             .data!; // TODO Sometimes (maybe because of file type or res), the progress indicator disappears, but it still takes a few seconds for image to appear
                       } else if (snapshot.hasError) {
-                        throw ("Could not display thumbnail: " +
-                            snapshot.error.toString());
+                        throw snapshot.error!;
                       } else {
                         thumbnail = Padding(
                           padding: EdgeInsets.zero,

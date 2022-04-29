@@ -7,7 +7,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class ConnectionStatusListener {
   // Make Singleton
   static final ConnectionStatusListener _singleton =
-      new ConnectionStatusListener._internal();
+      ConnectionStatusListener._internal();
   ConnectionStatusListener._internal();
   static ConnectionStatusListener getInstance() => _singleton;
 

@@ -94,7 +94,7 @@ class AboutFragment extends StatelessWidget {
                   )),
               TextButton(
                   onPressed: () {
-                    ActionHelper().openEmail(["rj-geometalab@ost.ch"]);
+                    ActionHelper().openEmail(["feedback-ifs@ost.ch"]);
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
