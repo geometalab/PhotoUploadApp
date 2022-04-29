@@ -36,7 +36,7 @@ class ConnectionStatusListener {
     bool previousConnection = hasConnection;
 
     try {
-      sleep(Duration(
+      sleep(const Duration(
           milliseconds:
               500)); // If there is no wait here, the lookup still gets a result and therefore doesn't set 'hasConnection' correctly.
       final result = await InternetAddress.lookup('commons.wikimedia.org');

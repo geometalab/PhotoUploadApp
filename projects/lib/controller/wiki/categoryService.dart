@@ -5,7 +5,7 @@ import 'package:projects/controller/internal/settingsManager.dart';
 class CategoryService {
   Future<List<Map<String, dynamic>>> getSuggestions(
       String pattern, int useCase) async {
-    var listedSuggestions;
+    List<Map<String, dynamic>> listedSuggestions;
     String request =
         'https://api.wikimedia.org/core/v1/commons/search/title?q=' +
             pattern +
@@ -40,7 +40,7 @@ class CategoryService {
             suggestion['title'].toString().replaceFirst("Category:", "");
       }
     }
-    return new Future.value(suggestionsList);
+    return Future.value(suggestionsList);
   }
 
   List<Map<String, dynamic>> recentlyUsedCategories() {
@@ -63,15 +63,16 @@ class Suggestion {
   Suggestion({this.pages});
 
   Suggestion.fromJson(Map<String, dynamic> json) {
-    this.pages = json["pages"] == null
+    pages = json["pages"] == null
         ? null
         : (json["pages"] as List).map((e) => Pages.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pages != null)
-      data["pages"] = this.pages?.map((e) => e.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pages != null) {
+      data["pages"] = pages?.map((e) => e.toJson()).toList();
+    }
     return data;
   }
 }
@@ -93,22 +94,22 @@ class Pages {
       this.thumbnail});
 
   Pages.fromJson(Map<String, dynamic> json) {
-    this.id = json["id"];
-    this.key = json["key"];
-    this.title = json["title"];
-    this.excerpt = json["excerpt"];
-    this.description = json["description"];
-    this.thumbnail = json["thumbnail"];
+    id = json["id"];
+    key = json["key"];
+    title = json["title"];
+    excerpt = json["excerpt"];
+    description = json["description"];
+    thumbnail = json["thumbnail"];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data["id"] = this.id;
-    data["key"] = this.key;
-    data["title"] = this.title;
-    data["excerpt"] = this.excerpt;
-    data["description"] = this.description;
-    data["thumbnail"] = this.thumbnail;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
+    data["key"] = key;
+    data["title"] = title;
+    data["excerpt"] = excerpt;
+    data["description"] = description;
+    data["thumbnail"] = thumbnail;
     return data;
   }
 }

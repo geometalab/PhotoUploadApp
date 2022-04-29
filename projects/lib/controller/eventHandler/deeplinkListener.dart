@@ -4,6 +4,7 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:projects/controller/internal/settingsManager.dart';
 import 'package:projects/view/simpleUpload/simpleUserPage.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../pageContainer.dart';
 import '../wiki/loginHandler.dart';
 
@@ -15,7 +16,8 @@ class DeepLinkListener extends ChangeNotifier {
   void listenDeepLinkData(BuildContext context) async {
     FlutterBranchSdk.initSession().listen((listenerData) async {
       if (listenerData.containsKey("code")) {
-        // Close all routes in case one is open
+        // Close browser and all routes in case one is open
+        closeInAppWebView();
         while (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
@@ -25,8 +27,10 @@ class DeepLinkListener extends ChangeNotifier {
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
               );
             },
           ),

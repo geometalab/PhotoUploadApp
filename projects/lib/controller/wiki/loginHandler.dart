@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/config.dart';
 import 'package:projects/controller/internal/actionHelper.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,7 +16,7 @@ class LoginHandler {
   static const WIKIMEDIA_REST = Config.wikimediaRest;
   static late String codeVerifier;
 
-  ActionHelper _actionHelper = ActionHelper();
+  final ActionHelper _actionHelper = ActionHelper();
 
   // Making class a singleton
   static final LoginHandler _loginHandler = LoginHandler._internal();
@@ -52,12 +51,13 @@ class LoginHandler {
     Userdata? data = await getUserInformationFromFile();
     if (data != null && data.username != "") {
       if (data.lastCheck
-          .isBefore(DateTime.now().subtract(Duration(hours: 1)))) {
+          .isBefore(DateTime.now().subtract(const Duration(hours: 1)))) {
         checkCredentials(); // If the last check happened more than a hour ago, refresh tokens & data
       }
       return true;
-    } else
+    } else {
       return false;
+    }
   }
 
   logOut() async {
@@ -287,7 +287,7 @@ class Userdata {
 
   Userdata fromJson(String jsonString) {
     Map<String, dynamic> json = jsonDecode(jsonString);
-    return new Userdata(
+    return Userdata(
         username: json['username'],
         realName: json['realname'],
         accessToken: json['accessToken'],

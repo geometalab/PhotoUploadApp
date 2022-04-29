@@ -24,11 +24,11 @@ class _DescriptionFragment extends State<DescriptionFragment> {
   }
 
   List<Widget> descriptionWidgets() {
-    List<Widget> list = new List.empty(growable: true);
+    List<Widget> list = List.empty(growable: true);
     list.add(MediaTitleWidget());
-    list.add(Divider(indent: 10, endIndent: 10));
+    list.add(const Divider(indent: 10, endIndent: 10));
     list.add(Padding(
-      padding: EdgeInsets.only(top: 16, left: 8, right: 8),
+      padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -36,7 +36,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
             Icons.text_fields_outlined,
             color: CustomColors().getDefaultIconColor(Theme.of(context)),
           ),
-          Padding(padding: EdgeInsets.only(left: 18)),
+          const Padding(padding: EdgeInsets.only(left: 18)),
           Text(
             "Descriptions: ",
             textScaleFactor: 1.2,
@@ -53,14 +53,14 @@ class _DescriptionFragment extends State<DescriptionFragment> {
     }
     String? descriptionLabel;
     for (int i = 0; i < collector.description.length; i++) {
-      descriptionLabel = data.languages['${collector.description[i].language}'];
+      descriptionLabel = data.languages[collector.description[i].language];
       if (descriptionLabel == null) {
         throw ("Description language could not be resolved");
       }
       descriptionLabel += " description";
 
       list.add(Padding(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: SizedBox(
               height: 140,
               child: Row(
@@ -68,7 +68,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                 children: [
                   Expanded(
                       child: Padding(
-                    padding: EdgeInsets.only(bottom: 1),
+                    padding: const EdgeInsets.only(bottom: 1),
                     child: TextFormField(
                         // TODO flexible height fields
                         initialValue: collector.description[i].content,
@@ -82,7 +82,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                           hintText: 'Write a meaningful description',
                         )),
                   )),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4),
                   ),
                   Column(
@@ -97,7 +97,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                                   // "Are you sure" dialog
                                   context: context,
                                   builder: (ctx) => AlertDialog(
-                                        title: Text("Delete Description"),
+                                        title: const Text("Delete Description"),
                                         content: Text(
                                             "Are you sure you want to delete this ${data.languages[collector.description[i].language]!.toLowerCase()} description? It contains text."),
                                         actions: <Widget>[
@@ -105,7 +105,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                                             onPressed: () {
                                               Navigator.of(ctx).pop();
                                             },
-                                            child: Text("No"),
+                                            child: const Text("No"),
                                           ),
                                           TextButton(
                                             onPressed: () {
@@ -115,7 +115,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                                               });
                                               Navigator.of(ctx).pop();
                                             },
-                                            child: Text("Yes"),
+                                            child: const Text("Yes"),
                                           ),
                                         ],
                                       ));
@@ -125,7 +125,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
                               });
                             }
                           },
-                          icon: Icon(Icons.close),
+                          icon: const Icon(Icons.close),
                           color: CustomColors()
                               .getDefaultIconColor(Theme.of(context)),
                         ),
@@ -168,7 +168,7 @@ class _DescriptionFragment extends State<DescriptionFragment> {
         });
       },
       child: Row(
-        children: [
+        children: const [
           Icon(Icons.add),
           Text("Add another language"),
         ],
@@ -194,7 +194,7 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
     if (collector.images.length > 1) {
       // If this is a batch upload
       return Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -212,21 +212,21 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
                         collector.fileName = value;
                       },
                       decoration: InputDecoration(
-                        icon: Icon(Icons.file_copy_outlined),
+                        icon: const Icon(Icons.file_copy_outlined),
                         labelText: 'File Name Schema',
                         hintText: 'Choose a descriptive name',
                         suffixIcon: _isChecking
                             ? Transform.scale(
-                                scale: 0.5, child: CircularProgressIndicator())
+                                scale: 0.5, child: const CircularProgressIndicator())
                             : null,
                       ))),
               if (collector.fileName != null && collector.fileName!.isNotEmpty)
                 Card(
-                    margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: SizedBox(
                         width: double.infinity,
                         child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -234,7 +234,7 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Text("Generated File Names:",
+                                    const Text("Generated File Names:",
                                         style: customStyles.objectDescription),
                                     Column(
                                       children: List<Widget>.generate(
@@ -250,7 +250,7 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
                                     )
                                   ],
                                 ),
-                                InfoPopUp(
+                                const InfoPopUp(
                                     "As you are uploading multiple files, multiple file names need to be generated. Descriptions, Categories and Licences will be applied to all images uploaded.")
                               ],
                             ))))
@@ -258,7 +258,7 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
           ));
     } else {
       return Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -277,12 +277,12 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
                     collector.fileName = value;
                   },
                   decoration: InputDecoration(
-                    icon: Icon(Icons.file_copy_outlined),
+                    icon: const Icon(Icons.file_copy_outlined),
                     labelText: 'File Name',
                     hintText: 'Choose a descriptive name',
                     suffixIcon: _isChecking
                         ? Transform.scale(
-                            scale: 0.5, child: CircularProgressIndicator())
+                            scale: 0.5, child: const CircularProgressIndicator())
                         : null,
                   ),
                 ),
@@ -290,7 +290,7 @@ class _MediaTitleWidget extends State<MediaTitleWidget> {
             ),
             if (collector.fileType != null)
               Padding(
-                padding: EdgeInsets.only(right: 8, left: 8, top: 16),
+                padding: const EdgeInsets.only(right: 8, left: 8, top: 16),
                 child: Text(collector.fileType!,
                     style: Theme.of(context).textTheme.subtitle1),
               ),

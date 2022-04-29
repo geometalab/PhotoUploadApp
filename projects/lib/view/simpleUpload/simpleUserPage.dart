@@ -6,7 +6,7 @@ class SimpleUsersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Wikimedia Account"),
+          title: const Text("Wikimedia Account"),
         ),
         body: UserFragment());
   }

@@ -45,7 +45,7 @@ class NearbyCategoriesService {
 
         if (!resultList
             .any((CategoryLocation cl) => cl.commons == commonsString)) {
-          resultList.add(new CategoryLocation(
+          resultList.add(CategoryLocation(
               commonsString, double.parse(lng), double.parse(lat)));
         }
       }
@@ -80,12 +80,12 @@ class NearbyCategoriesService {
           width: 40,
           height: 40,
           anchorPos: AnchorPos.align(AnchorAlign.top),
-          rotateAlignment: Alignment(0, 0.8),
+          rotateAlignment: const Alignment(0, 0.8),
           point: LatLng(locations[i].lat, locations[i].lng),
           builder: (ctx) => Container(
               child: Icon(Icons.location_pin,
                   color: Theme.of(context).colorScheme.primary, size: 40)),
-          key: new Key(locations[i].commons),
+          key: Key(locations[i].commons),
           rotate: true,
         ),
       );
@@ -103,11 +103,12 @@ class CategoryLocation {
   CategoryLocation(this.commons, this.lat, this.lng);
 
   bool equals(CategoryLocation categoryLocation) {
-    if (this.commons == categoryLocation.commons &&
-        this.lng == categoryLocation.lng &&
-        this.lat == categoryLocation.lat) {
+    if (commons == categoryLocation.commons &&
+        lng == categoryLocation.lng &&
+        lat == categoryLocation.lat) {
       return true;
-    } else
+    } else {
       return false;
+    }
   }
 }

@@ -6,9 +6,9 @@ class ValueLabelField extends StatelessWidget {
   final String? label;
   final Icon? icon;
   final double? padding;
-  late final bool replaceEmpty; // Replaces "" with "no value"
+  final bool replaceEmpty; // Replaces "" with "no value"
 
-  ValueLabelField(
+  const ValueLabelField(
     this.value,
     this.label, {
     this.icon,
@@ -30,7 +30,7 @@ class ValueLabelField extends StatelessWidget {
   }
 
   List<Widget> rowBuilder() {
-    List<Widget> list = new List.empty(growable: true);
+    List<Widget> list = List.empty(growable: true);
     list.add(Flexible(
       fit: FlexFit.loose,
       child: Column(

@@ -20,11 +20,11 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
   // TODO? Support Audio Files?
 
   final ImagePicker _picker = ImagePicker();
-  final InformationCollector collector = new InformationCollector();
+  final InformationCollector collector = InformationCollector();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: SingleChildScrollView(
         child: Column(
@@ -41,7 +41,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
 
   Widget contentContainer(Widget? child) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Card(
         elevation: 0,
         color: Colors.transparent,
@@ -54,7 +54,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         child: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: child,
           ),
         ),
@@ -82,7 +82,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
               for (int i = 0; i < snapshot.data!.length; i++) {
                 imageInfos.add(imageInfoWidget(snapshot.data![i]));
                 if (i + 1 > snapshot.data!.length) {
-                  imageInfos.add(Padding(
+                  imageInfos.add(const Padding(
                     padding: EdgeInsets.symmetric(vertical: 6),
                   ));
                 }
@@ -97,7 +97,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
-                            children: [
+                            children: const [
                               Icon(Icons.add),
                               Text("Add more images")
                             ],
@@ -105,7 +105,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     ],
               );
             } else {
-              return LinearProgressIndicator();
+              return const LinearProgressIndicator();
             }
           });
     } else {
@@ -114,7 +114,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             child: TextButton(
                 onPressed: () async {
                   _openImagePicker();
@@ -125,7 +125,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
+                      children: const <Widget>[
                         Icon(Icons.file_copy_outlined),
                         Padding(padding: EdgeInsets.only(left: 5)),
                         Text("Select Image from Files"),
@@ -134,7 +134,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
           ),
           SizedBox(
               width: 100,
-              child: Row(children: <Widget>[
+              child: Row(children: const <Widget>[
                 Expanded(child: Divider()),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4),
@@ -146,7 +146,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                 Expanded(child: Divider()),
               ])),
           Padding(
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
               child: TextButton(
                   onPressed: () async {
                     XFile? image =
@@ -162,7 +162,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        children: const <Widget>[
                           Icon(Icons.camera_alt_outlined),
                           Padding(padding: EdgeInsets.only(left: 5)),
                           Text("Capture a Photo"),
@@ -175,7 +175,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
 
   Widget imageInfoWidget(Map imageInfo) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -189,7 +189,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     child: imageInfo['image'],
                   ),
                 ),
-                Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
+                const Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,7 +225,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
                     }
                   });
                 },
-                icon: Icon(Icons.delete)),
+                icon: const Icon(Icons.delete)),
           ],
         ));
   }
@@ -235,27 +235,27 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
     double paragraphSpacing = 2.0;
     return Column(
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(top: 16),
         ),
-        Text("Before you start...",
+        const Text("Before you start...",
             style: articleTitle, textAlign: TextAlign.center),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
-        Text(
+        const Text(
           "Make sure that you are aware of what content can and should be "
           "uploaded to Wikimedia Commons. ",
           style: objectDescription,
           textAlign: TextAlign.center,
         ),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
-        Text(
+        const Text(
             "Once uploaded, you cannot delete any content you submitted to "
             "Commons. You may only upload works that are created entirely by you, "
             "with a few exceptions. ",
             style: objectDescription,
             textAlign: TextAlign.center),
         Padding(padding: EdgeInsets.symmetric(vertical: paragraphSpacing)),
-        Text(
+        const Text(
             "If you are not familiar with the Upload "
             "guidelines, you can learn more through the upload guide.",
             style: objectDescription,
@@ -265,7 +265,7 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => UploadGuideArticle()));
           },
-          child: Text("Learn more"),
+          child: const Text("Learn more"),
         ),
       ],
     );
@@ -286,14 +286,14 @@ class _SelectImageFragmentState extends State<SelectImageFragment> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Can't load images"),
-            content: Text("Make sure all your images are the same file type."),
+            title: const Text("Can't load images"),
+            content: const Text("Make sure all your images are the same file type."),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("Okay"))
+                  child: const Text("Okay"))
             ],
           );
         });

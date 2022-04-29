@@ -28,11 +28,11 @@ class UploadService {
     UploadProgressStream progressStream = UploadProgressStream();
     int progressNumber =
         3 * images.length; // represents times progress() is called
-    var map;
+    Map map;
     String token;
 
     progressStream.reset();
-    await (Future.delayed(Duration(milliseconds: 500)));
+    await (Future.delayed(const Duration(milliseconds: 500)));
 
     try {
       for (int i = 0; i < images.length; i++) {
@@ -57,12 +57,12 @@ class UploadService {
         // map = await _getCsrfToken();
         // token = map["tokens"]["csrftoken"];
         // _editDepictions(depictions, token);
-        await (Future.delayed(Duration(milliseconds: 200)));
+        await (Future.delayed(const Duration(milliseconds: 200)));
       }
       progressStream.doneUploading();
     } catch (e) {
       progressStream.error(e.toString());
-      throw (e);
+      rethrow;
     }
   }
 
@@ -73,18 +73,18 @@ class UploadService {
     int progressNumber = 3; // represents times progress() is called
 
     progressStream.reset();
-    await (Future.delayed(Duration(milliseconds: 200)));
+    await (Future.delayed(const Duration(milliseconds: 200)));
     progressStream.progress(progressNumber);
 
-    await (Future.delayed(Duration(milliseconds: 200)));
-
-    progressStream.progress(progressNumber);
-
-    await (Future.delayed(Duration(milliseconds: 200)));
+    await (Future.delayed(const Duration(milliseconds: 200)));
 
     progressStream.progress(progressNumber);
 
-    await (Future.delayed(Duration(milliseconds: 200)));
+    await (Future.delayed(const Duration(milliseconds: 200)));
+
+    progressStream.progress(progressNumber);
+
+    await (Future.delayed(const Duration(milliseconds: 200)));
 
     progressStream.doneUploading();
   }
@@ -93,9 +93,7 @@ class UploadService {
       XFile image, String fileName, String csrfToken) async {
     var request = http.MultipartRequest(
         'POST',
-        Uri.parse("$WIKIMEDIA_API?format=json" +
-            "&action=upload" +
-            "&filename=$fileName"));
+        Uri.parse("$WIKIMEDIA_API?format=json" "&action=upload" "&filename=$fileName"));
     request.headers['Authorization'] = "Bearer " + await getAccessToken();
     request.fields['token'] = csrfToken;
     request.files.add(await _convertToMultiPartFile(image, fileName));
@@ -164,7 +162,7 @@ ${_generateDescriptions(description)}
   Future<http.Response> _editDepictions(
       List<String> depicts, String token) async {
     // TODO Implement _editDepictions
-    await (Future.delayed(Duration(milliseconds: 700)));
+    await (Future.delayed(const Duration(milliseconds: 700)));
     throw UnimplementedError("_editDepictions is not implemented.");
   }
 
@@ -212,12 +210,12 @@ ${_generateDescriptions(description)}
       XFile image, String fileName) async {
     File imageFile = File(image.path);
 
-    var stream = new http.ByteStream(imageFile.openRead());
+    var stream = http.ByteStream(imageFile.openRead());
     stream.cast();
     var length = await imageFile.length();
 
     http.MultipartFile multipartFile =
-        new http.MultipartFile('file', stream, length, filename: fileName);
+        http.MultipartFile('file', stream, length, filename: fileName);
     return multipartFile;
   }
 
@@ -263,7 +261,7 @@ String _generateDescriptions(List<Description> description) {
 // 2.0        ->  is set a second after doneDownloading() is called
 class UploadProgressStream {
   UploadStatus _status = UploadStatus(progress: 0.0);
-  static StreamController<UploadStatus> _controller =
+  static final StreamController<UploadStatus> _controller =
       StreamController<UploadStatus>.broadcast();
 
   reset() {
@@ -283,7 +281,7 @@ class UploadProgressStream {
   doneUploading() async {
     _status = UploadStatus(progress: 1.0);
     _controller.add(_status);
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     doneProcessing();
   }
 

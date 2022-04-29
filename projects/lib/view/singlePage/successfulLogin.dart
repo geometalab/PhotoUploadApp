@@ -4,7 +4,7 @@ import 'package:projects/controller/wiki/loginHandler.dart';
 class SuccessfulLogin extends StatelessWidget {
   final String userCode;
 
-  SuccessfulLogin(
+  const SuccessfulLogin(
     this.userCode,
   );
 
@@ -13,7 +13,7 @@ class SuccessfulLogin extends StatelessWidget {
     LoginHandler().getTokens(userCode);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Successfully logged in"),
+        title: const Text("Successfully logged in"),
       ),
       body: Center(
         child: Text(userCode),

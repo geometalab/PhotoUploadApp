@@ -8,10 +8,10 @@ class OtherWikimediaProjectsArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Other Wikimedia Projects"),
+        title: const Text("Other Wikimedia Projects"),
       ),
       body: GridView.count(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         crossAxisCount: 2,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
@@ -86,12 +86,12 @@ class OtherWikimediaProjectsArticle extends StatelessWidget {
     return GestureDetector(
       child: Card(
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CachedNetworkImage(imageUrl: imageUrl, height: 64),
-              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               Text(
                 title,
                 style: customStyles.articleTitle,

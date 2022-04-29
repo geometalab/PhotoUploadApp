@@ -30,14 +30,14 @@ class DrawerItem {
 
 class PageContainer extends StatefulWidget {
   final drawerItems = [
-    new DrawerItem("Home", Icons.home_filled),
-    new DrawerItem("Divider", null),
-    new DrawerItem("Upload to Wikimedia", Icons.upload_file),
-    new DrawerItem("Find nearby Categories", Icons.map),
-    new DrawerItem("Divider", null),
-    new DrawerItem("Account Settings", Icons.person),
-    new DrawerItem("Divider", null),
-    new DrawerItem("Settings", Icons.settings)
+    DrawerItem("Home", Icons.home_filled),
+    DrawerItem("Divider", null),
+    DrawerItem("Upload to Wikimedia", Icons.upload_file),
+    DrawerItem("Find nearby Categories", Icons.map),
+    DrawerItem("Divider", null),
+    DrawerItem("Account Settings", Icons.person),
+    DrawerItem("Divider", null),
+    DrawerItem("Settings", Icons.settings)
   ];
 
   @override
@@ -110,17 +110,17 @@ class _PageContainerState extends State<PageContainer> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return new HomeFragment();
+        return HomeFragment();
       case 2:
-        return new CommonsUploadFragment();
+        return CommonsUploadFragment();
       case 3:
-        return new MapFragment();
+        return MapFragment();
       case 5:
-        return new UserFragment();
+        return UserFragment();
       case 7:
-        return new SettingsFragment();
+        return const SettingsFragment();
       default:
-        return new Text(
+        return const Text(
             "Widget could not be returned for _getDrawerItemWidget");
     }
   }
@@ -161,11 +161,11 @@ class _PageContainerState extends State<PageContainer> {
       for (var i = 0; i < widget.drawerItems.length; i++) {
         var d = widget.drawerItems[i];
         if (d.title == "Divider") {
-          drawerOptions.add(new Divider());
+          drawerOptions.add(const Divider());
         } else {
-          drawerOptions.add(new ListTile(
-              leading: new Icon(d.icon),
-              title: new Text(d.title),
+          drawerOptions.add(ListTile(
+              leading: Icon(d.icon),
+              title: Text(d.title),
               selected: i == _selectedDrawerIndex,
               onTap: () {
                 Navigator.of(context).pop();
@@ -211,11 +211,11 @@ class _PageContainerState extends State<PageContainer> {
                       bottom: 16,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.person_off,
                             color: Colors.white,
                           ),
-                          Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                          const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                           Text(
                             "Not logged into wikimedia",
                             style: customStyles.objectDescription
@@ -234,7 +234,7 @@ class _PageContainerState extends State<PageContainer> {
           return UserAccountsDrawerHeader(
               decoration: _headerDecorationImage(),
               currentAccountPicture: UserAvatar(),
-              currentAccountPictureSize: Size.square(48),
+              currentAccountPictureSize: const Size.square(48),
               // arrowColor: Theme.of(context).colorScheme.onPrimary,
               // onDetailsPressed: () { }, // TODO maybe put something in this dropdown
               accountName: Text(data.username),
@@ -255,12 +255,12 @@ class _PageContainerState extends State<PageContainer> {
       return BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+          colorFilter: const ColorFilter.mode(Colors.black45, BlendMode.darken),
           image: AssetImage(imagePath),
         ),
       );
     } else {
-      return BoxDecoration(color: Theme.of(context).colorScheme.primaryVariant);
+      return BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer);
     }
   }
 
@@ -272,7 +272,7 @@ class _PageContainerState extends State<PageContainer> {
   }
 
   introductionView(SettingsManager settingsManager) {
-    Future.delayed(Duration(milliseconds: 700), () {
+    Future.delayed(const Duration(milliseconds: 700), () {
       if (settingsManager.isFirstTime()) {
         // Only push the IntroductionView() if current route is home page, else do nothing
         if (!Navigator.canPop(context)) {

@@ -25,8 +25,8 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                    title: Text("Batch uploads not possible"),
-                    content: Text(
+                    title: const Text("Batch uploads not possible"),
+                    content: const Text(
                         "Uploading multiple images at once is disabled in simple mode. To enable this functionality, turn off simple mode in the settings."),
                     actions: <Widget>[
                       TextButton(
@@ -35,7 +35,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
                             Navigator.of(context).pop();
                           }
                         },
-                        child: Text("Got it"),
+                        child: const Text("Got it"),
                       ),
                     ]));
       }
@@ -61,14 +61,14 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   return ListView(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     children: [
                       _previewImage(),
                       DescriptionFragment(),
                     ],
                   );
                 } else {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator.adaptive(),
                   );
                 }
@@ -82,13 +82,13 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      title: Text("Upload to Wikimedia"),
+      title: const Text("Upload to Wikimedia"),
       actions: [
         IconButton(
             onPressed: () {
               _nextPage(context);
             },
-            icon: Icon(Icons.arrow_forward))
+            icon: const Icon(Icons.arrow_forward))
       ],
     );
   }
@@ -132,7 +132,7 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
         color: CustomColors.NO_IMAGE_COLOR,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Icon(Icons.image_not_supported,
                 color: CustomColors.NO_IMAGE_CONTENTS_COLOR, size: 40),
             Padding(padding: EdgeInsets.symmetric(vertical: 2)),
@@ -202,5 +202,6 @@ class _SimpleUploadPageState extends State<SimpleUploadPage> {
         .fileExists(collector.fileName!, collector.fileType!)) {
       return "A file with this name already exists.";
     }
+    return null;
   }
 }

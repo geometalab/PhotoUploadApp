@@ -13,7 +13,7 @@ class ImageService {
     if (urls.isEmpty) {
       return Container(
         color: CustomColors.NO_IMAGE_COLOR,
-        child: Center(
+        child: const Center(
           child: Icon(Icons.image_not_supported,
               color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
         ),
@@ -70,7 +70,7 @@ class ImageService {
 
         var params = "/${width.toString()}px-" + urlFilename + ".jpg";
 
-        urlList.add(new ImageURL(
+        urlList.add(ImageURL(
             filename, (urlPrefix + hashUrlPart + urlFilename + params)));
       }
       return urlList;

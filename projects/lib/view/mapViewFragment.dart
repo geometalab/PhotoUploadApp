@@ -94,6 +94,7 @@ class _MapFragmentState extends State<MapFragment> {
         title: const Text("Find nearby categories"),
       );
     }
+    return null;
   }
 
   Widget? infoMenu() {

@@ -44,7 +44,7 @@ class _IntroductionViewState extends State<IntroductionView> {
         child: LiquidSwipe(
           pages: pages,
           liquidController: liquidController,
-          slideIconWidget: Icon(Icons.arrow_back_ios),
+          slideIconWidget: const Icon(Icons.arrow_back_ios),
           onPageChangeCallback: (int page) {
             positionCallback(page);
           },
@@ -91,11 +91,11 @@ class _IntroductionViewState extends State<IntroductionView> {
     return _sampleContainer(
         color: Theme.of(context).colorScheme.background,
         child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(padding: EdgeInsets.only(bottom: 24)),
+                const Padding(padding: EdgeInsets.only(bottom: 24)),
                 Text("What is Commons?", style: customStyles.introBigText),
                 Text(
                   "Wikimedia Commons (or simply Commons) is a media repository of free-use images, sounds and other media.",
@@ -110,7 +110,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                   style: customStyles.introSmallText,
                   textAlign: TextAlign.end,
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 24)),
+                const Padding(padding: EdgeInsets.only(bottom: 24)),
               ],
             )));
   }
@@ -119,7 +119,7 @@ class _IntroductionViewState extends State<IntroductionView> {
     return _sampleContainer(
         color: Theme.of(context).colorScheme.secondary,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 56, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -132,7 +132,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.only(right: 16),
                     child: Icon(
                       Icons.grid_view,
                       size: 48,
@@ -150,7 +150,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.only(right: 16),
                     child: Icon(
                       Icons.photo_camera,
                       size: 48,
@@ -168,7 +168,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.only(right: 16),
                     child: Icon(
                       Icons.place,
                       size: 48,
@@ -191,7 +191,7 @@ class _IntroductionViewState extends State<IntroductionView> {
     return _sampleContainer(
       color: Theme.of(context).backgroundColor,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -252,7 +252,7 @@ class _IntroductionViewState extends State<IntroductionView> {
     return _sampleContainer(
         color: CustomColors.WIKIMEDIA_THEME_BLUE,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -267,7 +267,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                     customStyles.introSmallText.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
-              Padding(padding: EdgeInsets.all(16)),
+              const Padding(padding: EdgeInsets.all(16)),
               SizedBox(
                 width: 140,
                 height: 48,
@@ -331,7 +331,7 @@ class _IntroductionViewState extends State<IntroductionView> {
               bottom: 8,
               left: 8,
               child: TextButton(
-                child: Text("Skip introduction",
+                child: const Text("Skip introduction",
                     style: TextStyle(color: Colors.white)),
                 onPressed: () {
                   closeView();
@@ -356,8 +356,8 @@ class _IntroductionViewState extends State<IntroductionView> {
       position: position,
       dotsCount: max,
       decorator: DotsDecorator(
-        size: Size.fromRadius(4),
-        activeSize: Size.fromRadius(8),
+        size: const Size.fromRadius(4),
+        activeSize: const Size.fromRadius(8),
         color: Colors.white,
         activeColor: Theme.of(context).colorScheme.secondary,
       ),
@@ -373,7 +373,7 @@ class _IntroductionViewState extends State<IntroductionView> {
 
   slideCallback(double pos) {
     // Only call if build is completed and position is not initializing to 0.0
-    if (this.mounted) {
+    if (mounted) {
       if (pos > 0.01) {
         setState(() {
           if (!forwardSwipe) {
@@ -386,7 +386,7 @@ class _IntroductionViewState extends State<IntroductionView> {
   }
 
   positionCallback(int pos) {
-    if (this.mounted) {
+    if (mounted) {
       setState(() {
         slidePosition = 0.0;
         pagePosition = pos;
@@ -396,7 +396,7 @@ class _IntroductionViewState extends State<IntroductionView> {
 
   closeView() {
     SettingsManager().setFirstTime(false);
-    Future.delayed(Duration(milliseconds: 100));
+    Future.delayed(const Duration(milliseconds: 100));
     Navigator.pop(context);
   }
 }

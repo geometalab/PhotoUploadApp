@@ -17,8 +17,8 @@ class SelectItemFragment extends StatefulWidget {
 }
 
 class _SelectItemFragmentState extends State<SelectItemFragment> {
-  CategoryService cs = new CategoryService();
-  InformationCollector collector = new InformationCollector();
+  CategoryService cs = CategoryService();
+  InformationCollector collector = InformationCollector();
   List<String>? titles;
   List<Map<String, dynamic>?>? thumbs;
   int? useCase;
@@ -53,10 +53,10 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
 
     return Column(children: <Widget>[
       Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           // Autocomplete field which suggests existing Wikimedia categories and gets their Wikidata IDs. Documentation: https://pub.dev/documentation/flutter_typeahead/latest/
           child: TypeAheadField(
-            debounceDuration: Duration(
+            debounceDuration: const Duration(
                 milliseconds:
                     150), // Wait for 150 ms of no typing before starting to get the results
             textFieldConfiguration: TextFieldConfiguration(
@@ -68,7 +68,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
                     color: Theme.of(context).textTheme.bodyText1!.color),
                 decoration: InputDecoration(
                     labelText: labelText(useCase!),
-                    border: OutlineInputBorder())),
+                    border: const OutlineInputBorder())),
             suggestionsCallback: (pattern) async {
               return await cs.getSuggestions(pattern, useCase!);
             },
@@ -121,7 +121,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
     if (thumbnail == null) {
       return Container(
         color: CustomColors.NO_IMAGE_COLOR,
-        child: AspectRatio(
+        child: const AspectRatio(
           aspectRatio: 4 / 3,
           child: Icon(Icons.image_not_supported,
               color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
@@ -137,10 +137,10 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
       return Expanded(
         child: Center(
           child: Padding(
-              padding: EdgeInsets.fromLTRB(40, 0, 40, 40),
+              padding: const EdgeInsets.fromLTRB(40, 0, 40, 40),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                children: const [
                   Icon(
                     Icons.list,
                     size: 40,
@@ -160,14 +160,14 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
         child: ListView.builder(
           itemCount: titles?.length,
           shrinkWrap: true,
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           scrollDirection: Axis.vertical,
           itemBuilder: (BuildContext context, int i) {
             return Card(
               child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                 leading: Padding(
-                  padding: EdgeInsets.only(top: 6, bottom: 6),
+                  padding: const EdgeInsets.only(top: 6, bottom: 6),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: thumbnail(thumbs![i]),
@@ -175,7 +175,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
                 ),
                 title: Text(titles![i]), // TODO Text all on same vertical line
                 trailing: IconButton(
-                  icon: Icon(Icons.remove),
+                  icon: const Icon(Icons.remove),
                   onPressed: () {
                     setState(() {
                       _typeAheadController?.clear();

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class UnorderedList extends StatelessWidget {
-  UnorderedList(this.texts, this.textStyle);
+  const UnorderedList(this.texts, this.textStyle);
   final List<String> texts;
   final TextStyle textStyle;
 
@@ -12,7 +12,7 @@ class UnorderedList extends StatelessWidget {
       // Add list item
       widgetList.add(UnorderedListItem(text, textStyle));
       // Add space between items
-      widgetList.add(SizedBox(height: 5.0));
+      widgetList.add(const SizedBox(height: 5.0));
     }
 
     return Column(children: widgetList);
@@ -20,7 +20,7 @@ class UnorderedList extends StatelessWidget {
 }
 
 class UnorderedListItem extends StatelessWidget {
-  UnorderedListItem(this.text, this.textStyle);
+  const UnorderedListItem(this.text, this.textStyle);
   final String text;
   final TextStyle textStyle;
 

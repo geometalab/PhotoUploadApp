@@ -28,7 +28,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
         appBar: _appBar(context),
         body: Center(
             child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,7 +73,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      title: Text("Commons Uploader"),
+      title: const Text("Commons Uploader"),
       actions: [
         IconButton(
             onPressed: () {
@@ -84,7 +84,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                 ),
               );
             },
-            icon: Icon(Icons.account_circle)),
+            icon: const Icon(Icons.account_circle)),
         IconButton(
             onPressed: () {
               Navigator.push(
@@ -94,7 +94,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                 ),
               );
             },
-            icon: Icon(Icons.settings)),
+            icon: const Icon(Icons.settings)),
       ],
     );
   }
@@ -102,7 +102,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
   Widget _bigButton(IconData icon, String text, VoidCallback onPressed) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         child: OutlinedButton(
             onPressed: onPressed,
             child: SizedBox(
@@ -115,10 +115,10 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                     icon,
                     size: 50,
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
                   Text(
                     text,
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   )
                 ],
               ),

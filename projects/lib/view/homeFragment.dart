@@ -80,7 +80,7 @@ class HomeFragment extends StatelessWidget {
                                 end: Alignment.topCenter),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(12, 48, 12, 12),
+                            padding: const EdgeInsets.fromLTRB(12, 48, 12, 12),
                             child: Text(
                               "Picture of the Day",
                               style: customStyles.articleTitle
@@ -92,7 +92,7 @@ class HomeFragment extends StatelessWidget {
                     ],
                   );
                 } else {
-                  child = Center(
+                  child = const Center(
                     child: Padding(
                       padding: EdgeInsets.all(16),
                       child: CircularProgressIndicator.adaptive(),
@@ -100,7 +100,7 @@ class HomeFragment extends StatelessWidget {
                   );
                 }
                 return AnimatedSwitcher(
-                  duration: Duration(milliseconds: 1000),
+                  duration: const Duration(milliseconds: 1000),
                   child: child,
                 );
               },
@@ -108,11 +108,11 @@ class HomeFragment extends StatelessWidget {
           ));
     }
 
-    return new Scaffold(
+    return Scaffold(
       body: Center(
           child: ListView(
         scrollDirection: Axis.vertical,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         children: [
           headerWidget(),
           Row(
@@ -128,7 +128,7 @@ class HomeFragment extends StatelessWidget {
 }
 
 class ArticleList {
-  static List<Article> articles = new List.empty(growable: true);
+  static List<Article> articles = List.empty(growable: true);
 
   setArticles(List<Article> newArticles) {
     articles = newArticles;
@@ -143,15 +143,15 @@ class ArticleList {
   }
 
   List<Card> generateCards(BuildContext context) {
-    List<Card> cards = new List.empty(growable: true);
+    List<Card> cards = List.empty(growable: true);
     List<Article> articles = ArticleList.articles;
 
-    if (articles.length == 0) {
+    if (articles.isEmpty) {
       throw ("No articles to be displayed");
     }
 
     for (Article article in articles) {
-      cards.add(new Card(
+      cards.add(Card(
           color: Theme.of(context).cardColor,
           child: GestureDetector(
               onTap: () {
@@ -163,24 +163,24 @@ class ArticleList {
                 }
               },
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           article.title,
                           style: customStyles.articleTitle,
                         )),
                     if (article.image != null)
                       Padding(
-                          padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                           child: article.image as Widget),
                     if (article.description != null)
                       Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                         child: Text(
                           article.description ?? "",
                           style: customStyles.objectDescription,
@@ -195,16 +195,16 @@ class ArticleList {
 
   List<Expanded> generateLists(BuildContext context, List<Card> cards) {
     // This is ugly, but at least it isn't redundant
-    List<Expanded> returnList = new List.empty(growable: true);
-    List<Card> cardList1 = new List.empty(growable: true);
-    List<Card> cardList2 = new List.empty(growable: true);
+    List<Expanded> returnList = List.empty(growable: true);
+    List<Card> cardList1 = List.empty(growable: true);
+    List<Card> cardList2 = List.empty(growable: true);
     for (int i = 0; i < cards.length; i = i + 2) {
       cardList1.add(cards[i]);
       if (i + 1 < cards.length) {
         cardList2.add(cards[i + 1]);
       }
     }
-    List<List<Card>> listception = new List.empty(growable: true);
+    List<List<Card>> listception = List.empty(growable: true);
     listception.add(cardList1);
     listception.add(cardList2);
 

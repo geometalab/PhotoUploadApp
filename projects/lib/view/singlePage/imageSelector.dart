@@ -25,10 +25,10 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select an image"),
+        title: const Text("Select an image"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: Column(
           children: generateRows(widget.images),
         ),
@@ -55,7 +55,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
     if (index < imageList.length) {
       late AnimationController _controller;
       _controller = AnimationController(
-        duration: Duration(milliseconds: 120),
+        duration: const Duration(milliseconds: 120),
         vsync: this,
       );
 
@@ -78,7 +78,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
         if (imageList[index] == "") {
           return Container(
             color: Colors.grey,
-            child: Center(
+            child: const Center(
               child: Icon(
                 Icons.clear,
                 size: 50,
@@ -108,7 +108,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
             child: AspectRatio(
               aspectRatio: 1 / 1,
               child: Padding(
-                padding: EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
                 child: AnimatedBuilder(
                   builder: (BuildContext context, Widget? child) {
                     return Transform.scale(
@@ -159,7 +159,7 @@ class _ImageSelectorFragmentState extends State<ImageSelectorFragment>
           widget.callback(_selectedImage!);
           Navigator.pop(context);
         },
-        child: Icon(Icons.done),
+        child: const Icon(Icons.done),
       );
     } else {
       return null;

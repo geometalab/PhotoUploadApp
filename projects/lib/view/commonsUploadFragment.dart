@@ -19,7 +19,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO noticeable frame drop when switching tabs  (maybe my phone is just shit)
-    return new Scaffold(
+    return Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         resizeToAvoidBottomInset: false,
         body: FutureBuilder(
@@ -37,7 +37,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
   Widget _body() {
     return Column(
       children: [
-        Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         ProgressTabBar(
           selectedTab: selectedTab,
           children: [
@@ -87,7 +87,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
                 label: "Review"),
           ],
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(top: 8),
           child: Divider(
             height: 1,
@@ -108,7 +108,7 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       // case 1:
       //   return StatefulSelectItemFragment(1);
       case 1:
-        return SelectItemFragment(0);
+        return const SelectItemFragment(0);
       case 2:
         return DescriptionFragment();
       case 3:

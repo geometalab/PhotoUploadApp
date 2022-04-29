@@ -14,7 +14,7 @@ class _SimpleCategoriesPageState extends State<SimpleCategoriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
-      body: Padding(
+      body: const Padding(
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 4),
         child: SelectItemFragment(0),
       ),
@@ -23,13 +23,13 @@ class _SimpleCategoriesPageState extends State<SimpleCategoriesPage> {
 
   AppBar _appBar() {
     return AppBar(
-      title: Text("Upload to Wikimedia"),
+      title: const Text("Upload to Wikimedia"),
       actions: [
         IconButton(
             onPressed: () {
               upload();
             },
-            icon: Icon(Icons.upload)),
+            icon: const Icon(Icons.upload)),
       ],
     );
   }

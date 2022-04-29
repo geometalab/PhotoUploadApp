@@ -9,7 +9,7 @@ class PictureOfTheDayArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Picture of the day"),
+        title: const Text("Picture of the day"),
       ),
       body: Center(
         child: FutureBuilder(
@@ -18,13 +18,13 @@ class PictureOfTheDayArticle extends StatelessWidget {
               (BuildContext context, AsyncSnapshot<PictureOfTheDay> snapshot) {
             if (snapshot.hasData) {
               return ListView(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 children: [
-                  Text(
+                  const Text(
                     "Wikimedia Picture of the day",
                     style: headerText,
                   ),
-                  Divider(),
+                  const Divider(),
                   Column(
                     children: [
                       GestureDetector(
@@ -45,14 +45,14 @@ class PictureOfTheDayArticle extends StatelessWidget {
                               child: Image.network(snapshot.data!.imageUrl),
                             ),
                           )),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
                       snapshot.data!.description,
                       TextButton(
                         onPressed: () {
                           potd.openPotdWeb();
                         },
                         child: Row(
-                          children: [
+                          children: const [
                             Icon(Icons.public),
                             Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 2)),
@@ -65,7 +65,7 @@ class PictureOfTheDayArticle extends StatelessWidget {
                 ],
               );
             } else {
-              return LinearProgressIndicator();
+              return const LinearProgressIndicator();
             }
           },
         ),

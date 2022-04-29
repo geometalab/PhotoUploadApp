@@ -3,7 +3,7 @@ import 'package:projects/model/informationCollector.dart';
 import '../wiki/loginHandler.dart';
 
 class OwnWorkHelper {
-  InformationCollector _collector = InformationCollector();
+  final InformationCollector _collector = InformationCollector();
 
   Future<void> setOwnWork() async {
     _collector.source = "Own Work";

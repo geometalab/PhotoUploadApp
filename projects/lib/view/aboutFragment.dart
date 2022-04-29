@@ -21,17 +21,17 @@ class AboutFragment extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("About"),
+        title: const Text("About"),
       ),
       body: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 120),
+                padding: const EdgeInsets.symmetric(horizontal: 120),
                 child: AspectRatio(
                   aspectRatio: 4 / 3,
                   child: Image.asset(
@@ -40,7 +40,7 @@ class AboutFragment extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 "Commons Uploader",
                 style: fragmentTitle,
                 textAlign: TextAlign.center,
@@ -53,27 +53,27 @@ class AboutFragment extends StatelessWidget {
                     return Text(
                         "${packageInfo.version}+${packageInfo.buildNumber}");
                   } else {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                 },
               ),
-              Padding(padding: EdgeInsets.only(bottom: 8)),
-              Text("Developed by ", style: headerText),
-              Padding(padding: EdgeInsets.only(bottom: 4)),
-              Text(
+              const Padding(padding: EdgeInsets.only(bottom: 8)),
+              const Text("Developed by ", style: headerText),
+              const Padding(padding: EdgeInsets.only(bottom: 4)),
+              const Text(
                 "Fabio Zahner & Remo Steiner",
                 style: headerText,
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: SizedBox(
                   width: double.infinity,
                   child: ifsLogo,
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
                 child: SizedBox(
                   width: double.infinity,
                   child: ostLogo,
@@ -86,7 +86,7 @@ class AboutFragment extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.public),
                       Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                       Text("Visit our website")
@@ -99,7 +99,7 @@ class AboutFragment extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.person),
                       Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                       Text("Contact us")
@@ -113,13 +113,13 @@ class AboutFragment extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.code),
                       Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                       Text("Code Repository")
                     ],
                   )),
-              Padding(
+              const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                   child: Text(
                     "Commons Uploader is not affiliated with the Wikimedia Foundation.",

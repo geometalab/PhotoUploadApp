@@ -7,6 +7,7 @@ class NoConnection extends StatefulWidget {
 }
 
 class _NoConnectionState extends State<NoConnection> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -15,23 +16,23 @@ class _NoConnectionState extends State<NoConnection> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Padding(
-              padding: EdgeInsets.all(32),
+              padding: const EdgeInsets.all(32),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Connection lost",
                     style: articleTitle,
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                   Icon(
                     Icons.signal_wifi_connected_no_internet_4,
                     size: 60,
                     color: Theme.of(context).disabledColor,
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-                  Text(
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  const Text(
                     "Connection with Wikimedia could not be established. "
                     "Check your internet connection or try again later.",
                     textAlign: TextAlign.center,
@@ -40,7 +41,7 @@ class _NoConnectionState extends State<NoConnection> {
               ),
             );
           } else {
-            return CircularProgressIndicator.adaptive();
+            return const CircularProgressIndicator.adaptive();
           }
         },
       )),

@@ -52,7 +52,7 @@ class PictureOfTheDayService {
     if (_pictureOfTheDay == null) {
       _pictureOfTheDay = await getItemFromFeed(0);
     } else if (_pictureOfTheDay!.pubDate
-        .isBefore(DateTime.now().subtract(Duration(days: 1)))) {
+        .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
       _pictureOfTheDay = await getItemFromFeed(0);
     }
     return _pictureOfTheDay!;
@@ -97,7 +97,7 @@ class PictureOfTheDayService {
       style: {
         "*": Style(
           padding: const EdgeInsets.all(0),
-          margin: EdgeInsets.all(0),
+          margin: const EdgeInsets.all(0),
           fontSize: FontSize.large,
         ),
       },

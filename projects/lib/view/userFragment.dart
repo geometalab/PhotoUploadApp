@@ -14,13 +14,13 @@ class UserFragment extends StatefulWidget {
 }
 
 class _UserFragmentState extends State<UserFragment> {
-  LoginHandler loginHandler = new LoginHandler();
+  LoginHandler loginHandler = LoginHandler();
   bool expanded = false;
   Userdata? userdata;
   late DeepLinkListener deepLinkListener;
 
   _UserFragmentState() {
-    deepLinkListener = new DeepLinkListener();
+    deepLinkListener = DeepLinkListener();
     deepLinkListener.addListener(() async {
       // On return to app from app, refresh widget
       await pullRefresh();
@@ -36,7 +36,7 @@ class _UserFragmentState extends State<UserFragment> {
             future: loginHandler.getUserInformationFromFile(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator.adaptive());
+                return const Center(child: CircularProgressIndicator.adaptive());
               } else {
                 Userdata? data = snapshot.data as Userdata?;
                 if (data == null) {
@@ -59,7 +59,7 @@ class _UserFragmentState extends State<UserFragment> {
   Widget loggedIn(Userdata userdata) {
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       children: <Widget>[
         Theme(
           data: Theme.of(context).copyWith(
@@ -70,12 +70,12 @@ class _UserFragmentState extends State<UserFragment> {
               userdata.username,
               style: headerText,
             ),
-            subtitle: Text("View Details 〉", style: objectDescription),
+            subtitle: const Text("View Details 〉", style: objectDescription),
             leading: UserAvatar(),
             children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
-            childrenPadding: EdgeInsets.symmetric(horizontal: 8),
+            childrenPadding: const EdgeInsets.symmetric(horizontal: 8),
             initiallyExpanded: true,
           ),
         ),
@@ -85,19 +85,19 @@ class _UserFragmentState extends State<UserFragment> {
                 loginHandler.openMediaAccount(userdata.username);
               });
             },
-            child: Text("My uploads")),
+            child: const Text("My uploads")),
         OutlinedButton(
             onPressed: () {
               loginHandler.logOut();
               pullRefresh();
             },
-            child: Text("Log out")),
+            child: const Text("Log out")),
       ],
     );
   }
 
   List<Widget> expandedInfo(Userdata userdata, double spaceBetween) {
-    List<Widget> list = new List.empty(growable: true);
+    List<Widget> list = List.empty(growable: true);
     list.add(ValueLabelField(userdata.username, "username"));
     list.add(ValueLabelField(userdata.email, "email"));
     list.add(ValueLabelField(userdata.editCount.toString(), "number of edits"));
@@ -109,7 +109,7 @@ class _UserFragmentState extends State<UserFragment> {
     list.add(expansionInfoWidget("groups", userdata.groups));
     list.add(ValueLabelField(DateFormat().format(userdata.lastCheck),
         "last refresh")); // TODO Is there an easy way to localize date time format?
-    list.add(Padding(padding: EdgeInsets.symmetric(vertical: 4)));
+    list.add(const Padding(padding: EdgeInsets.symmetric(vertical: 4)));
     return addPadding(list, spaceBetween);
   }
 
@@ -142,7 +142,7 @@ class _UserFragmentState extends State<UserFragment> {
       list.add(ListTile(
         title: Text(string),
         dense: true,
-        visualDensity: VisualDensity(vertical: 0),
+        visualDensity: const VisualDensity(vertical: 0),
       ));
     }
     return list;
@@ -163,14 +163,14 @@ class _UserFragmentState extends State<UserFragment> {
                 size: 80,
                 color: Theme.of(context).disabledColor,
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
               ),
-              Text(
+              const Text(
                 "Not logged in",
                 style: TextStyle(fontSize: 20),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
               ),
               SizedBox(
@@ -180,7 +180,7 @@ class _UserFragmentState extends State<UserFragment> {
                   onPressed: () {
                     loginHandler.openWebLogin();
                   },
-                  child: new Text("Log in"),
+                  child: const Text("Log in"),
                 ),
               ),
               SizedBox(
@@ -190,7 +190,7 @@ class _UserFragmentState extends State<UserFragment> {
                   onPressed: () {
                     loginHandler.openWebSignUp();
                   },
-                  child: new Text("Create account"),
+                  child: const Text("Create account"),
                 ),
               ),
             ],

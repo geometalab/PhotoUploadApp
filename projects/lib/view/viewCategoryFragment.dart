@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 
 class ViewCategoryFragment extends StatefulWidget {
   final Marker marker;
-  ViewCategoryFragment(this.marker, {Key? key}) : super(key: key);
+  const ViewCategoryFragment(this.marker, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ViewCategoryFragment(marker);
@@ -27,7 +27,7 @@ class ViewCategoryFragment extends StatefulWidget {
 class _ViewCategoryFragment extends State<ViewCategoryFragment> {
   final Marker _marker;
   _ViewCategoryFragment(this._marker);
-  InformationCollector collector = new InformationCollector();
+  InformationCollector collector = InformationCollector();
   int numberOfImages = 10;
 
   @override
@@ -36,7 +36,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
         _marker.key.toString().substring(3, _marker.key.toString().length - 3);
     List<Widget> cards = List.empty(growable: true);
 
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(categoryTitle),
       ),
@@ -61,12 +61,12 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                             numberOfImages += 10;
                           });
                         },
-                        child: Text("Load more"),
+                        child: const Text("Load more"),
                       ));
                     } else {
                       cards.add(Card(
                         child: Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -86,16 +86,16 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                                   child: CachedNetworkImage(
                                     imageUrl: images[i].url,
                                     placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
+                                        const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                        const Icon(Icons.error),
                                     fit: BoxFit.fitWidth,
                                   )),
                               Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(top: 10),
                                 child: Text(images[i].name,
                                     style:
-                                        TextStyle(fontStyle: FontStyle.italic)),
+                                        const TextStyle(fontStyle: FontStyle.italic)),
                               ),
                             ],
                           ),
@@ -103,16 +103,16 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                       ));
                     }
                   }
-                  cards.add(Padding(
+                  cards.add(const Padding(
                     padding: EdgeInsets.symmetric(vertical: 32),
                   ));
                   return Expanded(
                       child: ListView(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     children: cards,
                   ));
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               },
             )
@@ -125,7 +125,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           if (snapshot.hasData && snapshot.data != null) {
             return snapshot.data!;
           } else {
-            return SizedBox
+            return const SizedBox
                 .shrink(); // Because FutureBuilder can't return null even though floatingActionButton is nullable :)
           }
         },
@@ -148,7 +148,7 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
             ButtonNavigationItem.expandable(
                 collapseButton: ButtonNavigationItem(
                     color: Theme.of(context).colorScheme.secondary,
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     height: 56,
                     width: 80,
                     onPressed: () {}),
@@ -156,13 +156,13 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                 width: 250,
                 verticalOffset: 64,
                 expandableSpacing: 64,
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 label: "Upload to this Category",
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                     onPressed: () async {
@@ -176,9 +176,9 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                     },
                     child: Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         child: Row(
-                          children: [
+                          children: const [
                             Icon(Icons.photo_camera),
                             Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 4)),
@@ -188,8 +188,8 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                     onPressed: () async {
@@ -203,9 +203,9 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
                     },
                     child: Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         child: Row(
-                          children: [
+                          children: const [
                             Icon(Icons.folder),
                             Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 4)),
@@ -223,8 +223,8 @@ class _ViewCategoryFragment extends State<ViewCategoryFragment> {
           Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 2;
         },
         heroTag: "nonSimpleModeFAB",
-        label: Text("Upload to this Category"),
-        icon: Icon(Icons.add),
+        label: const Text("Upload to this Category"),
+        icon: const Icon(Icons.add),
       );
     }
   }

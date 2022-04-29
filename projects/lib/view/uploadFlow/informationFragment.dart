@@ -11,10 +11,10 @@ class InformationFragment extends StatefulWidget {
 }
 
 class _InformationFragment extends State<InformationFragment> {
-  InformationCollector collector = new InformationCollector();
+  InformationCollector collector = InformationCollector();
 
   DateTime selectedDate = InformationCollector().date;
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -35,7 +35,7 @@ class _InformationFragment extends State<InformationFragment> {
       child: SingleChildScrollView(
           child: Column(children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -51,12 +51,12 @@ class _InformationFragment extends State<InformationFragment> {
                     }
                     setState(() {});
                   }),
-              Text("This file is my own work"),
+              const Text("This file is my own work"),
             ],
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: TextFormField(
               controller: TextEditingController(text: collector.source),
               onChanged: (value) {
@@ -69,7 +69,7 @@ class _InformationFragment extends State<InformationFragment> {
                   hintText: 'Where this digital file came from')),
         ),
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: TextFormField(
               controller: TextEditingController(text: collector.author),
               enabled: !collector.ownWork,
@@ -82,7 +82,7 @@ class _InformationFragment extends State<InformationFragment> {
                   hintText: 'Original author of the file')),
         ),
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,7 +96,7 @@ class _InformationFragment extends State<InformationFragment> {
                     color:
                         CustomColors().getDefaultIconColor(Theme.of(context)),
                   ),
-                  Padding(padding: EdgeInsets.only(left: 18)),
+                  const Padding(padding: EdgeInsets.only(left: 18)),
                   Text(
                     "License: ",
                     textScaleFactor: 1.2,
@@ -133,7 +133,7 @@ class _InformationFragment extends State<InformationFragment> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -148,7 +148,7 @@ class _InformationFragment extends State<InformationFragment> {
                       color:
                           CustomColors().getDefaultIconColor(Theme.of(context)),
                     ),
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 9)),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 9)),
                     Text(
                       'Date:',
                       textScaleFactor: 1.2,
@@ -156,7 +156,7 @@ class _InformationFragment extends State<InformationFragment> {
                           color: CustomColors()
                               .getDefaultIconColor(Theme.of(context))),
                     ),
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     Text(
                       DateFormat.yMd().format(
                           collector.date), // TODO local format instead of yMd
@@ -172,7 +172,7 @@ class _InformationFragment extends State<InformationFragment> {
                     children: [
                       OutlinedButton(
                         onPressed: () => _selectDate(context),
-                        child: Text('Select date'),
+                        child: const Text('Select date'),
                       )
                     ]),
               )

@@ -13,7 +13,7 @@ class ImageDataExtractor {
     List<Map> maps = List.empty(growable: true);
     try {
       for (XFile image in collector.images) {
-        Map<String, dynamic> infoMap = new Map();
+        Map<String, dynamic> infoMap = {};
         infoMap['image'] = Image.file(File(image.path),
             scale: 0.5, filterQuality: FilterQuality.medium, fit: BoxFit.cover);
         final imageBytes = await image.readAsBytes();
@@ -61,7 +61,7 @@ class ImageDataExtractor {
     } catch (e) {
       // Somehow, thrown errors don't get printed to console, so I print them as well.
       print("Error while processing image: $e");
-      throw (e);
+      rethrow;
     }
   }
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:projects/config.dart';
 import 'package:projects/model/exceptions/requestException.dart';

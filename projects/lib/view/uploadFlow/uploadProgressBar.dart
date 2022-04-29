@@ -45,7 +45,7 @@ class UploadProgressBar {
                     // Child which gets inserted into the AnimatedSwitcher
                     Widget child;
                     // Checkmark which gets displayed on upload finish
-                    Icon checkMark = Icon(
+                    Icon checkMark = const Icon(
                       Icons.check,
                       color: Colors.green,
                       size: 40,
@@ -53,7 +53,7 @@ class UploadProgressBar {
 
                     // If stream has not yet broadcast a value
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      child = CircularProgressIndicator();
+                      child = const CircularProgressIndicator();
                     } else {
                       done = snapshot.data!.done;
                       streamedProgressValue = snapshot.data!.progress;
@@ -65,12 +65,12 @@ class UploadProgressBar {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             checkMark,
-                            Padding(
+                            const Padding(
                               padding: EdgeInsets.symmetric(vertical: 16),
                             ),
                             Text("Upload successful",
-                                style: Theme.of(context).textTheme.bodyText1),
-                            Padding(
+                                style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.white)),
+                            const Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),
                             ),
                             ElevatedButton(
@@ -89,7 +89,7 @@ class UploadProgressBar {
                                         .viewIndex = 0;
                                   }
                                 },
-                                child: Text(
+                                child: const Text(
                                     "Back to home")), // TODO View in web button
                           ],
                         );
@@ -119,7 +119,7 @@ class UploadProgressBar {
                             if (value >= 0.999) {
                               return checkMark;
                             } else if (value == 0.0) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else {
                               return CircularProgressIndicator(
                                 value: value,
@@ -139,7 +139,7 @@ class UploadProgressBar {
       });
 
   progressManager() {
-    Timer.periodic(Duration(milliseconds: 100), (timer) {
+    Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (done) {
         timer.cancel();
       }

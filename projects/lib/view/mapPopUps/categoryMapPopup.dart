@@ -5,7 +5,7 @@ import 'package:projects/view/viewCategoryFragment.dart';
 
 class CategoryPopup extends StatefulWidget {
   final Marker marker;
-  CategoryPopup(this.marker, {Key? key}) : super(key: key);
+  const CategoryPopup(this.marker, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CategoryPopupState(marker);
@@ -33,7 +33,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
               width: 100,
               height: 70,
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: FutureBuilder(
                     future: ImageService().getCategoryThumbnail(_marker.key
                         .toString()
@@ -47,7 +47,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
                       } else if (snapshot.hasError) {
                         throw snapshot.error!;
                       } else {
-                        thumbnail = Padding(
+                        thumbnail = const Padding(
                           padding: EdgeInsets.zero,
                           child: Center(
                               child: CircularProgressIndicator.adaptive(
@@ -60,7 +60,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
               ),
             ),
             _cardDescription(context),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 20, right: 15),
               child: Icon(Icons.edit),
             ),
@@ -74,7 +74,7 @@ class _CategoryPopupState extends State<CategoryPopup> {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
-        constraints: BoxConstraints(minWidth: 100, maxWidth: 200),
+        constraints: const BoxConstraints(minWidth: 100, maxWidth: 200),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,

@@ -15,13 +15,13 @@ class NotLoggedIn extends StatelessWidget {
             size: 60,
             color: Theme.of(context).disabledColor,
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-          Text(
+          const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+          const Text(
             "Not logged in",
             style: articleTitle,
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-          Text(
+          const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+          const Text(
             "Log into your wikimedia account to begin uploading.",
             textAlign: TextAlign.center,
           ),

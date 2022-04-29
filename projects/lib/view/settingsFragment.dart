@@ -123,10 +123,10 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                children: [
-                  const Text("Simple Mode"),
-                  const Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4)),
+                children: const [
+                  Text("Simple Mode"),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4)),
                   InfoPopUp(texts.simpleModeInfo),
                 ],
               ),
@@ -163,9 +163,9 @@ class _SettingsFragmentState extends State<SettingsFragment> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Select background image"),
-              const Icon(Icons.chevron_right)
+            children: const [
+              Text("Select background image"),
+              Icon(Icons.chevron_right)
             ],
           ),
         ));
@@ -183,8 +183,8 @@ class _SettingsFragmentState extends State<SettingsFragment> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Show first-time Introduction"),
+            children: const [
+              Text("Show first-time Introduction"),
             ],
           ),
         ));
@@ -228,8 +228,8 @@ class _SettingsFragmentState extends State<SettingsFragment> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Delete local storage"),
+            children: const [
+              Text("Delete local storage"),
             ],
           ),
         ));

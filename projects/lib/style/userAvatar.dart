@@ -4,7 +4,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      child: Icon(
+      child: const Icon(
         Icons.person_outline_rounded,
         color: Color.fromRGBO(229, 229, 229, 1),
       ),

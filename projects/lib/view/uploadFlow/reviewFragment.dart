@@ -18,7 +18,7 @@ class ReviewFragment extends StatefulWidget {
 }
 
 class _ReviewFragmentState extends State<ReviewFragment> {
-  InformationCollector collector = new InformationCollector();
+  InformationCollector collector = InformationCollector();
   List<Widget> infoText = List.empty(growable: true);
   Icon? fileNameIcon, titleIcon, authorIcon, licenseIcon, categoryIcon;
   List<Icon?> descriptionIcon = List.empty(growable: true);
@@ -34,7 +34,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
   }
 
   Icon warningIcon(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.warning_amber_rounded,
       color: CustomColors.WARNING_COLOR,
     );
@@ -45,11 +45,11 @@ class _ReviewFragmentState extends State<ReviewFragment> {
   }
 
   Text warningText(BuildContext context, String text) {
-    return Text(text, style: TextStyle(color: CustomColors.WARNING_COLOR));
+    return Text(text, style: const TextStyle(color: CustomColors.WARNING_COLOR));
   }
 
   Text statusText(BuildContext context, String text) {
-    return Text(text, style: TextStyle(color: Colors.green));
+    return Text(text, style: const TextStyle(color: Colors.green));
   }
 
   @override
@@ -57,14 +57,14 @@ class _ReviewFragmentState extends State<ReviewFragment> {
     infoCheckError();
     return Container(
         child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Column(
               children: [
                 media(),
                 Card(
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -112,11 +112,11 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                 ),
                 listWidgetBuilder(0),
                 // listWidgetBuilder(1),
-                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 Column(
                   children: infoText,
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 6)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                 SizedBox(
                   width: 180,
                   height: 48,
@@ -124,7 +124,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                     onPressed: infoCheckError()
                         ? null // Button only enables if infoCheckError returns false
                         : () async => submit(),
-                    child: Text("Submit"),
+                    child: const Text("Submit"),
                   ),
                 ),
               ],
@@ -270,12 +270,12 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                 return GestureDetector(
                   onTap: () => _controller.animateToPage(entry.key,
                       curve: Curves.ease,
-                      duration: Duration(milliseconds: 500)),
+                      duration: const Duration(milliseconds: 500)),
                   child: Container(
                     width: 8.0,
                     height: 8.0,
                     margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                        const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: (Theme.of(context).brightness == Brightness.dark
@@ -289,7 +289,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       );
     } else {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         width: double.infinity,
         alignment: Alignment.center,
         child: ClipRRect(
@@ -329,7 +329,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
         color: CustomColors.NO_IMAGE_COLOR,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Icon(Icons.image_not_supported,
                 color: CustomColors.NO_IMAGE_CONTENTS_COLOR, size: 40),
             Padding(padding: EdgeInsets.symmetric(vertical: 2)),
@@ -346,7 +346,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
   List<Widget> descriptionsBuilder() {
     List<Widget> list = List.empty(growable: true);
     for (Description description in collector.description) {
-      String descriptionLabel = data.languages['${description.language}']!;
+      String descriptionLabel = data.languages[description.language]!;
       descriptionLabel += " description";
       list.add(ValueLabelField(
         description.content,
@@ -368,10 +368,10 @@ class _ReviewFragmentState extends State<ReviewFragment> {
       title = "Depicts";
     }
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         child: Column(
           children: [
             Text(
@@ -397,19 +397,20 @@ class _ReviewFragmentState extends State<ReviewFragment> {
     } else if (useCase == 1) {
       titles = collector.depictions;
       thumbs = collector.depictionsThumb;
-    } else
+    } else {
       throw ("Incorrect useCase param for categoriesList");
+    }
 
-    List<Widget> list = new List.empty(growable: true);
+    List<Widget> list = List.empty(growable: true);
     // If no keywords in list, display warning message
     if (titles.isEmpty) {
-      list.add(Divider());
+      list.add(const Divider());
       list.add(Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 2),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "No items added",
               style: objectDescription,
             ),
@@ -429,7 +430,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
         thumbnail = Container(
             height: 48,
             color: CustomColors.NO_IMAGE_COLOR,
-            child: AspectRatio(
+            child: const AspectRatio(
               aspectRatio: 3 / 2,
               child: Icon(Icons.image_not_supported,
                   color: CustomColors.NO_IMAGE_CONTENTS_COLOR),
@@ -449,7 +450,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 8),
+            padding: const EdgeInsets.only(left: 8),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: thumbnail,
@@ -461,7 +462,7 @@ class _ReviewFragmentState extends State<ReviewFragment> {
 
     // Insert divider between list elements
     for (int i = list.length - 1; i >= 0; i--) {
-      list.insert(i, Divider());
+      list.insert(i, const Divider());
     }
     return list;
   }

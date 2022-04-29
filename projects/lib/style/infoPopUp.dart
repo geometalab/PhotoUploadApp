@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class InfoPopUp extends StatelessWidget {
   final String message;
-  InfoPopUp(this.message);
+  const InfoPopUp(this.message);
 
   @override
   Widget build(BuildContext context) {
     return Tooltip(
       message: message,
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       verticalOffset: 16,
-      showDuration: Duration(minutes: 1),
+      showDuration: const Duration(minutes: 1),
       triggerMode: TooltipTriggerMode.tap,
       child: Icon(
         Icons.help_outline_outlined,
