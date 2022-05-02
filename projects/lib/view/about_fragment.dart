@@ -85,7 +85,7 @@ class AboutFragment extends StatelessWidget {
               ),
               TextButton(
                   onPressed: () {
-                    ActionHelper().launchUrl("https://www.ifs.hsr.ch/");
+                    ActionHelper().openUrl("https://www.ifs.hsr.ch/");
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -111,7 +111,7 @@ class AboutFragment extends StatelessWidget {
                   )),
               TextButton(
                   onPressed: () {
-                    ActionHelper().launchUrl(
+                    ActionHelper().openUrl(
                         "https://github.com/geometalab/PhotoUploadApp");
                   },
                   child: Row(

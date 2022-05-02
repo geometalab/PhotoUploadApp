@@ -69,7 +69,7 @@ class UploadGuideArticle extends StatelessWidget {
             onPressed: () async {
               String url =
                   "https://commons.wikimedia.org/wiki/Commons:First_steps/Uploading_files";
-              ActionHelper().launchUrl(url);
+              ActionHelper().openUrl(url);
             },
           )
         ],

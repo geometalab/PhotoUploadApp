@@ -109,7 +109,7 @@ class OtherWikimediaProjectsArticle extends StatelessWidget {
         ),
       ),
       onTap: () {
-        ActionHelper().launchUrl(link);
+        ActionHelper().openUrl(link);
       },
     );
   }

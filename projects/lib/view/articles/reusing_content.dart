@@ -71,7 +71,7 @@ class ReusingContentArticle extends StatelessWidget {
             onPressed: () async {
               String url =
                   "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia#How_to_comply_with_a_file's_license_requirements";
-              ActionHelper().launchUrl(url);
+              ActionHelper().openUrl(url);
             },
           )
         ],

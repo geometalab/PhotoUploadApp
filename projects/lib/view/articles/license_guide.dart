@@ -59,7 +59,7 @@ class LicenseGuideArticle extends StatelessWidget {
             onPressed: () async {
               String url =
                   "https://commons.wikimedia.org/wiki/Commons:Licensing";
-              ActionHelper().launchUrl(url);
+              ActionHelper().openUrl(url);
             },
           )
         ],

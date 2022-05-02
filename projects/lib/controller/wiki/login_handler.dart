@@ -72,20 +72,20 @@ class LoginHandler {
         "&response_type=code"
         "&code_challenge=$codeChallenge"
         "&code_challenge_method=S256";
-    _actionHelper.launchUrl(url);
+    _actionHelper.openUrl(url);
   }
 
   openWebSignUp() {
     // TODO Return to app directly if possible https://www.mediawiki.org/wiki/Onboarding_new_Wikipedians/Account_creation_pathways
     String url =
         "https://en.wikipedia.org/w/index.php?title=Special:CreateAccount";
-    _actionHelper.launchUrl(url);
+    _actionHelper.openUrl(url);
   }
 
   openMediaAccount(String username) {
     String url =
         "https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/$username";
-    _actionHelper.launchUrl(url);
+    _actionHelper.openUrl(url);
   }
 
   Future<Userdata> getTokens(String authCode) async {

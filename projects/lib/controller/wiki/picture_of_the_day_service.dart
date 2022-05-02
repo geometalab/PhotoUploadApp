@@ -23,7 +23,7 @@ class PictureOfTheDayService {
   }
 
   openPotdWeb() {
-    ActionHelper().launchUrl(
+    ActionHelper().openUrl(
         "https://commons.wikimedia.org/wiki/Commons:Picture_of_the_day"); // TODO open the actual page of POTD, not this site
   }
 
@@ -104,7 +104,7 @@ class PictureOfTheDayService {
       data: input,
       onLinkTap: (url, _, __, ___) {
         if (url != null) {
-          ActionHelper().launchUrl(url);
+          ActionHelper().openUrl(url);
         }
       },
     );
