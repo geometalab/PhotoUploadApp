@@ -28,8 +28,7 @@ class HomeFragment extends StatelessWidget {
           onTap: const ReusingContentArticle()),
       Article(
           title: "License Guide",
-          image: Image.network(
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/CC-BY-SA_icon.svg/640px-CC-BY-SA_icon.svg.png"),
+          image: Image.asset("assets/media/CC_BY-SA_icon.png"),
           description:
               "This page gives non-lawyers an overview of complicated copyright laws.",
           onTap: const LicenseGuideArticle()),
