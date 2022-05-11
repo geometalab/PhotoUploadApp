@@ -74,7 +74,7 @@ class _UserFragmentState extends State<UserFragment> {
               style: headerText,
             ),
             subtitle: const Text("View Details 〉", style: objectDescription),
-            leading: const UserAvatar(),
+            leading: const UserAvatar(Icons.person_outline_rounded),
             children: expandedInfo(userdata, 0),
             expandedAlignment: Alignment.bottomLeft,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,

@@ -202,41 +202,19 @@ class _PageContainerState extends State<PageContainer> {
       future: LoginHandler().getUserInformationFromFile(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
-          return DrawerHeader(
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Stack(
-                children: [
-                  Positioned(
-                      left: 16,
-                      bottom: 16,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.person_off,
-                            color: Colors.white,
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 2)),
-                          Text(
-                            "Not logged into wikimedia",
-                            style: text_styles.objectDescription
-                                .copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ))
-                ],
-              ),
-              decoration: _headerDecorationImage(),
-            ),
-            padding: EdgeInsets.zero,
+          return UserAccountsDrawerHeader(
+            decoration: _headerDecorationImage(),
+            currentAccountPictureSize: const Size.square(48),
+            currentAccountPicture: const UserAvatar(Icons.person_off),
+            accountEmail: const Text("Log in to upload images."),
+            accountName: const Text("Not logged in"),
           );
         } else {
           Userdata data = snapshot.data;
           return UserAccountsDrawerHeader(
               decoration: _headerDecorationImage(),
-              currentAccountPicture: const UserAvatar(),
+              currentAccountPicture:
+                  const UserAvatar(Icons.person_outline_rounded),
               currentAccountPictureSize: const Size.square(48),
               // arrowColor: Theme.of(context).colorScheme.onPrimary,
               // onDetailsPressed: () { }, // TODO maybe put something in this dropdown
