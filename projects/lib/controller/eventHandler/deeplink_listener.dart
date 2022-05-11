@@ -54,9 +54,21 @@ class DeepLinkListener extends ChangeNotifier {
         } else {
           Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 5;
         }
+        rebuildAllChildren(context); // Father forgive me, for i have sinned.
       }
     }, onError: (error) {
       throw error as PlatformException;
     });
+  }
+
+  void rebuildAllChildren(BuildContext context) {
+    // I know this is not how you should go about this
+    // But it was a 2 min fix so idk
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
   }
 }
