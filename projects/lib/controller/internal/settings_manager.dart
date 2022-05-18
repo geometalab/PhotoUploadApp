@@ -1,14 +1,18 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:projects/provider/report_mode_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsManager {
   static late SharedPreferences _prefs;
 
   // Keys for different SharedPreferences settings
-  final String _backGroundImageKey = "backgroundImage";
+  final String _backgroundImageKey = "backgroundImage";
   final String _cachedCategoriesKey = "cachedCategories";
   final String _simpleModeKey = "easyMode";
   final String _firstTimeKey = "firstTime";
+  final String _reportModeKey = "reportMode";
 
   SettingsManager() {
     initPrefs();
@@ -27,11 +31,11 @@ class SettingsManager {
   }
 
   setBackgroundImage(String path) {
-    _prefs.setString(_backGroundImageKey, path);
+    _prefs.setString(_backgroundImageKey, path);
   }
 
   String? getBackgroundImage() {
-    return _prefs.getString(_backGroundImageKey);
+    return _prefs.getString(_backgroundImageKey);
   }
 
   addToCachedCategories(Map<String, dynamic> category) {
@@ -94,5 +98,55 @@ class SettingsManager {
       setFirstTime(true);
     }
     return _prefs.getBool(_firstTimeKey)!;
+  }
+
+  CustomReportMode getReportMode(BuildContext context) {
+    CustomReportMode? reportMode =
+        Provider.of<ReportModeProvider>(context, listen: false)
+            .getCustomReportMode();
+    if (reportMode != null) {
+      return reportMode;
+    }
+    if (!_prefs.containsKey(_reportModeKey)) {
+      switch (_prefs.getString(_reportModeKey)) {
+        case "silent":
+          {
+            return CustomReportMode.silent;
+          }
+        case "dialog":
+          {
+            return CustomReportMode.dialog;
+          }
+        case "none":
+          {
+            return CustomReportMode.none;
+          }
+        default:
+          {
+            return CustomReportMode.dialog;
+          }
+      }
+    } else {
+      setReportMode(CustomReportMode.dialog, context);
+      return CustomReportMode.dialog;
+    }
+  }
+
+  setReportMode(CustomReportMode reportMode, BuildContext context) {
+    Provider.of<ReportModeProvider>(context, listen: false)
+        .setCustomReportMode(reportMode);
+    switch (reportMode) {
+      case CustomReportMode.dialog:
+        _prefs.setString(_reportModeKey, "dialog");
+        break;
+      case CustomReportMode.silent:
+        _prefs.setString(_reportModeKey, "silent");
+        break;
+      case CustomReportMode.none:
+        _prefs.setString(_reportModeKey, "none");
+        break;
+      default:
+        throw UnimplementedError();
+    }
   }
 }

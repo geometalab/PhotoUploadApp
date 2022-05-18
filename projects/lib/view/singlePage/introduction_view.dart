@@ -7,7 +7,7 @@ import 'package:projects/style/text_styles.dart' as text_styles;
 import 'package:projects/style/themes.dart';
 import 'package:provider/provider.dart';
 
-import '../../page_container.dart';
+import '../../provider/view_switcher.dart';
 
 class IntroductionView extends StatefulWidget {
   const IntroductionView({Key? key}) : super(key: key);

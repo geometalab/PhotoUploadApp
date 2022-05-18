@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:projects/controller/internal/action_helper.dart';
-import 'package:projects/style/text_styles.dart';
+import 'package:projects/style/text_styles.dart' as text_styles;
 
 class AboutFragment extends StatelessWidget {
   const AboutFragment({Key? key}) : super(key: key);
@@ -33,7 +33,8 @@ class AboutFragment extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 120),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 120),
                 child: AspectRatio(
                   aspectRatio: 4 / 3,
                   child: Image.asset(
@@ -44,7 +45,7 @@ class AboutFragment extends StatelessWidget {
               ),
               const Text(
                 "Commons Uploader",
-                style: fragmentTitle,
+                style: text_styles.fragmentTitle,
                 textAlign: TextAlign.center,
               ),
               FutureBuilder(
@@ -60,16 +61,21 @@ class AboutFragment extends StatelessWidget {
                 },
               ),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
-              const Text("Developed by ", style: headerText),
-              const Padding(padding: EdgeInsets.only(bottom: 4)),
               const Text(
-                "Fabio Zahner & Remo Steiner",
-                style: headerText,
+                "Developed by Fabio Zahner & Remo Steiner",
+                style: text_styles.objectDescription,
               ),
+              const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  child: Text(
+                    "Commons Uploader is not affiliated with the Wikimedia Foundation.",
+                    style: text_styles.objectDescription,
+                    textAlign: TextAlign.center,
+                  )),
               const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                 child: SizedBox(
                   width: double.infinity,
                   child: ifsLogo,
@@ -77,7 +83,7 @@ class AboutFragment extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 48),
                 child: SizedBox(
                   width: double.infinity,
                   child: ostLogo,
@@ -123,13 +129,19 @@ class AboutFragment extends StatelessWidget {
                       Text("Code Repository")
                     ],
                   )),
-              const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                  child: Text(
-                    "Commons Uploader is not affiliated with the Wikimedia Foundation.",
-                    style: TextStyle(fontSize: 11),
-                    textAlign: TextAlign.center,
-                  ))
+              TextButton(
+                  onPressed: () {
+                    showLicensePage(context: context);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.article),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                      Text("View licenses")
+                    ],
+                  )),
             ],
           ),
         ),

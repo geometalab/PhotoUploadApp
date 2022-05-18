@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/model/information_collector.dart';
-import 'package:projects/page_container.dart';
 import 'package:projects/view/simpleUpload/simple_upload_page.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+
+import '../../provider/view_switcher.dart';
 
 class ExternalIntentHandler {
   // Gets called when a external intent is received

@@ -9,6 +9,7 @@ import 'package:projects/controller/wiki/login_handler.dart';
 import 'package:projects/controller/wiki/picture_of_the_day_service.dart';
 import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/model/datasets.dart';
+import 'package:projects/provider/view_switcher.dart';
 import 'package:projects/view/home_fragment.dart';
 import 'package:projects/view/commons_upload_fragment.dart';
 import 'package:projects/view/setting_fragment.dart';
@@ -17,7 +18,6 @@ import 'package:projects/view/singlePage/introduction_view.dart';
 import 'package:projects/view/singlePage/no_connection_view.dart';
 import 'package:projects/view/user_fragment.dart';
 import 'package:projects/view/map_view_fragment.dart';
-import 'package:projects/style/text_styles.dart' as text_styles;
 import 'package:projects/style/user_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -202,41 +202,19 @@ class _PageContainerState extends State<PageContainer> {
       future: LoginHandler().getUserInformationFromFile(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
-          return DrawerHeader(
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Stack(
-                children: [
-                  Positioned(
-                      left: 16,
-                      bottom: 16,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.person_off,
-                            color: Colors.white,
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 2)),
-                          Text(
-                            "Not logged into wikimedia",
-                            style: text_styles.objectDescription
-                                .copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ))
-                ],
-              ),
-              decoration: _headerDecorationImage(),
-            ),
-            padding: EdgeInsets.zero,
+          return UserAccountsDrawerHeader(
+            decoration: _headerDecorationImage(),
+            currentAccountPictureSize: const Size.square(48),
+            currentAccountPicture: const UserAvatar(Icons.person_off),
+            accountEmail: const Text("Log in to upload images."),
+            accountName: const Text("Not logged in"),
           );
         } else {
           Userdata data = snapshot.data;
           return UserAccountsDrawerHeader(
               decoration: _headerDecorationImage(),
-              currentAccountPicture: const UserAvatar(),
+              currentAccountPicture:
+                  const UserAvatar(Icons.person_outline_rounded),
               currentAccountPictureSize: const Size.square(48),
               // arrowColor: Theme.of(context).colorScheme.onPrimary,
               // onDetailsPressed: () { }, // TODO maybe put something in this dropdown
@@ -289,18 +267,5 @@ class _PageContainerState extends State<PageContainer> {
         }
       }
     });
-  }
-}
-
-class ViewSwitcher extends ChangeNotifier {
-  int _viewIndex = 0;
-
-  int get viewIndex {
-    return _viewIndex;
-  }
-
-  set viewIndex(int viewIndex) {
-    _viewIndex = viewIndex;
-    notifyListeners();
   }
 }

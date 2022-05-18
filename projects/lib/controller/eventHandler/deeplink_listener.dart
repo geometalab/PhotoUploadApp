@@ -5,7 +5,7 @@ import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/view/simpleUpload/simple_user_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../page_container.dart';
+import '../../provider/view_switcher.dart';
 import '../wiki/login_handler.dart';
 
 // TODO if one of the requests in the login process fails, display error (or at least acknowledge it)
@@ -54,9 +54,21 @@ class DeepLinkListener extends ChangeNotifier {
         } else {
           Provider.of<ViewSwitcher>(context, listen: false).viewIndex = 5;
         }
+        rebuildAllChildren(context); // Father forgive me, for i have sinned.
       }
     }, onError: (error) {
       throw error as PlatformException;
     });
+  }
+
+  void rebuildAllChildren(BuildContext context) {
+    // I know this is not how you should go about this
+    // But it was a 2 min fix so idk
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
   }
 }

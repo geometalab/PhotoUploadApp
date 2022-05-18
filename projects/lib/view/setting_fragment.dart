@@ -4,7 +4,6 @@ import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/controller/wiki/login_handler.dart';
 import 'package:projects/model/datasets.dart';
 import 'package:projects/model/information_collector.dart';
-import 'package:projects/page_container.dart';
 import 'package:projects/style/info_popup.dart';
 import 'package:projects/view/about_fragment.dart';
 import 'package:projects/model/texts.dart' as texts;
@@ -12,6 +11,9 @@ import 'package:projects/view/simpleUpload/simple_settings_page.dart';
 import 'package:projects/view/singlePage/image_selector.dart';
 import 'package:projects/view/singlePage/introduction_view.dart';
 import 'package:provider/provider.dart';
+
+import '../provider/report_mode_provider.dart';
+import '../provider/view_switcher.dart';
 
 // TODO a "author name" text field, which gets filled into "author" field when "This is my own work" checkbox is tapped.
 
@@ -24,7 +26,6 @@ class SettingsFragment extends StatefulWidget {
 
 class _SettingsFragmentState extends State<SettingsFragment> {
   static const dividerHeight = 0.0;
-
   late final SettingsManager manager = SettingsManager();
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,10 @@ class _SettingsFragmentState extends State<SettingsFragment> {
               height: dividerHeight,
             ),
             _backgroundImageSelector(context),
+            const Divider(
+              height: dividerHeight,
+            ),
+            _errorReportingDropdown(context),
             const Divider(
               height: dividerHeight,
             ),
@@ -105,6 +110,78 @@ class _SettingsFragmentState extends State<SettingsFragment> {
           ),
           items: <String>['Light', 'Dark', 'Use System Theme']
               .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        )
+      ],
+    );
+  }
+
+  Widget _errorReportingDropdown(BuildContext context) {
+    late String dropdownValue;
+    CustomReportMode reportMode = manager.getReportMode(context);
+    switch (reportMode) {
+      case CustomReportMode.dialog:
+        dropdownValue = "Ask every time";
+        break;
+      case CustomReportMode.silent:
+        dropdownValue = "Automatically report";
+        break;
+      case CustomReportMode.none:
+        dropdownValue = "Never report";
+        break;
+      default:
+        throw ("Fallthrough case. Value: $reportMode");
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: const [
+            Text("Error Reporting"),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+            InfoPopUp(
+                "Choose how detected Errors in the app should be handled. When an error is detected, it is sent off to the developers for analysis, as long as you agree in the displayed popup or choose \"Automatically report\" here.")
+          ],
+        ),
+        DropdownButton<String>(
+          value: dropdownValue,
+          onChanged: (String? newValue) {
+            CustomReportMode newReportMode;
+            switch (newValue) {
+              case "Ask every time":
+                newReportMode = CustomReportMode.dialog;
+                break;
+              case "Automatically report":
+                newReportMode = CustomReportMode.silent;
+                break;
+              case "Never report":
+                newReportMode = CustomReportMode.none;
+                break;
+              default:
+                throw ("Fallthrough case. Value: $newValue");
+            }
+            setState(() {
+              manager.setReportMode(newReportMode, context);
+              dropdownValue = newValue!;
+            });
+          },
+          icon: const Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          underline: Container(
+            height: 2,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          items: <String>[
+            "Ask every time",
+            "Automatically report",
+            "Never report"
+          ].map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
