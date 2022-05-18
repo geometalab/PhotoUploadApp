@@ -20,8 +20,7 @@ import 'controller/internal/action_helper.dart';
 
 // TODO make branch reroute page more beautiful (e.g. "Return to App" button & "Login successful" text)
 // TODO add editing of your own media
-// Add screenshot error handling
-// TODO add auto send errors with opt out's
+// TODO Add screenshot error handling
 // TODO add "featured images" article on homepage
 // TODO allow custom categories, but are you sure prompt
 // TODO add gps coordinates from exif header if available

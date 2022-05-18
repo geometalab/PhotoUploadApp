@@ -18,8 +18,13 @@ class ReportModeProvider extends ChangeNotifier {
   CatcherOptions getReleaseConfig(CustomReportMode reportMode) {
     switch (reportMode) {
       case CustomReportMode.dialog:
-        return CatcherOptions(
-            DialogReportMode(), [SentryHandler(_sentryClient)]);
+        return CatcherOptions(DialogReportMode(), [
+          SentryHandler(_sentryClient)
+        ], localizationOptions: [
+          LocalizationOptions("en",
+              dialogReportModeDescription:
+                  "Unexpected error occurred in application. Click Accept to send error report or Cancel to dismiss report. Go to settings to set how errors should be handled.")
+        ]);
       case CustomReportMode.silent:
         return CatcherOptions(
             SilentReportMode(), [SentryHandler(_sentryClient)]);
