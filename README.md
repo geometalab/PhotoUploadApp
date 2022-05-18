@@ -1,6 +1,8 @@
 # Commons Uploader
 Mobile App for uploading Images to Wikimedia Commons. 
 
+[Commons Uploader on Play Store](https://play.google.com/store/apps/details?id=ch.ifs.commonsuploader)
+
 Find nearby commons categories, take images of them and upload them to Wikimedia Commons with your own account. Information can be added to an image, such as fitting categories, date of capture, description in different languages and more. If you are new to Wikimedia, it is also possible to only have access to the most important features and fields for a more streamlined experience with our "Simple Mode". Multiple articles in the app also provide help regarding copyright law, licences and more. Future functionality may include different supported media types and uploading to diffrent plattforms.
 
 Made with Flutter at the Institute for Software at OST Campus Rapperswil.
