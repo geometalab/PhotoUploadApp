@@ -7,10 +7,11 @@ import 'package:projects/controller/wiki/image_service.dart';
 import 'package:projects/controller/wiki/login_handler.dart';
 import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/model/information_collector.dart';
-import 'package:projects/page_container.dart';
 import 'package:projects/style/hero_photo_view_route_wrapper.dart';
 import 'package:projects/view/simpleUpload/simple_upload_page.dart';
 import 'package:provider/provider.dart';
+
+import '../provider/view_switcher.dart';
 
 // TODO? tabbed view? for more information (see todos below)
 // TODO add a View in Web/App function (requires QTag probably)

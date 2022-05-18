@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/controller/eventHandler/deeplink_listener.dart';
 import 'package:projects/controller/wiki/login_handler.dart';
-import 'package:projects/page_container.dart';
 import 'package:projects/style/key_value_field.dart';
 import 'package:projects/style/text_styles.dart';
 import 'package:projects/style/user_avatar.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/view_switcher.dart';
 import '../style/key_value_field.dart';
 
 class UserFragment extends StatefulWidget {

@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/controller/wiki/upload_service.dart';
-import 'package:projects/page_container.dart';
 import 'package:provider/provider.dart';
+
+import '../../provider/view_switcher.dart';
 
 class UploadProgressBar {
   bool? simpleMode;

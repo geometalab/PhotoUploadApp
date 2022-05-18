@@ -5,7 +5,7 @@ import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/view/simpleUpload/simple_user_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../page_container.dart';
+import '../../provider/view_switcher.dart';
 import '../wiki/login_handler.dart';
 
 // TODO if one of the requests in the login process fails, display error (or at least acknowledge it)
