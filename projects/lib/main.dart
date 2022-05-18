@@ -3,7 +3,6 @@ import 'package:catcher/handlers/console_handler.dart';
 import 'package:catcher/handlers/sentry_handler.dart';
 import 'package:catcher/mode/dialog_report_mode.dart';
 import 'package:catcher/model/catcher_options.dart';
-import 'package:catcher/model/report_mode.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -77,7 +76,6 @@ class MyApp extends StatelessWidget {
               create: (_) => ReportModeProvider(sentryClient))
         ],
         builder: (BuildContext context, _) {
-          print("rebuilt");
           return Consumer<ReportModeProvider>(builder: (context, provider, __) {
             SchedulerBinding.instance?.addPostFrameCallback((_) {
               CustomReportMode reportMode =

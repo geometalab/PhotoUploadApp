@@ -1,10 +1,7 @@
-import 'package:catcher/catcher.dart';
-import 'package:catcher/model/report_mode.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/controller/wiki/login_handler.dart';
-import 'package:projects/main.dart';
 import 'package:projects/model/datasets.dart';
 import 'package:projects/model/information_collector.dart';
 import 'package:projects/style/info_popup.dart';

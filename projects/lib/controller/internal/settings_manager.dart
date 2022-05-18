@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:catcher/catcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:projects/provider/report_mode_provider.dart';
 import 'package:provider/provider.dart';

@@ -2,8 +2,6 @@ import 'package:catcher/catcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../controller/internal/settings_manager.dart';
-
 class ReportModeProvider extends ChangeNotifier {
   CustomReportMode? _customReportMode;
   final SentryClient _sentryClient;
