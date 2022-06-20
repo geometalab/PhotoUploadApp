@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:projects/controller/internal/settings_manager.dart';
+import '../../model/datasets.dart';
 
 class CategoryService {
   Future<List<Map<String, dynamic>>> getSuggestions(
-      String pattern, int useCase) async {
+      String pattern, SelectItemsFragmentUseCase useCase) async {
     List<Map<String, dynamic>> listedSuggestions;
     String request =
         'https://api.wikimedia.org/core/v1/commons/search/title?q=' +

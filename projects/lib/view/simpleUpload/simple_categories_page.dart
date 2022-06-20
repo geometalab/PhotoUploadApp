@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projects/controller/internal/own_work_helper.dart';
+import 'package:projects/model/datasets.dart';
 import 'package:projects/model/information_collector.dart';
 import 'package:projects/view/uploadFlow/select_items_fragment.dart';
 import 'package:projects/view/uploadFlow/upload_progress_bar.dart';
@@ -18,7 +19,7 @@ class _SimpleCategoriesPageState extends State<SimpleCategoriesPage> {
       appBar: _appBar(),
       body: const Padding(
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-        child: SelectItemFragment(0),
+        child: SelectItemFragment(SelectItemsFragmentUseCase.category),
       ),
     );
   }

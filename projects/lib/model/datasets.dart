@@ -31,3 +31,5 @@ List<String> assetImages() {
     ''
   ];
 }
+
+enum SelectItemsFragmentUseCase { category, depicts }
