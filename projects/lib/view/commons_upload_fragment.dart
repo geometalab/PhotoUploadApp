@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_tab_bar/progress_tab_bar.dart';
 import 'package:projects/controller/wiki/login_handler.dart';
+import 'package:projects/model/datasets.dart';
 import 'package:projects/view/singlePage/not_logged_in_view.dart';
 import 'package:projects/view/uploadFlow/description_fragment.dart';
 import 'package:projects/view/uploadFlow/information_fragment.dart';
@@ -108,9 +109,9 @@ class _CommonsUploadFragmentState extends State<CommonsUploadFragment> {
       case 0:
         return const SelectImageFragment();
       // case 1:
-      //   return StatefulSelectItemFragment(1);
+      //   return StatefulSelectItemFragment(SelectItemsFragmentUseCase.depicts);
       case 1:
-        return const SelectItemFragment(0);
+        return const SelectItemFragment(SelectItemsFragmentUseCase.category);
       case 2:
         return const DescriptionFragment();
       case 3:

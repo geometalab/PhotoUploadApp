@@ -25,6 +25,7 @@ import 'controller/internal/action_helper.dart';
 // TODO allow custom categories, but are you sure prompt
 // TODO add gps coordinates from exif header if available
 // TODO Handle Main activity destruction (https://pub.dev/packages/image_picker#handling-mainactivity-destruction-on-android)
+// TODO branch redirects dont work as ios sends useragent as macIOS starting from ios13
 
 late Catcher catcher;
 late SentryClient sentryClient;

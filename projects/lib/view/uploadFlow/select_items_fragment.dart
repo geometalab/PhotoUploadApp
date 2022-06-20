@@ -5,11 +5,12 @@ import 'package:projects/controller/internal/settings_manager.dart';
 import 'package:projects/model/information_collector.dart';
 import 'package:projects/style/themes.dart';
 import 'package:projects/style/text_styles.dart' as text_styles;
+import '../../model/datasets.dart';
 
 class SelectItemFragment extends StatefulWidget {
   // If 0, uses categories / if 1, uses depicts
   // yes ik its ugly, feel free to rewrite
-  final int useCase;
+  final SelectItemsFragmentUseCase useCase;
   const SelectItemFragment(this.useCase, {Key? key}) : super(key: key);
 
   @override
@@ -21,18 +22,14 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
   InformationCollector collector = InformationCollector();
   List<String>? titles;
   List<Map<String, dynamic>?>? thumbs;
-  int? useCase;
+  late SelectItemsFragmentUseCase useCase;
   TextEditingController? _typeAheadController;
 
   @override
   Widget build(BuildContext context) {
     useCase = widget.useCase;
 
-    if (useCase != 0 && useCase != 1) {
-      throw ("Incorrect useCase param on StatefulSelectCategoryFragment");
-    }
-
-    if (useCase == 0) {
+    if (useCase == SelectItemsFragmentUseCase.category) {
       titles = collector.categories;
       thumbs = collector.categoriesThumb;
     } else {
@@ -42,7 +39,8 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
 
     // TODO add help menu
     String prefillContent;
-    if (collector.preFillContent != null && useCase == 0) {
+    if (collector.preFillContent != null &&
+        useCase == SelectItemsFragmentUseCase.category) {
       prefillContent = collector.preFillContent!;
     } else {
       prefillContent = "";
@@ -67,10 +65,10 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
                     fontSize: 20,
                     color: Theme.of(context).textTheme.bodyText1!.color),
                 decoration: InputDecoration(
-                    labelText: labelText(useCase!),
+                    labelText: labelText(useCase),
                     border: const OutlineInputBorder())),
             suggestionsCallback: (pattern) async {
-              return await cs.getSuggestions(pattern, useCase!);
+              return await cs.getSuggestions(pattern, useCase);
             },
             itemBuilder: (context, Map<String, dynamic> suggestion) {
               return ListTile(
@@ -81,9 +79,9 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
             },
             onSuggestionSelected: (Map<String, dynamic> suggestion) {
               setState(() {
-                bool duplicate = isDuplicate(suggestion['title'], useCase!);
+                bool duplicate = isDuplicate(suggestion['title'], useCase);
                 if (!duplicate) {
-                  if (useCase == 0) {
+                  if (useCase == SelectItemsFragmentUseCase.category) {
                     collector.categories.add(suggestion['title']!);
                     collector.categoriesThumb.add(suggestion['thumbnail']);
                     SettingsManager().addToCachedCategories(suggestion);
@@ -109,8 +107,8 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
     ]);
   }
 
-  String labelText(int useCase) {
-    if (useCase == 0) {
+  String labelText(SelectItemsFragmentUseCase useCase) {
+    if (useCase == SelectItemsFragmentUseCase.category) {
       return "Enter fitting categories";
     } else {
       return "What is depicted on the image?";
@@ -179,7 +177,7 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
                   onPressed: () {
                     setState(() {
                       _typeAheadController?.clear();
-                      if (useCase == 0) {
+                      if (useCase == SelectItemsFragmentUseCase.category) {
                         collector.categories.removeAt(i);
                         collector.categoriesThumb.removeAt(i);
                       } else {
@@ -197,8 +195,8 @@ class _SelectItemFragmentState extends State<SelectItemFragment> {
     }
   }
 
-  bool isDuplicate(String title, int useCase) {
-    if (useCase == 0) {
+  bool isDuplicate(String title, SelectItemsFragmentUseCase useCase) {
+    if (useCase == SelectItemsFragmentUseCase.category) {
       return collector.categories.any((element) => element == title);
     } else {
       return collector.depictions.any((element) => element == title);
