@@ -13,7 +13,6 @@ class ActionHelper {
       if (Platform.isIOS && uri.path.contains("oauth2/authorize")) {
         // if authorisation flow on ios, open in app-internal browser for smoother user experience
         await launchUrl(uri, mode: LaunchMode.inAppWebView);
-        print("Webbb");
       } else {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
