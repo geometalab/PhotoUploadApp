@@ -9,14 +9,14 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.6+6
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.4                         # make get and post requests
   url_launcher: ^6.0.12                 # for opening browser with links
-  data_connection_checker: ^0.3.4       # for detecting when connection is lost and displaying no connection page
+  data_connection_checker: ^0.3.4     # for detecting when connection is lost and displaying no connection page
   image_picker: ^0.8.3                  # opening gallery/camera for uploading media
   cupertino_icons: ^1.0.2               # icons
   provider: ^6.0.0                      # providers, e.g. for the ViewSwitcher()
